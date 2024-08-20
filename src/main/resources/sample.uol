@@ -1,0 +1,5 @@
+class Test {
+    private native runable = nil
+    private test = nil
+
+}

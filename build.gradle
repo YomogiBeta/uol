@@ -1,0 +1,31 @@
+plugins {
+    id 'java'
+    id 'antlr'
+}
+
+group = 'ksu.yomogi'
+version = '1.0-SNAPSHOT'
+def groupString = 'ksu.yomogi'
+def packagePath = groupString.replace('.', '/')
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+dependencies {
+     antlr "org.antlr:antlr4:4.5" // use ANTLR version 4
+}
+
+generateGrammarSource {
+    outputDirectory = file("src/main/java/${packagePath}/parser")
+    arguments += ["-Dlanguage=Java","-package", groupString + ".parser", "-visitor", "-listener"]
+}
+
+test {
+    useJUnitPlatform()
+}

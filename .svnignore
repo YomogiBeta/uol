@@ -1,0 +1,30 @@
+.gradle
+build
+
+### IntelliJ IDEA ###
+*.iws
+*.iml
+*.ipr
+out
+
+### Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin
+
+### NetBeans ###
+nbbuild
+dist
+nbdist
+.nb-gradle
+
+### Mac OS ###
+.DS_Store
+
+## .git ignore ##
+.git
