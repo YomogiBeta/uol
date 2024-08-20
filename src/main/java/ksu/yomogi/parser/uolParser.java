@@ -141,11 +141,6 @@ public class uolParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitProg(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitProg(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final ProgContext prog() throws RecognitionException {
@@ -222,11 +217,6 @@ public class uolParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitStatement(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitStatement(this);
-			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -328,11 +318,6 @@ public class uolParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitExpression(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitExpression(this);
-			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -468,11 +453,6 @@ public class uolParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitResponseExpression(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitResponseExpression(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final ResponseExpressionContext responseExpression() throws RecognitionException {
@@ -544,11 +524,6 @@ public class uolParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitIterableExpression(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitIterableExpression(this);
-			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -643,11 +618,6 @@ public class uolParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitExpressionList(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitExpressionList(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final ExpressionListContext expressionList() throws RecognitionException {
@@ -715,11 +685,6 @@ public class uolParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitFileImportStatement(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitFileImportStatement(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final FileImportStatementContext fileImportStatement() throws RecognitionException {
@@ -767,11 +732,6 @@ public class uolParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitPartsImportStatement(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitPartsImportStatement(this);
-			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -824,11 +784,6 @@ public class uolParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitPartsImportContentList(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitPartsImportContentList(this);
-			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -896,11 +851,6 @@ public class uolParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitPartsImportContent(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitPartsImportContent(this);
-			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -977,11 +927,6 @@ public class uolParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitClassDefine(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitClassDefine(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final ClassDefineContext classDefine() throws RecognitionException {
@@ -1047,11 +992,6 @@ public class uolParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitExtendPart(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitExtendPart(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final ExtendPartContext extendPart() throws RecognitionException {
@@ -1096,11 +1036,6 @@ public class uolParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitInterfaceParts(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitInterfaceParts(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final InterfacePartsContext interfaceParts() throws RecognitionException {
@@ -1144,11 +1079,6 @@ public class uolParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitInterfaceList(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitInterfaceList(this);
-			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1210,11 +1140,6 @@ public class uolParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitClassParts(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitClassParts(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final ClassPartsContext classParts() throws RecognitionException {
@@ -1274,11 +1199,6 @@ public class uolParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitClassPartsList(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitClassPartsList(this);
-			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1348,11 +1268,6 @@ public class uolParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitMemberDefine(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitMemberDefine(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final MemberDefineContext memberDefine() throws RecognitionException {
@@ -1406,11 +1321,6 @@ public class uolParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitFunctionDefine(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitFunctionDefine(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final FunctionDefineContext functionDefine() throws RecognitionException {
@@ -1456,11 +1366,6 @@ public class uolParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitLambdaDefine(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitLambdaDefine(this);
-			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1520,11 +1425,6 @@ public class uolParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitReturnExpression(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitReturnExpression(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final ReturnExpressionContext returnExpression() throws RecognitionException {
@@ -1568,11 +1468,6 @@ public class uolParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitLambdaBody(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitLambdaBody(this);
-			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1650,11 +1545,6 @@ public class uolParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitArgumentDefineList(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitArgumentDefineList(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final ArgumentDefineListContext argumentDefineList() throws RecognitionException {
@@ -1730,11 +1620,6 @@ public class uolParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitArgumentDefaultList(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitArgumentDefaultList(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final ArgumentDefaultListContext argumentDefaultList() throws RecognitionException {
@@ -1783,11 +1668,6 @@ public class uolParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitInstanceExpression(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitInstanceExpression(this);
-			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1855,11 +1735,6 @@ public class uolParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitBooleanConditionExpression(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitBooleanConditionExpression(this);
-			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2022,11 +1897,6 @@ public class uolParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitBooleanLoopExpression(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitBooleanLoopExpression(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final BooleanLoopExpressionContext booleanLoopExpression() throws RecognitionException {
@@ -2082,11 +1952,6 @@ public class uolParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitForEachExpression(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitForEachExpression(this);
-			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2150,11 +2015,6 @@ public class uolParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitConditionExpressionList(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitConditionExpressionList(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final ConditionExpressionListContext conditionExpressionList() throws RecognitionException {
@@ -2215,11 +2075,6 @@ public class uolParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitConditionExpression(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitConditionExpression(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final ConditionExpressionContext conditionExpression() throws RecognitionException {
@@ -2273,11 +2128,6 @@ public class uolParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitAssignExpression(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitAssignExpression(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final AssignExpressionContext assignExpression() throws RecognitionException {
@@ -2330,11 +2180,6 @@ public class uolParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitChainExpression(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitChainExpression(this);
-			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2410,11 +2255,6 @@ public class uolParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitCallExpression(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitCallExpression(this);
-			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2497,11 +2337,6 @@ public class uolParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitArgumentList(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitArgumentList(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final ArgumentListContext argumentList() throws RecognitionException {
@@ -2567,11 +2402,6 @@ public class uolParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitAdditiveExpression(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitAdditiveExpression(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final AdditiveExpressionContext additiveExpression() throws RecognitionException {
@@ -2635,11 +2465,6 @@ public class uolParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitMultiplicativeExpression(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitMultiplicativeExpression(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final MultiplicativeExpressionContext multiplicativeExpression() throws RecognitionException {
@@ -2698,11 +2523,6 @@ public class uolParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitUnaryExpression(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitUnaryExpression(this);
-			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2770,11 +2590,6 @@ public class uolParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitListDefine(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitListDefine(this);
-			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2851,11 +2666,6 @@ public class uolParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitListDefineWithKey(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitListDefineWithKey(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final ListDefineWithKeyContext listDefineWithKey() throws RecognitionException {
@@ -2917,11 +2727,6 @@ public class uolParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitListDefineWithKeyContent(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitListDefineWithKeyContent(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final ListDefineWithKeyContentContext listDefineWithKeyContent() throws RecognitionException {
@@ -2970,11 +2775,6 @@ public class uolParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitElementExpression(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitElementExpression(this);
-			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -3037,11 +2837,6 @@ public class uolParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitLiteral(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitLiteral(this);
-			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -3120,11 +2915,6 @@ public class uolParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof uolListener ) ((uolListener)listener).exitIntegerLiteral(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitIntegerLiteral(this);
-			else return visitor.visitChildren(this);
 		}
 	}
 

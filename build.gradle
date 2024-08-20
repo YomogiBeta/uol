@@ -23,7 +23,7 @@ dependencies {
 
 generateGrammarSource {
     outputDirectory = file("src/main/java/${packagePath}/parser")
-    arguments += ["-Dlanguage=Java","-package", groupString + ".parser", "-visitor", "-listener"]
+    arguments += ["-Dlanguage=Java","-package", groupString + ".parser", "-listener"]
 }
 
 test {
