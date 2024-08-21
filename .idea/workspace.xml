@@ -5,11 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2beadc4c-bdb1-41c7-b9c1-83160b79d96d" name="変更" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/errors/NotFoundSymbolError.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/errors/UolRuntimeError.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/sample.uol" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sample.uol" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/errors/UolRuntimeError.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/errors/UolRuntimeError.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -165,7 +162,7 @@
       <workItem from="1724078420067" duration="19614000" />
       <workItem from="1724170270152" duration="57000" />
       <workItem from="1724171845305" duration="377000" />
-      <workItem from="1724229672862" duration="2760000" />
+      <workItem from="1724229672862" duration="2927000" />
     </task>
     <servers />
   </component>

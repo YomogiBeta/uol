@@ -30,9 +30,10 @@ public class UolRuntimeError extends RuntimeException {
         aBuffer.append(this.aContext.getStart().getLine());
         aBuffer.append(System.lineSeparator());
         aBuffer.append("Code: ");
-        aBuffer.append(this.aContext.getStart().getText());
-        aBuffer.append(" ");
-        aBuffer.append(this.aContext.getStop().getText());
+        this.aContext.children.forEach((aChild) -> {
+            aBuffer.append(aChild.getText());
+            aBuffer.append(" ");
+        });
         System.err.println(aBuffer.toString());
     }
 }
