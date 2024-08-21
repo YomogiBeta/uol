@@ -1,4 +1,4 @@
-class Test {
+class Test extends Object {
     private native runable = nil
     private test = nil
 

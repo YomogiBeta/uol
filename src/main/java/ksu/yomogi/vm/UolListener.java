@@ -2,6 +2,7 @@ package ksu.yomogi.vm;
 
 import ksu.yomogi.parser.uolBaseListener;
 import ksu.yomogi.parser.uolParser;
+import ksu.yomogi.vm.errors.NotFoundSymbolError;
 
 import java.util.HashMap;
 import java.util.Stack;
@@ -14,6 +15,7 @@ public class UolListener extends uolBaseListener {
     private HashMap<String, ClassContent> aClassMap = new HashMap<String, ClassContent>();
     private HashMap<String, Object> aCacheMessageMap = null;
     private HashMap<String, MemberContent> aCacheMemberMap = null;
+    private String aCacheParentClassName = "Object";
 
 
     private HashMap<String, PrimitiveContent> getCurrentVariableHashMap() {
@@ -151,11 +153,11 @@ public class UolListener extends uolBaseListener {
     public void exitClassDefine(uolParser.ClassDefineContext ctx) {
         super.exitClassDefine(ctx);
         String aClassName = ctx.getChild(1).getText();
-        String aParentClassName = "Object";
 
-        ClassContent aClassContent = new ClassContent(aClassName, aParentClassName, this.aCacheMemberMap, this.aCacheMessageMap);
+        ClassContent aClassContent = new ClassContent(aClassName, this.aCacheParentClassName, this.aCacheMemberMap, this.aCacheMessageMap);
         this.aClassMap.put(aClassName, aClassContent);
 
+        this.aCacheParentClassName = "Object";
         this.aCacheMemberMap = null;
         this.aCacheMessageMap = null;
 
@@ -170,6 +172,20 @@ public class UolListener extends uolBaseListener {
      */
     public void exitExtendPart(uolParser.ExtendPartContext ctx) {
         super.exitExtendPart(ctx);
+
+        String aParentClassName = ctx.getChild(1).getText();
+
+        if (this.aClassMap.get(aParentClassName) == null) {
+            try {
+                throw new NotFoundSymbolError(aParentClassName, ctx);
+            }catch (NotFoundSymbolError event){
+                event.printErrorMessages();
+            }
+            return;
+        }
+
+        this.aCacheParentClassName = aParentClassName;
+        this.aCacheMemberMap = new HashMap<>(this.aClassMap.get(aParentClassName).getMembers());
     }
 
     /**

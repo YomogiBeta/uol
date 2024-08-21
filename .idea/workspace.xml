@@ -5,11 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2beadc4c-bdb1-41c7-b9c1-83160b79d96d" name="変更" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/errors/NotFoundSymbolError.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/errors/UolRuntimeError.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolBaseVisitor.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolVisitor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/sample.uol" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sample.uol" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,6 +66,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
     "Gradle.uol_antlr [:UolVirtualMachine.main()].executor": "Run",
     "Gradle.uol_antlr [:Visitor.main()].executor": "Run",
     "Gradle.uol_antlr [generateGrammarSource].executor": "Run",
@@ -94,7 +95,7 @@
       <recent name="ksu.yomogi.vm" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.uol_antlr [generateGrammarSource]">
+  <component name="RunManager" selected="アプリケーション.UolVirtualMachine">
     <configuration name="UolVirtualMachine" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ksu.yomogi.vm.UolVirtualMachine" />
       <module name="uol_antlr.main" />
@@ -163,7 +164,8 @@
       <workItem from="1723991714100" duration="10320000" />
       <workItem from="1724078420067" duration="19614000" />
       <workItem from="1724170270152" duration="57000" />
-      <workItem from="1724171845305" duration="47000" />
+      <workItem from="1724171845305" duration="377000" />
+      <workItem from="1724229672862" duration="2760000" />
     </task>
     <servers />
   </component>
