@@ -10,20 +10,18 @@ import java.io.IOException;
 public class UolVirtualMachine extends Object {
 
     public static void main(String[] args) throws IOException {
-        UolVirtualMachine aMachine = new UolVirtualMachine();
         UolVirtualMachine.execute(args[0]);
     }
 
-    public static UolListener execute(String aPath) {
+    public static UolVisitor execute(String aPath) {
         try {
         ANTLRFileStream aStream = new ANTLRFileStream(aPath);
         uolLexer aLexer = new uolLexer(aStream);
         CommonTokenStream tokens = new CommonTokenStream(aLexer);
         uolParser aParser = new uolParser(tokens);
-        UolListener aListener = new UolListener();
-        aParser.addParseListener(aListener);
-        aParser.prog();
-        return aListener;
+        UolVisitor aVisitor = new UolVisitor();
+        aVisitor.visit(aParser.prog());
+        return aVisitor;
         } catch (IOException e) {
             e.printStackTrace();
             return null;

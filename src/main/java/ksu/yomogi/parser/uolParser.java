@@ -136,12 +136,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_prog; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterProg(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitProg(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitProg(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -213,12 +210,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_statement; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterStatement(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitStatement(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitStatement(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -314,12 +308,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_expression; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitExpression(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitExpression(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -448,12 +439,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_responseExpression; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterResponseExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitResponseExpression(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitResponseExpression(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -520,12 +508,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_iterableExpression; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterIterableExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitIterableExpression(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitIterableExpression(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -613,12 +598,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_expressionList; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterExpressionList(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitExpressionList(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitExpressionList(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -680,12 +662,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_fileImportStatement; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterFileImportStatement(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitFileImportStatement(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitFileImportStatement(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -728,12 +707,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_partsImportStatement; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterPartsImportStatement(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitPartsImportStatement(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitPartsImportStatement(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -776,12 +752,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_partsImportContentList; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterPartsImportContentList(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitPartsImportContentList(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitPartsImportContentList(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -845,12 +818,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_partsImportContent; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterPartsImportContent(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitPartsImportContent(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitPartsImportContent(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -908,12 +878,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_classDefine; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterClassDefine(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitClassDefine(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitClassDefine(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -973,12 +940,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_extendPart; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterExtendPart(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitExtendPart(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitExtendPart(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1017,12 +981,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_interfaceParts; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterInterfaceParts(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitInterfaceParts(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitInterfaceParts(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1061,12 +1022,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_interfaceList; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterInterfaceList(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitInterfaceList(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitInterfaceList(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1121,12 +1079,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_classParts; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterClassParts(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitClassParts(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitClassParts(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1181,12 +1136,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_classPartsList; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterClassPartsList(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitClassPartsList(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitClassPartsList(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1249,12 +1201,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_memberDefine; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterMemberDefine(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitMemberDefine(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitMemberDefine(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1302,12 +1251,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_functionDefine; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterFunctionDefine(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitFunctionDefine(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitFunctionDefine(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1348,12 +1294,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_lambdaDefine; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterLambdaDefine(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitLambdaDefine(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitLambdaDefine(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1398,12 +1341,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_returnExpression; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterReturnExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitReturnExpression(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitReturnExpression(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1442,12 +1382,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_lambdaBody; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterLambdaBody(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitLambdaBody(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitLambdaBody(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1517,12 +1454,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_argumentDefineList; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterArgumentDefineList(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitArgumentDefineList(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitArgumentDefineList(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1588,12 +1522,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_arugumentNonDefaultList; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterArugumentNonDefaultList(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitArugumentNonDefaultList(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitArugumentNonDefaultList(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1644,12 +1575,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_argumentNonDefault; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterArgumentNonDefault(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitArgumentNonDefault(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitArgumentNonDefault(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1686,12 +1614,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_argumentDefaultList; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterArgumentDefaultList(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitArgumentDefaultList(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitArgumentDefaultList(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1756,12 +1681,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_argumentDefault; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterArgumentDefault(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitArgumentDefault(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitArgumentDefault(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1801,12 +1723,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_instanceExpression; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterInstanceExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitInstanceExpression(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitInstanceExpression(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1868,12 +1787,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_booleanConditionExpression; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterBooleanConditionExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitBooleanConditionExpression(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitBooleanConditionExpression(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2029,12 +1945,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_booleanLoopExpression; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterBooleanLoopExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitBooleanLoopExpression(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitBooleanLoopExpression(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2085,12 +1998,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_forEachExpression; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterForEachExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitForEachExpression(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitForEachExpression(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2147,12 +2057,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_conditionExpressionList; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterConditionExpressionList(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitConditionExpressionList(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitConditionExpressionList(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2207,12 +2114,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_conditionExpression; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterConditionExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitConditionExpression(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitConditionExpression(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2262,12 +2166,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_assignExpression; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterAssignExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitAssignExpression(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitAssignExpression(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2311,12 +2212,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_assignAbleExpression; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterAssignAbleExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitAssignAbleExpression(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitAssignAbleExpression(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2379,12 +2277,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_chainExpression; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterChainExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitChainExpression(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitChainExpression(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2454,12 +2349,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_callExpression; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterCallExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitCallExpression(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitCallExpression(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2535,12 +2427,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_argumentList; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterArgumentList(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitArgumentList(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitArgumentList(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2600,12 +2489,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_additiveExpression; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterAdditiveExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitAdditiveExpression(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitAdditiveExpression(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2663,12 +2549,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_multiplicativeExpression; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterMultiplicativeExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitMultiplicativeExpression(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitMultiplicativeExpression(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2722,12 +2605,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_unaryExpression; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterUnaryExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitUnaryExpression(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitUnaryExpression(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2789,12 +2669,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_listDefine; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterListDefine(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitListDefine(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitListDefine(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2864,12 +2741,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_listDefineWithKey; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterListDefineWithKey(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitListDefineWithKey(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitListDefineWithKey(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2925,12 +2799,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_listDefineWithKeyContent; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterListDefineWithKeyContent(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitListDefineWithKeyContent(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitListDefineWithKeyContent(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2974,12 +2845,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_elementExpression; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterElementExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitElementExpression(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitElementExpression(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -3036,12 +2904,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_literal; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterLiteral(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitLiteral(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitLiteral(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -3114,12 +2979,9 @@ public class uolParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_integerLiteral; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).enterIntegerLiteral(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof uolListener ) ((uolListener)listener).exitIntegerLiteral(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof uolVisitor ) return ((uolVisitor<? extends T>)visitor).visitIntegerLiteral(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
