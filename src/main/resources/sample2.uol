@@ -1,0 +1,9 @@
+import { Object } from "language.Object"
+
+class Sample extends Object {
+    private native runnable = nil
+
+    public function __construct() {
+        this.runnable = nil
+    }
+}

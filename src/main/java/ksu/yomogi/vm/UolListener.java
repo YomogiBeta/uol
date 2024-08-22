@@ -4,13 +4,17 @@ import ksu.yomogi.parser.uolBaseListener;
 import ksu.yomogi.parser.uolParser;
 import ksu.yomogi.vm.errors.NotFoundSymbolError;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Stack;
 
 public class UolListener extends uolBaseListener {
 
+    private final static String aRuntimePath = "src/main/resources/";
+
     private Stack<Object> aDataStack = new Stack<Object>();
-    private HashMap<String, PrimitiveContent> aGlobalVariableMap = new HashMap<String, PrimitiveContent>();
+    private HashMap<String, Object> aDataMap = new HashMap<String, Object>();
+    private HashMap<String, Object> aGlobalVariableMap = new HashMap<String, Object>();
 
     private HashMap<String, ClassContent> aClassMap = new HashMap<String, ClassContent>();
     private HashMap<String, Object> aCacheMessageMap = null;
@@ -18,7 +22,7 @@ public class UolListener extends uolBaseListener {
     private String aCacheParentClassName = "Object";
 
 
-    private HashMap<String, PrimitiveContent> getCurrentVariableHashMap() {
+    private HashMap<String, Object> getCurrentVariableHashMap() {
         return this.aGlobalVariableMap;
     }
 
@@ -97,6 +101,7 @@ public class UolListener extends uolBaseListener {
      */
     public void exitExpressionList(uolParser.ExpressionListContext ctx) {
         super.exitExpressionList(ctx);
+
     }
 
     /**
@@ -119,6 +124,32 @@ public class UolListener extends uolBaseListener {
      */
     public void exitPartsImportStatement(uolParser.PartsImportStatementContext ctx) {
         super.exitPartsImportStatement(ctx);
+
+        String aFileKey = ctx.getChild(3).getText();
+        aFileKey = aFileKey.replaceAll("\\.", File.separator);
+        aFileKey = aFileKey.substring(1, aFileKey.length() - 1);
+        UolListener aListener = UolVirtualMachine.execute(aRuntimePath + aFileKey + ".uol");
+
+        if (aListener != null) {
+
+            Stack<ImportLabel> aLabelStack = (Stack<ImportLabel>) this.aDataMap.get("importLabel");
+
+            aLabelStack.forEach((aLabel) -> {
+                ClassContent aClassContent = aListener.getClassContent(aLabel.getTrueLabel());
+                if (aClassContent != null) {
+                    this.aClassMap.put(aLabel.getSubLabel(), aClassContent);
+                    return;
+                }
+
+                // TODO ファンクションマップ実装後作成
+
+                Object aVarialbe = aListener.getGlobalVariable(aLabel.getTrueLabel());
+                if (aVarialbe != null) {
+                    this.aGlobalVariableMap.put(aLabel.getSubLabel(), aVarialbe);
+                }
+            });
+        }
+
     }
 
     /**
@@ -141,6 +172,21 @@ public class UolListener extends uolBaseListener {
      */
     public void exitPartsImportContent(uolParser.PartsImportContentContext ctx) {
         super.exitPartsImportContent(ctx);
+        ImportLabel anImportLabel = null;
+
+        // 1以上の場合、仮名と真名が存在する
+        if (ctx.getChildCount() > 1){
+            anImportLabel = new ImportLabel(ctx.getChild(0).getText(), ctx.getChild(2).getText());
+        } else {
+            anImportLabel = new ImportLabel(ctx.getChild(0).getText());
+        }
+
+        Stack<ImportLabel> aLabelStack = new Stack<ImportLabel>();
+        if (this.aDataMap.get("importLabel") != null) {
+            aLabelStack = (Stack<ImportLabel>) this.aDataMap.get("importLabel");
+        }
+        aLabelStack.push(anImportLabel);
+        this.aDataMap.put("importLabel", aLabelStack);
     }
 
     /**
@@ -246,7 +292,7 @@ public class UolListener extends uolBaseListener {
         String aMemberName = ctx.getChild(ctx.getChildCount() - 1).getChild(0).getText();
 
         // 変数Assignがすでに実行されており、それをメンバの値として利用する
-        PrimitiveContent aValue = this.getCurrentVariableHashMap().get(aMemberName);
+        Object aValue = this.getCurrentVariableHashMap().get(aMemberName);
         this.getCurrentVariableHashMap().remove(aMemberName);
 
         // メンバに必要な情報の取得
@@ -258,7 +304,7 @@ public class UolListener extends uolBaseListener {
             anInstruction = ctx.getChild(1).getText();
         }
 
-        MemberContent aMemberContent = new MemberContent(aModifier, anInstruction, aValue.getValue(), aValue.getType());
+        MemberContent aMemberContent = new MemberContent(aModifier, anInstruction, aValue);
 
         if (this.aCacheMemberMap == null) {
             this.aCacheMemberMap = new HashMap<String, MemberContent>();
@@ -285,8 +331,33 @@ public class UolListener extends uolBaseListener {
      *
      * @param ctx
      */
+    public void exitArgumentNonDefault(uolParser.ArgumentNonDefaultContext ctx) {
+        super.exitArgumentNonDefault(ctx);
+        String anIdentity = ctx.getChild(0).getText();
+        this.aDataStack.push(anIdentity);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     *
+     * @param ctx
+     */
+    public void exitArgumentDefault(uolParser.ArgumentDefaultContext ctx) {
+        super.exitArgumentDefault(ctx);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     *
+     * @param ctx
+     */
     public void exitLambdaDefine(uolParser.LambdaDefineContext ctx) {
         super.exitLambdaDefine(ctx);
+        System.out.println("LambdaDefine");
     }
 
     /**
@@ -397,8 +468,8 @@ public class UolListener extends uolBaseListener {
      */
     public void exitAssignExpression(uolParser.AssignExpressionContext ctx) {
         super.exitAssignExpression(ctx);
-        String aVariableKey = ctx.getStart().getText();
-        PrimitiveContent aVariableValue = (PrimitiveContent) this.aDataStack.pop();
+        Object aVariableValue = this.aDataStack.pop();
+        String aVariableKey = (String) this.aDataStack.pop();
         this.getCurrentVariableHashMap().put(aVariableKey, aVariableValue);
     }
 
@@ -526,6 +597,10 @@ public class UolListener extends uolBaseListener {
                 PrimitiveContent aVariableContent = new PrimitiveContent(null, "nil");
                 this.aDataStack.push(aVariableContent);
             }
+            case uolParser.IDENTIFIER -> {
+                String anIdentity = ctx.getText();
+                this.aDataStack.push(anIdentity);
+            }
         }
     }
 
@@ -556,5 +631,33 @@ public class UolListener extends uolBaseListener {
 //                this.aDataStack.push(aVariableContent);
 //            }
 //        }
+    }
+
+    /**
+     * 引数の文字列をキーとして、クラスマップよりクラスコンテンツを探し、応答するメッセージ
+     * @param aClassName クラスの名前
+     * @return ClassContent または null
+     */
+    public ClassContent getClassContent(String aClassName) {
+        return this.aClassMap.get(aClassName);
+    }
+
+    /**
+     * 引数の文字列をキーとして、関数マップより関数コンテンツを探し、応答するメッセージ
+     * @param aFunctionName 関数の名前
+     * @return FunctionContent または null
+     */
+    public Object getFunctionContent(String aFunctionName) {
+        // TODO ファンクションマップ実装後作成
+        return null;
+    }
+
+    /**
+     * 引数の文字列をキーとして、グローバル変数マップより変数の値を探し、応答するメッセージ
+     * @param aVariableName 変数の名前
+     * @return Object または null
+     */
+    public Object getGlobalVariable(String aVariableName) {
+        return this.aGlobalVariableMap.get(aVariableName);
     }
 }

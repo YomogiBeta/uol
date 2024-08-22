@@ -281,6 +281,30 @@ public class uolBaseListener implements uolListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterArugumentNonDefaultList(uolParser.ArugumentNonDefaultListContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArugumentNonDefaultList(uolParser.ArugumentNonDefaultListContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterArgumentNonDefault(uolParser.ArgumentNonDefaultContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArgumentNonDefault(uolParser.ArgumentNonDefaultContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterArgumentDefaultList(uolParser.ArgumentDefaultListContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -288,6 +312,18 @@ public class uolBaseListener implements uolListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitArgumentDefaultList(uolParser.ArgumentDefaultListContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterArgumentDefault(uolParser.ArgumentDefaultContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArgumentDefault(uolParser.ArgumentDefaultContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -372,6 +408,18 @@ public class uolBaseListener implements uolListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitAssignExpression(uolParser.AssignExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAssignAbleExpression(uolParser.AssignAbleExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAssignAbleExpression(uolParser.AssignAbleExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

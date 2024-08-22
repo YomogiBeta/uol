@@ -1,0 +1,4 @@
+class Object {
+    private test = nil
+
+}

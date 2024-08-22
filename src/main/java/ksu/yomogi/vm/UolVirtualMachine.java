@@ -11,10 +11,11 @@ public class UolVirtualMachine extends Object {
 
     public static void main(String[] args) throws IOException {
         UolVirtualMachine aMachine = new UolVirtualMachine();
-        aMachine.execute(args[0]);
+        UolVirtualMachine.execute(args[0]);
     }
 
-    public UolListener execute(String aPath) throws IOException {
+    public static UolListener execute(String aPath) {
+        try {
         ANTLRFileStream aStream = new ANTLRFileStream(aPath);
         uolLexer aLexer = new uolLexer(aStream);
         CommonTokenStream tokens = new CommonTokenStream(aLexer);
@@ -23,5 +24,9 @@ public class UolVirtualMachine extends Object {
         aParser.addParseListener(aListener);
         aParser.prog();
         return aListener;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

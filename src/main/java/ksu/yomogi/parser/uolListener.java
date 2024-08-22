@@ -229,6 +229,26 @@ public interface uolListener extends ParseTreeListener {
 	 */
 	void exitArgumentDefineList(uolParser.ArgumentDefineListContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link uolParser#arugumentNonDefaultList}.
+	 * @param ctx the parse tree
+	 */
+	void enterArugumentNonDefaultList(uolParser.ArugumentNonDefaultListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link uolParser#arugumentNonDefaultList}.
+	 * @param ctx the parse tree
+	 */
+	void exitArugumentNonDefaultList(uolParser.ArugumentNonDefaultListContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link uolParser#argumentNonDefault}.
+	 * @param ctx the parse tree
+	 */
+	void enterArgumentNonDefault(uolParser.ArgumentNonDefaultContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link uolParser#argumentNonDefault}.
+	 * @param ctx the parse tree
+	 */
+	void exitArgumentNonDefault(uolParser.ArgumentNonDefaultContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link uolParser#argumentDefaultList}.
 	 * @param ctx the parse tree
 	 */
@@ -238,6 +258,16 @@ public interface uolListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitArgumentDefaultList(uolParser.ArgumentDefaultListContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link uolParser#argumentDefault}.
+	 * @param ctx the parse tree
+	 */
+	void enterArgumentDefault(uolParser.ArgumentDefaultContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link uolParser#argumentDefault}.
+	 * @param ctx the parse tree
+	 */
+	void exitArgumentDefault(uolParser.ArgumentDefaultContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link uolParser#instanceExpression}.
 	 * @param ctx the parse tree
@@ -308,6 +338,16 @@ public interface uolListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitAssignExpression(uolParser.AssignExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link uolParser#assignAbleExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterAssignAbleExpression(uolParser.AssignAbleExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link uolParser#assignAbleExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitAssignAbleExpression(uolParser.AssignAbleExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link uolParser#chainExpression}.
 	 * @param ctx the parse tree

@@ -5,13 +5,11 @@ public class MemberContent extends Object {
     private final String aModifier;
     private final String anInstruction;
     private Object aValue;
-    private String aType;
 
-    public MemberContent(String modifier, String instruction, Object value, String type) {
+    public MemberContent(String modifier, String instruction, Object value) {
         this.aModifier = modifier;
         this.anInstruction = instruction;
         this.aValue = value;
-        this.aType = type;
     }
 
     public String getModifier() {
@@ -26,17 +24,12 @@ public class MemberContent extends Object {
         return aValue;
     }
 
-    public String getType() {
-        return aType;
-    }
-
-    public void setValue(Object value, String type) {
+    public void setValue(Object value) {
         this.aValue = value;
-        this.aType = type;
     }
 
     public String toString() {
-        String aString = "{ " + this.aModifier + " " + this.anInstruction + " " + this.aType + " } ";
+        String aString = "{ " + this.aModifier + " " + this.anInstruction + " } ";
         if (aValue == null)
             return aString + "null";
         return aString + this.aValue.toString();
@@ -45,7 +38,6 @@ public class MemberContent extends Object {
     public boolean equals(Object obj) {
         if (obj instanceof MemberContent anOther) {
             return this.aValue.equals(anOther.getValue())
-                    && this.aType.equals(anOther.getType())
                     && this.aModifier.equals(anOther.getModifier())
                     && this.anInstruction.equals(anOther.getInstruction());
         }
@@ -53,7 +45,7 @@ public class MemberContent extends Object {
     }
 
     public int hashCode() {
-        return (this.aValue.hashCode() + this.aType.hashCode() + this.aModifier.hashCode() + this.anInstruction.hashCode()
+        return (this.aValue.hashCode() + this.aModifier.hashCode() + this.anInstruction.hashCode()
         );
     }
 }

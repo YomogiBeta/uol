@@ -16,6 +16,7 @@ STRING_LITERAL: '"' (~["\\\r\n])* '"';
 NIL_LITERAL: 'nil';
 
 IMPORT: 'import';
+AS: 'as';
 FROM: 'from';
 CLASS: 'class';
 EXTENDS: 'extends';
@@ -102,11 +103,12 @@ partsImportStatement
     ;
 
 partsImportContentList
-    : (partsImportContent (NEWLINE)*)*
+    : '{' (partsImportContent (',' partsImportContent)*)? '}'
     ;
 
 partsImportContent
-    : '{' (IDENTIFIER (',' IDENTIFIER)*)? '}'
+    : IDENTIFIER
+    | IDENTIFIER AS IDENTIFIER
     ;
 
 classDefine
@@ -143,7 +145,7 @@ functionDefine
     ;
 
 lambdaDefine
-    :  '(' argumentDefineList? ')' '{' lambdaBody '}'
+    :  '(' argumentDefineList ')' '{' lambdaBody '}'
     ;
 
 returnExpression
@@ -156,11 +158,24 @@ lambdaBody
     ;
 
 argumentDefineList
-    :   IDENTIFIER (',' IDENTIFIER)* argumentDefaultList*
+    :   arugumentNonDefaultList*  argumentDefaultList
+    |   argumentDefaultList
+    ;
+
+arugumentNonDefaultList
+    :   argumentNonDefault (',' argumentNonDefault)*
+    ;
+
+argumentNonDefault
+    :   IDENTIFIER
     ;
 
 argumentDefaultList
-    :  (',' IDENTIFIER ASSIGN literal)
+    :   (argumentDefault)* (',' argumentDefault)*
+    ;
+
+argumentDefault
+    :   IDENTIFIER ASSIGN literal
     ;
 
 instanceExpression
@@ -190,7 +205,13 @@ conditionExpression
     :   expression (CONDITIONAL_OPERATOR expression)?
     ;
 
-assignExpression: IDENTIFIER ASSIGN expression ;
+assignExpression: assignAbleExpression ASSIGN expression ;
+
+assignAbleExpression
+    :   unaryExpression
+    |   callExpression
+    |   chainExpression
+    ;
 
 chainExpression
     :   elementExpression ('.' (IDENTIFIER | callExpression))*
