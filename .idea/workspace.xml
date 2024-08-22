@@ -5,16 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2beadc4c-bdb1-41c7-b9c1-83160b79d96d" name="変更" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVisitor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolBaseListener.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolListener.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolListener.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVirtualMachine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVirtualMachine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVisitor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/sample.uol" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sample.uol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/sample2.uol" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sample2.uol" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +65,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
-    "Gradle.uol_antlr [:UolVirtualMachine.main()].executor": "Debug",
+    "Gradle.uol_antlr [:UolVirtualMachine.main()].executor": "Run",
     "Gradle.uol_antlr [:Visitor.main()].executor": "Run",
     "Gradle.uol_antlr [generateGrammarSource].executor": "Run",
     "Gradle.uol_antrl.executor": "Run",
@@ -171,7 +164,7 @@
       <workItem from="1724170270152" duration="57000" />
       <workItem from="1724171845305" duration="377000" />
       <workItem from="1724229672862" duration="3197000" />
-      <workItem from="1724237859586" duration="24035000" />
+      <workItem from="1724237859586" duration="26101000" />
     </task>
     <servers />
   </component>

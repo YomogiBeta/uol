@@ -58,6 +58,7 @@ public class UolVisitor extends uolBaseVisitor {
                     this.aGlobalVariableMap.put(aLabel.getSubLabel(), aVarialbe);
                 }
             });
+            this.aDataMap.remove("importLabel");
         }
 
         return null;
@@ -83,10 +84,9 @@ public class UolVisitor extends uolBaseVisitor {
             anImportLabel = new ImportLabel(ctx.getChild(0).getText());
         }
 
-        Stack<ImportLabel> aLabelStack = new Stack<ImportLabel>();
-        if (this.aDataMap.get("importLabel") != null) {
-            aLabelStack = (Stack<ImportLabel>) this.aDataMap.get("importLabel");
-        }
+        this.aDataMap.computeIfAbsent("importLabel", k -> new Stack<ImportLabel>());
+
+        Stack<ImportLabel> aLabelStack = (Stack<ImportLabel>) this.aDataMap.get("importLabel");
         aLabelStack.push(anImportLabel);
         this.aDataMap.put("importLabel", aLabelStack);
 
@@ -189,10 +189,50 @@ public class UolVisitor extends uolBaseVisitor {
      *
      * @param ctx
      */
+    public Object visitLambdaDefine(uolParser.LambdaDefineContext ctx) {
+        super.visitLambdaDefine(ctx);
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     *
+     * @param ctx
+     */
     public Object visitArgumentNonDefault(uolParser.ArgumentNonDefaultContext ctx) {
         super.visitArgumentNonDefault(ctx);
         String anIdentity = ctx.getChild(0).getText();
-        this.aDataStack.push(anIdentity);
+        PrimitiveContent aVariableContent = new PrimitiveContent(null, "nil");
+
+        this.aDataMap.computeIfAbsent("arguments", k -> new HashMap<String, Object>());
+
+        HashMap<String, Object> anArgumentMap = (HashMap<String, Object>) this.aDataMap.get("arguments");
+        anArgumentMap.put(anIdentity, aVariableContent);
+        this.aDataMap.put("arguments", anArgumentMap);
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     *
+     * @param ctx
+     */
+    public Object visitArgumentDefault(uolParser.ArgumentDefaultContext ctx) {
+        super.visitArgumentDefault(ctx);
+        String anIdentity = ctx.getChild(0).getText();
+        Object aDefaultValue = this.aDataStack.pop();
+
+        this.aDataMap.computeIfAbsent("arguments", _ -> new HashMap<String, Object>());
+        HashMap<String, Object> anArgumentMap = (HashMap<String, Object>) this.aDataMap.get("arguments");
+        anArgumentMap.put(anIdentity, aDefaultValue);
+        this.aDataMap.put("arguments", anArgumentMap);
+
         return null;
     }
 
