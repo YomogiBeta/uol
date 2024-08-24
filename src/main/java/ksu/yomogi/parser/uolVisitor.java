@@ -234,6 +234,12 @@ public interface uolVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitArgumentList(uolParser.ArgumentListContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link uolParser#argumentContent}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArgumentContent(uolParser.ArgumentContentContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link uolParser#additiveExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

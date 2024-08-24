@@ -91,7 +91,7 @@ iterableExpression
     ;
 
 expressionList
-     :   (expression (NEWLINE)*)*
+     : (expression (NEWLINE)*)* (returnExpression (NEWLINE)*)?
      ;
 
 fileImportStatement
@@ -149,12 +149,11 @@ lambdaDefine
     ;
 
 returnExpression
-    : RETURN expression
+    : RETURN responseExpression
     ;
 
 lambdaBody
-    : returnExpression
-    | expressionList
+    : expressionList
     ;
 
 argumentDefineList
@@ -183,7 +182,7 @@ instanceExpression
     ;
 
 booleanConditionExpression
-    :   IF '(' conditionExpressionList ')' '{' expressionList '}'
+    :   IF '(' conditionExpressionList ')' '{' (expressionList) '}'
     |   IF '(' conditionExpressionList ')' '{' expressionList '}' ELSE '{' expressionList '}'
     |   IF '(' conditionExpressionList ')' '{' expressionList '}' ELSEIF '(' conditionExpressionList ')' '{' expressionList '}'
     |   IF '(' conditionExpressionList ')' '{' expressionList '}' ELSEIF '(' conditionExpressionList ')' '{' expressionList '}' ELSE '{' expressionList '}'
@@ -209,7 +208,6 @@ assignExpression: assignAbleExpression ASSIGN expression ;
 
 assignAbleExpression
     :   unaryExpression
-    |   callExpression
     |   chainExpression
     ;
 
@@ -223,7 +221,11 @@ callExpression
     ;
 
 argumentList
-    :   expression (',' expression)*
+    :   argumentContent (',' argumentContent)*
+    ;
+
+argumentContent
+    : expression
     ;
 
 additiveExpression

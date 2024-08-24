@@ -21,6 +21,10 @@ public class UolRuntimeError extends RuntimeException {
         this.aContext = context;
     }
 
+    public void setContext(ParserRuleContext context) {
+        this.aContext = context;
+    }
+
     public void printErrorMessages() {
         StringBuffer aBuffer = new StringBuffer();
         aBuffer.append("Error: ");

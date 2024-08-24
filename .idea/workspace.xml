@@ -5,8 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2beadc4c-bdb1-41c7-b9c1-83160b79d96d" name="変更" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/errors/MissingArgumentsError.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/antlr/uol.g4" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/antlr/uol.g4" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolBaseVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolBaseVisitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolVisitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/LambdaContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/LambdaContent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/PrimitiveContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/PrimitiveContent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVisitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/errors/UolRuntimeError.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/errors/UolRuntimeError.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/sample.uol" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sample.uol" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -90,6 +98,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="ksu.yomogi.vm.errors" />
       <recent name="ksu.yomogi.vm" />
     </key>
   </component>
@@ -164,7 +173,8 @@
       <workItem from="1724170270152" duration="57000" />
       <workItem from="1724171845305" duration="377000" />
       <workItem from="1724229672862" duration="3197000" />
-      <workItem from="1724237859586" duration="26101000" />
+      <workItem from="1724237859586" duration="27919000" />
+      <workItem from="1724499816583" duration="11196000" />
     </task>
     <servers />
   </component>

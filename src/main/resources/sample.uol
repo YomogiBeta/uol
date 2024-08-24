@@ -1,3 +1,6 @@
-(a, b, c = nil) {
-    c = nil
+b = (test) {
+    return test
+
 }
+
+c = b(nil,nil)

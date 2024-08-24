@@ -25,7 +25,7 @@ public class PrimitiveContent extends Object {
 
     public String toString() {
         if (this.aValue == null)
-            return "null";
+            return "nil";
         return this.aValue.toString();
     }
 
