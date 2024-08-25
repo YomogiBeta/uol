@@ -20,7 +20,7 @@ public class MessageContent extends Object {
         return this.anInstruction;
     }
 
-    public Object getLambda() {
+    public LambdaContent getLambda() {
         return this.aLambda;
     }
 

@@ -6,4 +6,12 @@ class Sample extends Object {
     public function __construct() {
         a = nil
     }
+
+    public function testMessage() {
+        testMessageVariable = nil
+    }
 }
+
+aSample = new Sample()
+aSample.testMessage()
+

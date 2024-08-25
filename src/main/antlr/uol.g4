@@ -63,11 +63,11 @@ expression
     | listDefine
     | listDefineWithKey
     | lambdaDefine
-    | chainExpression
+    | instanceExpression
     | callExpression
+    | chainExpression
     | assignExpression
     | functionDefine
-    | instanceExpression
     | booleanConditionExpression
     | booleanLoopExpression
     | forEachExpression
@@ -186,7 +186,7 @@ instanceExpression
     ;
 
 booleanConditionExpression
-    :   IF '(' conditionExpressionList ')' '{' (expressionList) '}'
+    :   IF '(' conditionExpressionList ')' '{' expressionList '}'
     |   IF '(' conditionExpressionList ')' '{' expressionList '}' ELSE '{' expressionList '}'
     |   IF '(' conditionExpressionList ')' '{' expressionList '}' ELSEIF '(' conditionExpressionList ')' '{' expressionList '}'
     |   IF '(' conditionExpressionList ')' '{' expressionList '}' ELSEIF '(' conditionExpressionList ')' '{' expressionList '}' ELSE '{' expressionList '}'
@@ -216,7 +216,7 @@ assignAbleExpression
     ;
 
 chainExpression
-    :   elementExpression ('.' (IDENTIFIER | callExpression))*
+    :   elementExpression ('.' (elementExpression | callExpression))*
     ;
 
 callExpression

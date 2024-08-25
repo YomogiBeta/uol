@@ -9,6 +9,8 @@ import java.util.HashMap;
  */
 public class ClassContent extends Object {
 
+    public static final String CONSTRUCT_METHOD = "__construct";
+
     private final String aClassName;
     private final String aParentClassName;
 

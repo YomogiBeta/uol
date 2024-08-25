@@ -26,11 +26,7 @@ public class LambdaContent extends Object {
     }
 
     public UolVisitor execute() throws MissingArgumentsError {
-        if (this.anArgumentsCount != 0) {
-            throw new MissingArgumentsError(this.anArgumentsCount, null);
-        }
-        UolVisitor aVisitor = new UolVisitor();
-        aVisitor.visitExpressionList(aRunnableContext);
+        UolVisitor aVisitor = this.execute(new ArrayList<>());
         return aVisitor;
     }
 

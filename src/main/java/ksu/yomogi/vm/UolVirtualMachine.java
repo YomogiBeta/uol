@@ -15,13 +15,13 @@ public class UolVirtualMachine extends Object {
 
     public static UolVisitor execute(String aPath) {
         try {
-        ANTLRFileStream aStream = new ANTLRFileStream(aPath);
-        uolLexer aLexer = new uolLexer(aStream);
-        CommonTokenStream tokens = new CommonTokenStream(aLexer);
-        uolParser aParser = new uolParser(tokens);
-        UolVisitor aVisitor = new UolVisitor();
-        aVisitor.visit(aParser.prog());
-        return aVisitor;
+            ANTLRFileStream aStream = new ANTLRFileStream(aPath);
+            uolLexer aLexer = new uolLexer(aStream);
+            CommonTokenStream tokens = new CommonTokenStream(aLexer);
+            uolParser aParser = new uolParser(tokens);
+            UolVisitor aVisitor = new UolVisitor();
+            aVisitor.visit(aParser.prog());
+            return aVisitor;
         } catch (IOException e) {
             e.printStackTrace();
             return null;

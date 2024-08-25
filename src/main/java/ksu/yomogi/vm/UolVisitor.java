@@ -30,8 +30,12 @@ public class UolVisitor extends uolBaseVisitor {
     private Object aReturnValue = null;
 
     private Boolean aRawIdentityEvaluation = false;
+    private Boolean aChainable = false;
 
     private HashMap<String, Object> getCurrentVariableHashMap() {
+        if (this.aChainable) {
+            return (HashMap<String, Object>) this.aDataMap.get("chainableMap");
+        }
         return this.aVariableMap;
     }
 
@@ -61,7 +65,11 @@ public class UolVisitor extends uolBaseVisitor {
                     return;
                 }
 
-                // TODO ファンクションマップ実装後作成
+                LambdaContent aLambdaContent = (LambdaContent) aVisitor.getFunctionContent(aLabel.getTrueLabel());
+                if (aLambdaContent != null) {
+                    this.aVariableMap.put(aLabel.getSubLabel(), aLambdaContent);
+                    return;
+                }
 
                 Object aVarialbe = aVisitor.getGlobalVariable(aLabel.getTrueLabel());
                 if (aVarialbe != null) {
@@ -347,6 +355,55 @@ public class UolVisitor extends uolBaseVisitor {
      *
      * @param ctx
      */
+    public Object visitInstanceExpression(uolParser.InstanceExpressionContext ctx) {
+        super.visitInstanceExpression(ctx);
+        String aClassName = ctx.getChild(1).getText();
+
+        ArrayList<Object> anArguments = (ArrayList<Object>) this.aDataMap.get("arguments");
+        InstanceContent anInstanceContent = this.createInstance(aClassName, anArguments);
+
+        this.aDataStack.push(anInstanceContent);
+        return null;
+    }
+
+    /**
+     * クラス名と引数を受け取り、インスタンスを生成するメッセージ
+     * @param aClassName クラス名
+     * @param anArguments 引数のリスト
+     * @return　InstanceContent
+     */
+    private InstanceContent createInstance(String aClassName, ArrayList<Object> anArguments) {
+        ClassContent aClassContent = this.aClassMap.get(aClassName);
+        if (aClassContent == null) {
+            try {
+                throw new NotFoundSymbolError(aClassName, null);
+            } catch (NotFoundSymbolError event) {
+                event.printErrorMessages();
+                System.exit(1);
+            }
+        }
+
+        String aParentClassName = aClassContent.getParentClassName();
+        HashMap<String, MemberContent> aMembers = new HashMap<>(aClassContent.getMembers());
+        InstanceContent anInstanceContent = new InstanceContent(aClassName, aParentClassName, aMembers);
+
+        if (anArguments.size() <= 0) {
+            anInstanceContent.execute(ClassContent.CONSTRUCT_METHOD, new ArrayList<>(), this);
+        } else {
+            anInstanceContent.execute(ClassContent.CONSTRUCT_METHOD, anArguments, this);
+        }
+
+        return anInstanceContent;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     *
+     * @param ctx
+     */
     public Object visitCallExpression(uolParser.CallExpressionContext ctx) {
         super.visitCallExpression(ctx);
         String aKey = ctx.getChild(0).getText();
@@ -395,6 +452,35 @@ public class UolVisitor extends uolBaseVisitor {
         anArgumentList.add(aValue);
         this.aDataMap.put("arguments", anArgumentList);
         this.anArgumentsCount++;
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     *
+     * @param ctx
+     */
+    public Object visitElementExpression(uolParser.ElementExpressionContext ctx) {
+        super.visitElementExpression(ctx);
+        if (!this.aChainable) this.aChainable = true;
+        Object aValue = this.aDataStack.pop();
+
+        if (aValue instanceof Chainable aChainableContent) {
+            this.aDataMap.put("chainableMap", aChainableContent.getValuesMap());
+        } else {
+            try {
+                throw new NotFoundSymbolError(aValue.toString(), ctx);
+            } catch (NotFoundSymbolError event) {
+                event.printErrorMessages();
+                System.exit(1);
+            }
+        }
+
+
+
         return null;
     }
 
@@ -492,8 +578,7 @@ public class UolVisitor extends uolBaseVisitor {
      * @return FunctionContent または null
      */
     public Object getFunctionContent(String aFunctionName) {
-        // TODO ファンクションマップ実装後作成
-        return null;
+        return this.aVariableMap.get(aFunctionName);
     }
 
     /**
@@ -513,6 +598,22 @@ public class UolVisitor extends uolBaseVisitor {
      */
     public Object getReturnValue() {
         return this.aReturnValue;
+    }
+
+    public MessageContent searchMessage(String aClassName, String aMessageName) {
+        while(aClassName != null){
+            ClassContent aClassContent = this.aClassMap.get(aClassName);
+            if (aClassContent == null) {
+                return null;
+            }
+
+            if (aClassContent.getMessages().get(aMessageName) != null) {
+                return aClassContent.getMessages().get(aMessageName);
+            }
+
+            aClassName = aClassContent.getParentClassName();
+        }
+        return null;
     }
 
     /**

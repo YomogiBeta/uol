@@ -277,20 +277,20 @@ public class uolParser extends Parser {
 		public LambdaDefineContext lambdaDefine() {
 			return getRuleContext(LambdaDefineContext.class,0);
 		}
-		public ChainExpressionContext chainExpression() {
-			return getRuleContext(ChainExpressionContext.class,0);
+		public InstanceExpressionContext instanceExpression() {
+			return getRuleContext(InstanceExpressionContext.class,0);
 		}
 		public CallExpressionContext callExpression() {
 			return getRuleContext(CallExpressionContext.class,0);
+		}
+		public ChainExpressionContext chainExpression() {
+			return getRuleContext(ChainExpressionContext.class,0);
 		}
 		public AssignExpressionContext assignExpression() {
 			return getRuleContext(AssignExpressionContext.class,0);
 		}
 		public FunctionDefineContext functionDefine() {
 			return getRuleContext(FunctionDefineContext.class,0);
-		}
-		public InstanceExpressionContext instanceExpression() {
-			return getRuleContext(InstanceExpressionContext.class,0);
 		}
 		public BooleanConditionExpressionContext booleanConditionExpression() {
 			return getRuleContext(BooleanConditionExpressionContext.class,0);
@@ -353,7 +353,7 @@ public class uolParser extends Parser {
 				enterOuterAlt(_localctx, 5);
 				{
 				setState(120);
-				chainExpression();
+				instanceExpression();
 				}
 				break;
 			case 6:
@@ -367,21 +367,21 @@ public class uolParser extends Parser {
 				enterOuterAlt(_localctx, 7);
 				{
 				setState(122);
-				assignExpression();
+				chainExpression();
 				}
 				break;
 			case 8:
 				enterOuterAlt(_localctx, 8);
 				{
 				setState(123);
-				functionDefine();
+				assignExpression();
 				}
 				break;
 			case 9:
 				enterOuterAlt(_localctx, 9);
 				{
 				setState(124);
-				instanceExpression();
+				functionDefine();
 				}
 				break;
 			case 10:
@@ -1853,10 +1853,8 @@ public class uolParser extends Parser {
 				match(T__4);
 				setState(314);
 				match(T__0);
-				{
 				setState(315);
 				expressionList();
-				}
 				setState(316);
 				match(T__2);
 				}
@@ -3135,8 +3133,8 @@ public class uolParser extends Parser {
 		"hi\5\4\3\2ij\7\r\2\2jl\3\2\2\2kh\3\2\2\2lo\3\2\2\2mk\3\2\2\2mn\3\2\2\2"+
 		"n\3\3\2\2\2om\3\2\2\2pu\5\20\t\2qu\5\16\b\2ru\5\26\f\2su\5\6\4\2tp\3\2"+
 		"\2\2tq\3\2\2\2tr\3\2\2\2ts\3\2\2\2u\5\3\2\2\2v\u0084\5^\60\2w\u0084\5"+
-		"V,\2x\u0084\5X-\2y\u0084\5(\25\2z\u0084\5H%\2{\u0084\5J&\2|\u0084\5D#"+
-		"\2}\u0084\5&\24\2~\u0084\58\35\2\177\u0084\5:\36\2\u0080\u0084\5<\37\2"+
+		"V,\2x\u0084\5X-\2y\u0084\5(\25\2z\u0084\58\35\2{\u0084\5J&\2|\u0084\5"+
+		"H%\2}\u0084\5D#\2~\u0084\5&\24\2\177\u0084\5:\36\2\u0080\u0084\5<\37\2"+
 		"\u0081\u0084\5> \2\u0082\u0084\5P)\2\u0083v\3\2\2\2\u0083w\3\2\2\2\u0083"+
 		"x\3\2\2\2\u0083y\3\2\2\2\u0083z\3\2\2\2\u0083{\3\2\2\2\u0083|\3\2\2\2"+
 		"\u0083}\3\2\2\2\u0083~\3\2\2\2\u0083\177\3\2\2\2\u0083\u0080\3\2\2\2\u0083"+
