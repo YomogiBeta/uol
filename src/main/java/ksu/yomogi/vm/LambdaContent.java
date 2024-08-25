@@ -48,4 +48,22 @@ public class LambdaContent extends Object {
         aVisitor.visitExpressionList(aRunnableContext);
         return aVisitor;
     }
+
+    public String toString() {
+        return "Lambda";
+    }
+
+    public boolean equals(Object obj) {
+        if (obj instanceof LambdaContent anOther) {
+            return this.aVariableMap.equals(anOther.aVariableMap)
+                    && this.anArgumentsCount.equals(anOther.anArgumentsCount)
+                    && this.aDefaultArgumentsCount.equals(anOther.aDefaultArgumentsCount)
+                    && this.aRunnableContext.equals(anOther.aRunnableContext);
+        }
+        return false;
+    }
+
+    public int hashCode() {
+        return this.aVariableMap.hashCode() + this.anArgumentsCount.hashCode() + this.aDefaultArgumentsCount.hashCode() + this.aRunnableContext.hashCode();
+    }
 }

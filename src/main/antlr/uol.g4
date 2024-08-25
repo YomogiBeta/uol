@@ -127,13 +127,17 @@ classDefine
     : IDENTIFIER (',' IDENTIFIER)*
     ;
 
-classParts
-    : memberDefine
-    | MODIFIER functionDefine
-    ;
-
 classPartsList
     : (classParts (NEWLINE)*)*
+    ;
+
+classParts
+    : memberDefine
+    | messageDefine
+    ;
+
+messageDefine
+    : MODIFIER (INSTRUCTION)? functionDefine
     ;
 
 memberDefine

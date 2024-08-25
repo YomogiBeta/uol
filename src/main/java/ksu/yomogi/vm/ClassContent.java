@@ -13,9 +13,9 @@ public class ClassContent extends Object {
     private final String aParentClassName;
 
     private HashMap<String, MemberContent> aMembers = new HashMap<>();
-    private HashMap<String, Object> aMessages = new HashMap<>();
+    private HashMap<String, MessageContent> aMessages = new HashMap<>();
 
-    public ClassContent(String className, String parentClassName, HashMap<String, MemberContent> members, HashMap<String, Object> messages) {
+    public ClassContent(String className, String parentClassName, HashMap<String, MemberContent> members, HashMap<String, MessageContent> messages) {
         this.aClassName = className;
         this.aParentClassName = parentClassName;
         this.aMembers = members;
@@ -34,7 +34,25 @@ public class ClassContent extends Object {
         return this.aMembers;
     }
 
-    public HashMap<String, Object> getMessages() {
+    public HashMap<String, MessageContent> getMessages() {
         return this.aMessages;
+    }
+
+    public String toString() {
+        return this.aClassName + "Class";
+    }
+
+    public boolean equals(Object obj) {
+        if (obj instanceof ClassContent anOther) {
+            return this.aClassName.equals(anOther.getClassName())
+                    && this.aParentClassName.equals(anOther.getParentClassName())
+                    && this.aMembers.equals(anOther.getMembers())
+                    && this.aMessages.equals(anOther.getMessages());
+        }
+        return false;
+    }
+
+    public int hashCode() {
+        return this.aClassName.hashCode() + this.aParentClassName.hashCode() + this.aMembers.hashCode() + this.aMessages.hashCode();
     }
 }

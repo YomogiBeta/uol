@@ -96,17 +96,23 @@ public interface uolVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitInterfaceList(uolParser.InterfaceListContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link uolParser#classPartsList}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitClassPartsList(uolParser.ClassPartsListContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link uolParser#classParts}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitClassParts(uolParser.ClassPartsContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link uolParser#classPartsList}.
+	 * Visit a parse tree produced by {@link uolParser#messageDefine}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitClassPartsList(uolParser.ClassPartsListContext ctx);
+	T visitMessageDefine(uolParser.MessageDefineContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link uolParser#memberDefine}.
 	 * @param ctx the parse tree

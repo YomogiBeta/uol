@@ -1,15 +1,15 @@
 package ksu.yomogi.vm;
 
-public class MemberContent extends Object {
+public class MessageContent extends Object {
 
     private final String aModifier;
     private final String anInstruction;
-    private Object aValue;
+    private LambdaContent aLambda;
 
-    public MemberContent(String modifier, String instruction, Object value) {
+    public MessageContent(String modifier, String instruction, LambdaContent lambda) {
         this.aModifier = modifier;
         this.anInstruction = instruction;
-        this.aValue = value;
+        this.aLambda = lambda;
     }
 
     public String getModifier() {
@@ -20,24 +20,18 @@ public class MemberContent extends Object {
         return this.anInstruction;
     }
 
-    public Object getValue() {
-        return this.aValue;
-    }
-
-    public void setValue(Object value) {
-        this.aValue = value;
+    public Object getLambda() {
+        return this.aLambda;
     }
 
     public String toString() {
         String aString = "{ " + this.aModifier + " " + this.anInstruction + " } ";
-        if (this.aValue == null)
-            return aString + "null";
-        return aString + this.aValue.toString();
+        return aString + "Message";
     }
 
     public boolean equals(Object obj) {
-        if (obj instanceof MemberContent anOther) {
-            return this.aValue.equals(anOther.getValue())
+        if (obj instanceof MessageContent anOther) {
+            return this.aLambda.equals(anOther.getLambda())
                     && this.aModifier.equals(anOther.getModifier())
                     && this.anInstruction.equals(anOther.getInstruction());
         }
@@ -45,7 +39,7 @@ public class MemberContent extends Object {
     }
 
     public int hashCode() {
-        return (this.aValue.hashCode() + this.aModifier.hashCode() + this.anInstruction.hashCode()
+        return (this.aLambda.hashCode() + this.aModifier.hashCode() + this.anInstruction.hashCode()
         );
     }
 }

@@ -116,6 +116,13 @@ public class uolBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements uo
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitClassPartsList(uolParser.ClassPartsListContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitClassParts(uolParser.ClassPartsContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
@@ -123,7 +130,7 @@ public class uolBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements uo
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitClassPartsList(uolParser.ClassPartsListContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMessageDefine(uolParser.MessageDefineContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

@@ -20,7 +20,7 @@ public class UolVisitor extends uolBaseVisitor {
     private HashMap<String, Object> aVariableMap = new HashMap<String, Object>();
 
     private HashMap<String, ClassContent> aClassMap = new HashMap<String, ClassContent>();
-    private HashMap<String, Object> aCacheMessageMap = null;
+    private HashMap<String, MessageContent> aCacheMessageMap = null;
     private HashMap<String, MemberContent> aCacheMemberMap = null;
     private String aCacheParentClassName = "Object";
 
@@ -163,6 +163,43 @@ public class UolVisitor extends uolBaseVisitor {
      *
      * @param ctx
      */
+    public Object visitMessageDefine(uolParser.MessageDefineContext ctx) {
+        super.visitMessageDefine(ctx);
+
+        // 最後の要素の子要素の1番目のテキストがメッセージ名
+        String aMemberName = ctx.getChild(ctx.getChildCount() - 1).getChild(1).getText();
+
+        // 関数の名前付けがすでに実行されており、それをメッセージのLambdaContentとして利用する
+        LambdaContent aLambda = (LambdaContent) this.getCurrentVariableHashMap().get(aMemberName);
+        this.getCurrentVariableHashMap().remove(aMemberName);
+
+        // メンバに必要な情報の取得
+        String aModifier = ctx.getChild(0).getText();
+        String anInstruction = "none";
+
+        // 子要素が3つの場合、指示コンテクストが存在する
+        if (ctx.getChildCount() == 3) {
+            anInstruction = ctx.getChild(1).getText();
+        }
+
+        MessageContent aMessageContent = new MessageContent(aModifier, anInstruction, aLambda);
+
+        if (this.aCacheMessageMap == null) {
+            this.aCacheMessageMap = new HashMap<String, MessageContent>();
+        }
+        this.aCacheMessageMap.put(aMemberName, aMessageContent);
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     *
+     * @param ctx
+     */
     public Object visitMemberDefine(uolParser.MemberDefineContext ctx) {
         super.visitMemberDefine(ctx);
 
@@ -171,6 +208,8 @@ public class UolVisitor extends uolBaseVisitor {
 
         // 変数Assignがすでに実行されており、それをメンバの値として利用する
         Object aValue = this.getCurrentVariableHashMap().get(aMemberName);
+        // TODO クラス定義の前に、「メンバ名と同一の名 = value」のような式がある時、
+        //  それが上書きされてしまう。ClassDefineの際に、getCurrentVariableHashMapから返されるMapを変更する必要がある
         this.getCurrentVariableHashMap().remove(aMemberName);
 
         // メンバに必要な情報の取得
@@ -189,6 +228,22 @@ public class UolVisitor extends uolBaseVisitor {
         }
         this.aCacheMemberMap.put(aMemberName, aMemberContent);
 
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     *
+     * @param ctx
+     */
+    public Object visitFunctionDefine(uolParser.FunctionDefineContext ctx) {
+        super.visitFunctionDefine(ctx);
+        String aFunctionName = ctx.getChild(1).getText();
+        Object aLambdaContent = this.aDataStack.pop();
+        this.getCurrentVariableHashMap().put(aFunctionName, aLambdaContent);
         return null;
     }
 
