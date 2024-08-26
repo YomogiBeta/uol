@@ -75,7 +75,8 @@ expression
     ;
 
 responseExpression
-    : chainExpression
+    : literal
+    | chainExpression
     | callExpression
     | additiveExpression
     ;

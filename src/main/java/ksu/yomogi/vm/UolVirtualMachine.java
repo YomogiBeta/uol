@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class UolVirtualMachine extends Object {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         UolVirtualMachine.execute(args[0]);
     }
 

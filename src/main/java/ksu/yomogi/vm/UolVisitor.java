@@ -2,8 +2,11 @@ package ksu.yomogi.vm;
 
 import ksu.yomogi.parser.uolBaseVisitor;
 import ksu.yomogi.parser.uolParser;
+import ksu.yomogi.vm.datamanager.DataManager;
 import ksu.yomogi.vm.errors.MissingArgumentsError;
 import ksu.yomogi.vm.errors.NotFoundSymbolError;
+import ksu.yomogi.vm.interfaces.Executable;
+import ksu.yomogi.vm.interfaces.Value;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -11,32 +14,29 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Stack;
 
-public class UolVisitor extends uolBaseVisitor {
+public class UolVisitor extends uolBaseVisitor<Object> {
 
     private final static String aRuntimePath = "src/main/resources/";
 
-    private Stack<Object> aDataStack = new Stack<Object>();
-    private HashMap<String, Object> aDataMap = new HashMap<String, Object>();
-    private HashMap<String, Object> aVariableMap = new HashMap<String, Object>();
+    private DataManager aDataManager = new DataManager();
 
-    private HashMap<String, ClassContent> aClassMap = new HashMap<String, ClassContent>();
-    private HashMap<String, MessageContent> aCacheMessageMap = null;
-    private HashMap<String, MemberContent> aCacheMemberMap = null;
-    private String aCacheParentClassName = "Object";
-
-    private Integer aDefaultArgumentDefineCount = 0;
-
-    private Integer anArgumentsCount = 0;
     private Object aReturnValue = null;
 
     private Boolean aRawIdentityEvaluation = false;
-    private Boolean aChainable = false;
 
-    private HashMap<String, Object> getCurrentVariableHashMap() {
-        if (this.aChainable) {
-            return (HashMap<String, Object>) this.aDataMap.get("chainableMap");
-        }
-        return this.aVariableMap;
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     *
+     * @param ctx
+     */
+    public Object visitExpression(uolParser.ExpressionContext ctx) {
+        super.visitExpression(ctx);
+        this.aDataManager.getCounter(DataManager.ARGUMENT_COUNT).reset();
+        return null;
     }
 
     /**
@@ -56,27 +56,28 @@ public class UolVisitor extends uolBaseVisitor {
         UolVisitor aVisitor = UolVirtualMachine.execute(aRuntimePath + aFileKey + ".uol");
 
         if (aVisitor != null) {
-            Stack<ImportLabel> aLabelStack = (Stack<ImportLabel>) this.aDataMap.get("importLabel");
+            Stack<ImportLabel> aLabelStack = this.aDataManager.getDataMapContent(DataManager.IMPORT_LABEL_STACK);
 
             aLabelStack.forEach((aLabel) -> {
                 ClassContent aClassContent = aVisitor.getClassContent(aLabel.getTrueLabel());
                 if (aClassContent != null) {
-                    this.aClassMap.put(aLabel.getSubLabel(), aClassContent);
+                    this.aDataManager.setClassContent(aLabel.getSubLabel(), aClassContent);
                     return;
                 }
 
                 LambdaContent aLambdaContent = (LambdaContent) aVisitor.getFunctionContent(aLabel.getTrueLabel());
                 if (aLambdaContent != null) {
-                    this.aVariableMap.put(aLabel.getSubLabel(), aLambdaContent);
+                    this.aDataManager.setVariableContent(aLabel.getSubLabel(), aLambdaContent);
                     return;
                 }
 
                 Object aVarialbe = aVisitor.getGlobalVariable(aLabel.getTrueLabel());
                 if (aVarialbe != null) {
-                    this.aVariableMap.put(aLabel.getSubLabel(), aVarialbe);
+                    this.aDataManager.setVariableContent(aLabel.getSubLabel(), aVarialbe);
                 }
             });
-            this.aDataMap.remove("importLabel");
+
+            this.aDataManager.removeDataMapContent(DataManager.IMPORT_LABEL_STACK);
         }
 
         return null;
@@ -93,7 +94,7 @@ public class UolVisitor extends uolBaseVisitor {
     public Object visitPartsImportContent(uolParser.PartsImportContentContext ctx) {
         super.visitPartsImportContent(ctx);
 
-        ImportLabel anImportLabel = null;
+        ImportLabel anImportLabel;
 
         // 1以上の場合、仮名と真名が存在する
         if (ctx.getChildCount() > 1) {
@@ -102,11 +103,11 @@ public class UolVisitor extends uolBaseVisitor {
             anImportLabel = new ImportLabel(ctx.getChild(0).getText());
         }
 
-        this.aDataMap.computeIfAbsent("importLabel", k -> new Stack<ImportLabel>());
+        this.aDataManager.setDataMapContentIfAbsent(DataManager.IMPORT_LABEL_STACK, new Stack<ImportLabel>());
 
-        Stack<ImportLabel> aLabelStack = (Stack<ImportLabel>) this.aDataMap.get("importLabel");
+        Stack<ImportLabel> aLabelStack = this.aDataManager.getDataMapContent(DataManager.IMPORT_LABEL_STACK);
         aLabelStack.push(anImportLabel);
-        this.aDataMap.put("importLabel", aLabelStack);
+        this.aDataManager.setDataMapContent(DataManager.IMPORT_LABEL_STACK, aLabelStack);
 
         return null;
     }
@@ -124,12 +125,15 @@ public class UolVisitor extends uolBaseVisitor {
 
         String aClassName = ctx.getChild(1).getText();
 
-        ClassContent aClassContent = new ClassContent(aClassName, this.aCacheParentClassName, this.aCacheMemberMap, this.aCacheMessageMap);
-        this.aClassMap.put(aClassName, aClassContent);
+        HashMap<String, MemberContent> aMembers = this.aDataManager.getDataMapContent(DataManager.CACHE_MEMBER_MAP);
+        HashMap<String, MessageContent> aMessages = this.aDataManager.getDataMapContent(DataManager.CACHE_MESSAGE_MAP);
+        String aParentClassName = this.aDataManager.getDataMapContent(DataManager.CACHE_PARENT_CLASS_NAME);
+        ClassContent aClassContent = new ClassContent(aClassName, aParentClassName, aMembers, aMessages);
+        this.aDataManager.setClassContent(aClassName, aClassContent);
 
-        this.aCacheParentClassName = "Object";
-        this.aCacheMemberMap = null;
-        this.aCacheMessageMap = null;
+        this.aDataManager.setDataMapContent(DataManager.CACHE_PARENT_CLASS_NAME, "Object");
+        this.aDataManager.removeDataMapContent(DataManager.CACHE_MEMBER_MAP);
+        this.aDataManager.removeDataMapContent(DataManager.CACHE_MESSAGE_MAP);
 
         return null;
     }
@@ -147,7 +151,7 @@ public class UolVisitor extends uolBaseVisitor {
 
         String aParentClassName = ctx.getChild(1).getText();
 
-        if (this.aClassMap.get(aParentClassName) == null) {
+        if (this.aDataManager.getClassContent(aParentClassName) == null) {
             try {
                 throw new NotFoundSymbolError(aParentClassName, ctx);
             } catch (NotFoundSymbolError event) {
@@ -157,8 +161,9 @@ public class UolVisitor extends uolBaseVisitor {
             return null;
         }
 
-        this.aCacheParentClassName = aParentClassName;
-        this.aCacheMemberMap = new HashMap<>(this.aClassMap.get(aParentClassName).getMembers());
+        this.aDataManager.setDataMapContent(DataManager.CACHE_PARENT_CLASS_NAME, aParentClassName);
+        this.aDataManager.setDataMapContent(DataManager.CACHE_MEMBER_MAP,
+                new HashMap<>(this.aDataManager.getClassContent(aParentClassName).getMembers()));
 
         return null;
     }
@@ -175,11 +180,11 @@ public class UolVisitor extends uolBaseVisitor {
         super.visitMessageDefine(ctx);
 
         // 最後の要素の子要素の1番目のテキストがメッセージ名
-        String aMemberName = ctx.getChild(ctx.getChildCount() - 1).getChild(1).getText();
+        String aMessageName = ctx.getChild(ctx.getChildCount() - 1).getChild(1).getText();
 
         // 関数の名前付けがすでに実行されており、それをメッセージのLambdaContentとして利用する
-        LambdaContent aLambda = (LambdaContent) this.getCurrentVariableHashMap().get(aMemberName);
-        this.getCurrentVariableHashMap().remove(aMemberName);
+        LambdaContent aLambda = (LambdaContent) this.aDataManager.getVariableContent(aMessageName);
+        this.aDataManager.deleteVariableContent(aMessageName);
 
         // メンバに必要な情報の取得
         String aModifier = ctx.getChild(0).getText();
@@ -191,11 +196,8 @@ public class UolVisitor extends uolBaseVisitor {
         }
 
         MessageContent aMessageContent = new MessageContent(aModifier, anInstruction, aLambda);
-
-        if (this.aCacheMessageMap == null) {
-            this.aCacheMessageMap = new HashMap<String, MessageContent>();
-        }
-        this.aCacheMessageMap.put(aMemberName, aMessageContent);
+        this.aDataManager.setDataMapContentIfAbsent(DataManager.CACHE_MESSAGE_MAP, new HashMap<String, MessageContent>());
+        this.aDataManager.setDataMapDeepContent(DataManager.CACHE_MESSAGE_MAP, aMessageName, aMessageContent);
 
         return null;
     }
@@ -215,10 +217,10 @@ public class UolVisitor extends uolBaseVisitor {
         String aMemberName = ctx.getChild(ctx.getChildCount() - 1).getChild(0).getText();
 
         // 変数Assignがすでに実行されており、それをメンバの値として利用する
-        Object aValue = this.getCurrentVariableHashMap().get(aMemberName);
+        Object aValue = this.aDataManager.getVariableContent(aMemberName);
         // TODO クラス定義の前に、「メンバ名と同一の名 = value」のような式がある時、
         //  それが上書きされてしまう。ClassDefineの際に、getCurrentVariableHashMapから返されるMapを変更する必要がある
-        this.getCurrentVariableHashMap().remove(aMemberName);
+        this.aDataManager.deleteVariableContent(aMemberName);
 
         // メンバに必要な情報の取得
         String aModifier = ctx.getChild(0).getText();
@@ -230,11 +232,8 @@ public class UolVisitor extends uolBaseVisitor {
         }
 
         MemberContent aMemberContent = new MemberContent(aModifier, anInstruction, aValue);
-
-        if (this.aCacheMemberMap == null) {
-            this.aCacheMemberMap = new HashMap<String, MemberContent>();
-        }
-        this.aCacheMemberMap.put(aMemberName, aMemberContent);
+        this.aDataManager.setDataMapContentIfAbsent(DataManager.CACHE_MEMBER_MAP, new HashMap<String, MemberContent>());
+        this.aDataManager.setDataMapDeepContent(DataManager.CACHE_MEMBER_MAP, aMemberName, aMemberContent);
 
         return null;
     }
@@ -250,8 +249,8 @@ public class UolVisitor extends uolBaseVisitor {
     public Object visitFunctionDefine(uolParser.FunctionDefineContext ctx) {
         super.visitFunctionDefine(ctx);
         String aFunctionName = ctx.getChild(1).getText();
-        Object aLambdaContent = this.aDataStack.pop();
-        this.getCurrentVariableHashMap().put(aFunctionName, aLambdaContent);
+        Object aLambdaContent = this.aDataManager.getaDataStack().pop();
+        this.aDataManager.setVariableContent(aFunctionName, aLambdaContent);
         return null;
     }
 
@@ -265,12 +264,13 @@ public class UolVisitor extends uolBaseVisitor {
      */
     public Object visitLambdaDefine(uolParser.LambdaDefineContext ctx) {
         super.visitLambdaDefine(ctx);
-        LinkedHashMap<String, Object> anArgumentMap = (LinkedHashMap<String, Object>) this.aDataMap.get("argumentDefines");
-        uolParser.ExpressionListContext aRunnableContext = (uolParser.ExpressionListContext) this.aDataStack.pop();
-        LambdaContent aLambdaContent = new LambdaContent(anArgumentMap, this.aDefaultArgumentDefineCount, aRunnableContext);
-        this.aDataStack.push(aLambdaContent);
-        this.aDataMap.remove("argumentDefines");
-        this.aDefaultArgumentDefineCount = 0;
+        LinkedHashMap<String, Object> anArgumentMap = this.aDataManager.getDataMapContent(DataManager.ARGUMENT_DEFINE_MAP);
+        uolParser.ExpressionListContext aRunnableContext = (uolParser.ExpressionListContext) this.aDataManager.getaDataStack().pop();
+        Integer aDefaultArgumentDefineCount = this.aDataManager.getCounter(DataManager.DEFAULT_ARGUMENT_DEFINE_COUNT).getCount();
+        LambdaContent aLambdaContent = new LambdaContent(anArgumentMap, aDefaultArgumentDefineCount, aRunnableContext);
+        this.aDataManager.getaDataStack().push(aLambdaContent);
+        this.aDataManager.removeDataMapContent(DataManager.ARGUMENT_DEFINE_MAP);
+//        this.aDataManager.getCounter(DataManager.DEFAULT_ARGUMENT_DEFINE_COUNT).reset();
         return null;
     }
 
@@ -287,11 +287,8 @@ public class UolVisitor extends uolBaseVisitor {
         String anIdentity = ctx.getChild(0).getText();
         PrimitiveContent aVariableContent = new PrimitiveContent(null, "nil");
 
-        this.aDataMap.computeIfAbsent("argumentDefines", k -> new LinkedHashMap<String, Object>());
-
-        LinkedHashMap<String, Object> anArgumentMap = (LinkedHashMap<String, Object>) this.aDataMap.get("argumentDefines");
-        anArgumentMap.put(anIdentity, aVariableContent);
-        this.aDataMap.put("argumentDefines", anArgumentMap);
+        this.aDataManager.setDataMapContentIfAbsent(DataManager.ARGUMENT_DEFINE_MAP, new LinkedHashMap<String, Object>());
+        this.aDataManager.setDataMapDeepContent(DataManager.ARGUMENT_DEFINE_MAP, anIdentity, aVariableContent);
         return null;
     }
 
@@ -306,14 +303,12 @@ public class UolVisitor extends uolBaseVisitor {
     public Object visitArgumentDefault(uolParser.ArgumentDefaultContext ctx) {
         super.visitArgumentDefault(ctx);
         String anIdentity = ctx.getChild(0).getText();
-        Object aDefaultValue = this.aDataStack.pop();
+        Object aDefaultValue = this.aDataManager.getaDataStack().pop();
 
-        this.aDataMap.computeIfAbsent("argumentDefines", _ -> new LinkedHashMap<String, Object>());
-        LinkedHashMap<String, Object> anArgumentMap = (LinkedHashMap<String, Object>) this.aDataMap.get("argumentDefines");
-        anArgumentMap.put(anIdentity, aDefaultValue);
-        this.aDataMap.put("argumentDefines", anArgumentMap);
+        this.aDataManager.setDataMapContentIfAbsent(DataManager.ARGUMENT_DEFINE_MAP, new LinkedHashMap<String, Object>());
+        this.aDataManager.setDataMapDeepContent(DataManager.ARGUMENT_DEFINE_MAP, anIdentity, aDefaultValue);
 
-        this.aDefaultArgumentDefineCount++;
+        this.aDataManager.getCounter(DataManager.DEFAULT_ARGUMENT_DEFINE_COUNT).increment();
 
         return null;
     }
@@ -328,7 +323,7 @@ public class UolVisitor extends uolBaseVisitor {
      */
     public Object visitLambdaBody(uolParser.LambdaBodyContext ctx) {
         uolParser.ExpressionListContext anExpressionListContext = ctx.getChild(uolParser.ExpressionListContext.class, 0);
-        this.aDataStack.push(anExpressionListContext);
+        this.aDataManager.getaDataStack().push(anExpressionListContext);
         return null;
     }
 
@@ -342,8 +337,8 @@ public class UolVisitor extends uolBaseVisitor {
      */
     public Object visitReturnExpression(uolParser.ReturnExpressionContext ctx) {
         super.visitReturnExpression(ctx);
-        this.aReturnValue = this.aDataStack.pop();
-        System.out.println(this.aReturnValue);
+        this.aReturnValue = this.aDataManager.getaDataStack().pop();
+        System.out.println("Return: " + this.aReturnValue);
         return null;
     }
 
@@ -359,21 +354,26 @@ public class UolVisitor extends uolBaseVisitor {
         super.visitInstanceExpression(ctx);
         String aClassName = ctx.getChild(1).getText();
 
-        ArrayList<Object> anArguments = (ArrayList<Object>) this.aDataMap.get("arguments");
+        ArrayList<Object> anArguments = this.aDataManager.getDataMapContent(DataManager.ARGUMENT_LIST);
+        if (anArguments == null) {
+            anArguments = new ArrayList<>();
+        }
         InstanceContent anInstanceContent = this.createInstance(aClassName, anArguments);
 
-        this.aDataStack.push(anInstanceContent);
+        this.aDataManager.getaDataStack().push(anInstanceContent);
+        this.aDataManager.removeDataMapContent(DataManager.ARGUMENT_LIST);
         return null;
     }
 
     /**
      * クラス名と引数を受け取り、インスタンスを生成するメッセージ
-     * @param aClassName クラス名
+     *
+     * @param aClassName  クラス名
      * @param anArguments 引数のリスト
-     * @return　InstanceContent
+     * @return InstanceContent
      */
     private InstanceContent createInstance(String aClassName, ArrayList<Object> anArguments) {
-        ClassContent aClassContent = this.aClassMap.get(aClassName);
+        ClassContent aClassContent = this.aDataManager.getClassContent(aClassName);
         if (aClassContent == null) {
             try {
                 throw new NotFoundSymbolError(aClassName, null);
@@ -407,32 +407,40 @@ public class UolVisitor extends uolBaseVisitor {
     public Object visitCallExpression(uolParser.CallExpressionContext ctx) {
         super.visitCallExpression(ctx);
         String aKey = ctx.getChild(0).getText();
-        LambdaContent aLambdaContent = (LambdaContent) this.aVariableMap.get(aKey);
-        UolVisitor aFunctionRunnedVisitor = null;
+        UolVisitor aFunctionRunnedVisitor = this.executeCall(aKey);
 
-        if (aLambdaContent != null) {
-            try {
-                if (this.anArgumentsCount <= 0) {
-                    aFunctionRunnedVisitor = aLambdaContent.execute();
-                } else {
-                    ArrayList<Object> anArguments = (ArrayList<Object>) this.aDataMap.get("arguments");
-                    aFunctionRunnedVisitor = aLambdaContent.execute(anArguments);
-                }
-            } catch (MissingArgumentsError error) {
-                error.setContext(ctx);
-                error.printErrorMessages();
-                System.exit(1);
-            }
-
-            if (aFunctionRunnedVisitor != null) {
-                if (aFunctionRunnedVisitor.getReturnValue() != null) {
-                    this.aDataStack.push(aFunctionRunnedVisitor.getReturnValue());
-                }
+        if (aFunctionRunnedVisitor != null) {
+            if (aFunctionRunnedVisitor.getReturnValue() != null) {
+                this.aDataManager.getaDataStack().push(aFunctionRunnedVisitor.getReturnValue());
             }
         }
 
-        this.aDataMap.remove("arguments");
+        this.aDataManager.removeDataMapContent(DataManager.ARGUMENT_LIST);
+        this.aDataManager.getCounter(DataManager.ARGUMENT_COUNT).reset();
 
+        return null;
+    }
+
+    private DataManager getDataManagerIfShouldBeTakenOver() {
+        if (this.aDataManager.isShouldBeTakenOver()){
+            return this.aDataManager;
+        }
+        return null;
+    }
+
+    private UolVisitor executeCall(String aKey) {
+        Executable anExecutableContent = (Executable) this.aDataManager.getVariableContent(aKey);
+
+        if (anExecutableContent != null) {
+            try {
+                ArrayList<Object> anArguments = this.aDataManager.getDataMapContent(DataManager.ARGUMENT_LIST);
+                return anExecutableContent.execute(anArguments, this.getDataManagerIfShouldBeTakenOver());
+
+            } catch (MissingArgumentsError error) {
+                error.printErrorMessages();
+                System.exit(1);
+            }
+        }
         return null;
     }
 
@@ -446,12 +454,30 @@ public class UolVisitor extends uolBaseVisitor {
      */
     public Object visitArgumentContent(uolParser.ArgumentContentContext ctx) {
         super.visitArgumentContent(ctx);
-        Object aValue = this.aDataStack.pop();
-        this.aDataMap.computeIfAbsent("arguments", _ -> new ArrayList<>());
-        ArrayList<Object> anArgumentList = (ArrayList<Object>) this.aDataMap.get("arguments");
+        Object aValue = this.aDataManager.getaDataStack().pop();
+
+        this.aDataManager.setDataMapContentIfAbsent(DataManager.ARGUMENT_LIST, new ArrayList<>());
+
+        ArrayList<Object> anArgumentList = this.aDataManager.getDataMapContent(DataManager.ARGUMENT_LIST);
         anArgumentList.add(aValue);
-        this.aDataMap.put("arguments", anArgumentList);
-        this.anArgumentsCount++;
+        this.aDataManager.setDataMapContent(DataManager.ARGUMENT_LIST, anArgumentList);
+        this.aDataManager.getCounter(DataManager.ARGUMENT_COUNT).increment();
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     *
+     * @param ctx
+     */
+    public Object visitChainExpression(uolParser.ChainExpressionContext ctx) {
+        super.visitChainExpression(ctx);
+        this.aDataManager.releaseVariableMap();
+        this.aDataManager.releaseSearchTargetClassName();
+        this.aDataManager.getCounter(DataManager.CHAIN_COUNT).reset();
         return null;
     }
 
@@ -465,11 +491,19 @@ public class UolVisitor extends uolBaseVisitor {
      */
     public Object visitElementExpression(uolParser.ElementExpressionContext ctx) {
         super.visitElementExpression(ctx);
-        if (!this.aChainable) this.aChainable = true;
-        Object aValue = this.aDataStack.pop();
 
-        if (aValue instanceof Chainable aChainableContent) {
-            this.aDataMap.put("chainableMap", aChainableContent.getValuesMap());
+        int chainableCount = ((ctx.parent.getChildCount() + 1) / 2) - 1;
+        Integer currentChainCount = this.aDataManager.getCounter(DataManager.CHAIN_COUNT).getCount();
+
+        if (chainableCount == currentChainCount) {
+            return null;
+        }
+        Value aStackValue = (Value) this.aDataManager.getaDataStack().pop();
+        Object aValue = aStackValue.value();
+
+        if (aValue instanceof InstanceContent aChainableContent) {
+            this.aDataManager.useVariableMap(aChainableContent.getValuesMap());
+            this.aDataManager.setSearchTargetClassName(aChainableContent.getClassName());
         } else {
             try {
                 throw new NotFoundSymbolError(aValue.toString(), ctx);
@@ -479,8 +513,7 @@ public class UolVisitor extends uolBaseVisitor {
             }
         }
 
-
-
+        this.aDataManager.getCounter(DataManager.CHAIN_COUNT).increment();
         return null;
     }
 
@@ -496,9 +529,10 @@ public class UolVisitor extends uolBaseVisitor {
         this.aRawIdentityEvaluation = true;
         super.visitAssignExpression(ctx);
         this.aRawIdentityEvaluation = false;
-        Object aVariableValue = this.aDataStack.pop();
-        String aVariableKey = (String) this.aDataStack.pop();
-        this.getCurrentVariableHashMap().put(aVariableKey, aVariableValue);
+        Object aVariableValue = this.aDataManager.getaDataStack().pop();
+        String aVariableKey = (String) this.aDataManager.getaDataStack().pop();
+        this.aDataManager.setVariableContent(aVariableKey, aVariableValue);
+        System.out.println("Assign: " + aVariableKey + " = " + aVariableValue);
         return null;
     }
 
@@ -515,15 +549,15 @@ public class UolVisitor extends uolBaseVisitor {
         switch (ctx.getStart().getType()) {
             case uolParser.NIL_LITERAL -> {
                 PrimitiveContent aVariableContent = new PrimitiveContent(null, "nil");
-                this.aDataStack.push(aVariableContent);
+                this.aDataManager.getaDataStack().push(aVariableContent);
             }
             case uolParser.IDENTIFIER -> {
                 String anIdentity = ctx.getText();
                 if (this.aRawIdentityEvaluation) {
-                    this.aDataStack.push(anIdentity);
+                    this.aDataManager.getaDataStack().push(anIdentity);
                 } else {
-                    Object aVariableValue = this.getCurrentVariableHashMap().get(anIdentity);
-                    this.aDataStack.push(aVariableValue);
+                    Object aVariableValue = this.aDataManager.getVariableContent(anIdentity);
+                    this.aDataManager.getaDataStack().push(aVariableValue);
                 }
             }
         }
@@ -568,7 +602,7 @@ public class UolVisitor extends uolBaseVisitor {
      * @return ClassContent または null
      */
     public ClassContent getClassContent(String aClassName) {
-        return this.aClassMap.get(aClassName);
+        return this.aDataManager.getClassContent(aClassName);
     }
 
     /**
@@ -578,7 +612,7 @@ public class UolVisitor extends uolBaseVisitor {
      * @return FunctionContent または null
      */
     public Object getFunctionContent(String aFunctionName) {
-        return this.aVariableMap.get(aFunctionName);
+        return this.aDataManager.getVariableContent(aFunctionName);
     }
 
     /**
@@ -588,7 +622,7 @@ public class UolVisitor extends uolBaseVisitor {
      * @return Object または null
      */
     public Object getGlobalVariable(String aVariableName) {
-        return this.aVariableMap.get(aVariableName);
+        return this.aDataManager.getVariableContent(aVariableName);
     }
 
     /**
@@ -600,29 +634,21 @@ public class UolVisitor extends uolBaseVisitor {
         return this.aReturnValue;
     }
 
-    public MessageContent searchMessage(String aClassName, String aMessageName) {
-        while(aClassName != null){
-            ClassContent aClassContent = this.aClassMap.get(aClassName);
-            if (aClassContent == null) {
-                return null;
-            }
-
-            if (aClassContent.getMessages().get(aMessageName) != null) {
-                return aClassContent.getMessages().get(aMessageName);
-            }
-
-            aClassName = aClassContent.getParentClassName();
-        }
-        return null;
+    /**
+     * データマネージャーを応答するメッセージ
+     *
+     * @return DataManager
+     */
+    public DataManager getDataManager() {
+        return this.aDataManager;
     }
 
     /**
-     * 変数マップを設定するメッセージ
-     *
-     * @param aVariableMap 変数マップ
+     * データマネージャーを設定するメッセージ
      */
-    public void setVariableMap(HashMap<String, Object> aVariableMap) {
-        this.aVariableMap = aVariableMap;
+    public void setDataManager(DataManager aDataManager) {
+        this.aDataManager = aDataManager;
     }
+
 
 }

@@ -1,6 +1,12 @@
 package ksu.yomogi.vm;
 
-public class MessageContent extends Object {
+import ksu.yomogi.vm.datamanager.DataManager;
+import ksu.yomogi.vm.errors.MissingArgumentsError;
+import ksu.yomogi.vm.interfaces.Executable;
+
+import java.util.ArrayList;
+
+public class MessageContent extends Object implements Executable {
 
     private final String aModifier;
     private final String anInstruction;
@@ -22,6 +28,18 @@ public class MessageContent extends Object {
 
     public LambdaContent getLambda() {
         return this.aLambda;
+    }
+
+    public UolVisitor execute() throws MissingArgumentsError {
+        return this.execute(new ArrayList<>(), null);
+    }
+
+    public UolVisitor execute(ArrayList<Object> anArguments) throws MissingArgumentsError {
+        return this.aLambda.execute(anArguments, null);
+    }
+
+    public UolVisitor execute(ArrayList<Object> anArguments, DataManager aDataManager) throws MissingArgumentsError {
+        return this.aLambda.execute(anArguments, aDataManager);
     }
 
     public String toString() {

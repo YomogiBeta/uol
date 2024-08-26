@@ -5,13 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2beadc4c-bdb1-41c7-b9c1-83160b79d96d" name="変更" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/Chainable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/InstanceContent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/datamanager/DataManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/datamanager/SimpleCounter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/interfaces/Chainable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/interfaces/Executable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/interfaces/Value.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/antlr/uol.g4" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/antlr/uol.g4" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/Chainable.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/ClassContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/ClassContent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/InstanceContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/InstanceContent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/LambdaContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/LambdaContent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/MemberContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/MemberContent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/MessageContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/MessageContent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVirtualMachine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVirtualMachine.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVisitor.java" afterDir="false" />
@@ -78,6 +84,7 @@
     "Gradle.uol_antlr [:Visitor.main()].executor": "Run",
     "Gradle.uol_antlr [generateGrammarSource].executor": "Run",
     "Gradle.uol_antrl.executor": "Run",
+    "OverrideImplement.generate.javadoc": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "main",
@@ -109,7 +116,7 @@
       <option name="PROGRAM_PARAMETERS" value="src/main/resources/sample.uol" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ksu.yomogi.vm.*" />
+          <option name="PATTERN" value="ksu.yomogi.vm.datamanager.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -175,7 +182,7 @@
       <workItem from="1724229672862" duration="3197000" />
       <workItem from="1724237859586" duration="27919000" />
       <workItem from="1724499816583" duration="11825000" />
-      <workItem from="1724516971315" duration="15459000" />
+      <workItem from="1724516971315" duration="37325000" />
     </task>
     <servers />
   </component>
@@ -186,6 +193,7 @@
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="java.util.HashMap$Node" memberName="key" />
+        <PinnedItemInfo parentTag="java.util.HashMap$Node" memberName="value" />
         <PinnedItemInfo parentTag="org.antlr.v4.runtime.tree.TerminalNodeImpl" memberName="parent" />
       </pinned-members>
     </pin-to-top-manager>

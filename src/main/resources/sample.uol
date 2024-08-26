@@ -1,17 +1,32 @@
 import { Object } from "language.Object"
 
+class Test {
+
+    public function sayHey() {
+        testSayHey = nil
+    }
+
+}
+
 class Sample extends Object {
     private native runnable = nil
+    private aTestClass = new Test()
 
-    public function __construct() {
+    public function __construct(b) {
         a = nil
     }
 
     public function testMessage() {
         testMessageVariable = nil
     }
+
+    public function getTest() {
+        return aTestClass
+    }
 }
 
-aSample = new Sample()
+aSample = new Sample(nil)
 aSample.testMessage()
+aSample.getTest().sayHey()
+
 

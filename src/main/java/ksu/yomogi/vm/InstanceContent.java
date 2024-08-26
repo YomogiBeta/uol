@@ -1,11 +1,13 @@
 package ksu.yomogi.vm;
 
 import ksu.yomogi.vm.errors.NotFoundSymbolError;
+import ksu.yomogi.vm.interfaces.Chainable;
+import ksu.yomogi.vm.interfaces.Value;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class InstanceContent extends Object implements Chainable<MemberContent> {
+public class InstanceContent extends Object implements Chainable, Value<InstanceContent> {
 
     private final String aClassName;
     private final String aParentClassName;
@@ -31,9 +33,12 @@ public class InstanceContent extends Object implements Chainable<MemberContent> 
     }
 
     public UolVisitor execute(String message, ArrayList<Object> arguments, UolVisitor aVisitor) throws NotFoundSymbolError {
-        MessageContent aMessage = aVisitor.searchMessage(this.aClassName, message);
+        MessageContent aMessage = aVisitor.getDataManager().searchMessage(this.aClassName, message);
 
         if (aMessage == null) {
+            if (ClassContent.CONSTRUCT_METHOD.equals(message)) {
+                return null;
+            }
             throw new NotFoundSymbolError(message, null);
         }
         LambdaContent aLambda = aMessage.getLambda();
@@ -42,6 +47,10 @@ public class InstanceContent extends Object implements Chainable<MemberContent> 
 
     public HashMap<String, MemberContent> getValuesMap() {
         return this.aMembers;
+    }
+
+    public InstanceContent value() {
+        return this;
     }
 
     public String toString() {

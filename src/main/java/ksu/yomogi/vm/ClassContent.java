@@ -33,6 +33,9 @@ public class ClassContent extends Object {
     }
 
     public HashMap<String, MemberContent> getMembers() {
+        if (this.aMembers == null) {
+            return new HashMap<>();
+        }
         return this.aMembers;
     }
 

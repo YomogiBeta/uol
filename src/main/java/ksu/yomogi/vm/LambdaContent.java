@@ -1,13 +1,15 @@
 package ksu.yomogi.vm;
 
 import ksu.yomogi.parser.uolParser;
+import ksu.yomogi.vm.datamanager.DataManager;
 import ksu.yomogi.vm.errors.MissingArgumentsError;
+import ksu.yomogi.vm.interfaces.Executable;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class LambdaContent extends Object {
+public class LambdaContent extends Object implements Executable {
 
     private LinkedHashMap<String, Object> aVariableMap = null;
     private Integer anArgumentsCount = 0;
@@ -26,22 +28,39 @@ public class LambdaContent extends Object {
     }
 
     public UolVisitor execute() throws MissingArgumentsError {
-        UolVisitor aVisitor = this.execute(new ArrayList<>());
-        return aVisitor;
+        return this.execute(new ArrayList<>(), null);
     }
 
     public UolVisitor execute(ArrayList<Object> anArguments) throws MissingArgumentsError {
-        if (this.anArgumentsCount != anArguments.size()) {
-            throw new MissingArgumentsError(this.anArgumentsCount, anArguments.size(), null);
+        return this.execute(anArguments, null);
+    }
+
+    public UolVisitor execute(ArrayList<Object> anArguments, DataManager aDataManager) throws MissingArgumentsError {
+
+        if (anArguments == null) {
+            anArguments = new ArrayList<>();
+        }
+
+        ArrayList<Object> aFinalArguments = anArguments;
+
+        if (this.anArgumentsCount != aFinalArguments.size()) {
+            throw new MissingArgumentsError(this.anArgumentsCount, aFinalArguments.size(), null);
         }
         UolVisitor aVisitor = new UolVisitor();
-        AtomicReference<Integer> anIndex = new AtomicReference<>(0);
-        aVariableMap.sequencedKeySet().forEach((aKey) -> {
-            aVariableMap.replace(aKey, anArguments.get(anIndex.get()));
-            anIndex.getAndSet(anIndex.get() + 1);
-        });
-        aVisitor.setVariableMap(aVariableMap);
+        if (aDataManager != null) {
+            aVisitor.setDataManager(aDataManager);
+        }
+
+        if (!aFinalArguments.isEmpty()) {
+            AtomicReference<Integer> anIndex = new AtomicReference<>(0);
+            aVariableMap.sequencedKeySet().forEach((aKey) -> {
+                aVariableMap.replace(aKey, aFinalArguments.get(anIndex.get()));
+                anIndex.getAndSet(anIndex.get() + 1);
+            });
+            aVisitor.getDataManager().useVariableMap(aVariableMap);
+        }
         aVisitor.visitExpressionList(aRunnableContext);
+        aVisitor.getDataManager().releaseVariableMap();
         return aVisitor;
     }
 

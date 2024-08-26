@@ -1,6 +1,8 @@
 package ksu.yomogi.vm;
 
-public class MemberContent extends Object {
+import ksu.yomogi.vm.interfaces.Value;
+
+public class MemberContent extends Object implements Value<Object> {
 
     private final String aModifier;
     private final String anInstruction;
@@ -20,7 +22,7 @@ public class MemberContent extends Object {
         return this.anInstruction;
     }
 
-    public Object getValue() {
+    public Object value() {
         return this.aValue;
     }
 
@@ -32,12 +34,12 @@ public class MemberContent extends Object {
         String aString = "{ " + this.aModifier + " " + this.anInstruction + " } ";
         if (this.aValue == null)
             return aString + "null";
-        return aString + this.aValue.toString();
+        return aString + this.aValue;
     }
 
     public boolean equals(Object obj) {
         if (obj instanceof MemberContent anOther) {
-            return this.aValue.equals(anOther.getValue())
+            return this.aValue.equals(anOther.value())
                     && this.aModifier.equals(anOther.getModifier())
                     && this.anInstruction.equals(anOther.getInstruction());
         }
