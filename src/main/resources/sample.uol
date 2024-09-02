@@ -2,7 +2,7 @@ import { Object } from "language.Object"
 
 class Test {
 
-    public function sayHey() {
+    private function sayHey() {
         testSayHey = nil
     }
 

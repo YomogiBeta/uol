@@ -19,6 +19,7 @@ public class DataManager extends Object {
      */
     public static final String IMPORT_LABEL_STACK = "importLabelStack";
     public static final String ARGUMENT_LIST = "argumentList";
+    public static final String CACHE_CLASS_NAME = "cacheClassName";
 
     /**
      * Stringのキー
@@ -40,10 +41,12 @@ public class DataManager extends Object {
     private boolean anIsTempVariableMap = false;
     private String aSearchTargetClassName = null;
 
-    private final HashMap<String, ClassContent> aClassMap = new HashMap<String, ClassContent>();
+    private static final HashMap<String, ClassContent> aClassMap = new HashMap<String, ClassContent>();
 
     private final HashMap<String, Object> aDataMap = new HashMap<String, Object>();
     private final HashMap<String, SimpleCounter> aCounterMap = new HashMap<String, SimpleCounter>();
+
+    private String aSender = "";
 
     /**
      * データスタックを応答するメソッド
@@ -259,6 +262,20 @@ public class DataManager extends Object {
     public SimpleCounter getCounter(String counterName) {
         this.aCounterMap.putIfAbsent(counterName, new SimpleCounter());
         return this.aCounterMap.get(counterName);
+    }
+
+    /**
+     * センダーを設定するメソッド
+     */
+    public void setSender(String aSender) {
+        this.aSender = aSender;
+    }
+
+    /**
+     * センダーを応答するメソッド
+     */
+    public String getSender() {
+        return this.aSender;
     }
 
 }

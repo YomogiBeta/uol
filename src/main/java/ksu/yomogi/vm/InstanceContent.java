@@ -42,7 +42,7 @@ public class InstanceContent extends Object implements Chainable, Value<Instance
             throw new NotFoundSymbolError(message, null);
         }
         LambdaContent aLambda = aMessage.getLambda();
-        return aLambda.execute(arguments);
+        return aLambda.execute(arguments, aVisitor.getDataManager());
     }
 
     public HashMap<String, MemberContent> getValuesMap() {

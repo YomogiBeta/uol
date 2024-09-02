@@ -27,12 +27,8 @@ public class LambdaContent extends Object implements Executable {
         this.anArgumentsCount = this.aVariableMap.size() - this.aDefaultArgumentsCount;
     }
 
-    public UolVisitor execute() throws MissingArgumentsError {
-        return this.execute(new ArrayList<>(), null);
-    }
-
-    public UolVisitor execute(ArrayList<Object> anArguments) throws MissingArgumentsError {
-        return this.execute(anArguments, null);
+    public UolVisitor execute(DataManager aDataManager) throws MissingArgumentsError {
+        return this.execute(new ArrayList<>(), aDataManager);
     }
 
     public UolVisitor execute(ArrayList<Object> anArguments, DataManager aDataManager) throws MissingArgumentsError {
@@ -47,7 +43,7 @@ public class LambdaContent extends Object implements Executable {
             throw new MissingArgumentsError(this.anArgumentsCount, aFinalArguments.size(), null);
         }
         UolVisitor aVisitor = new UolVisitor();
-        if (aDataManager != null) {
+        if (aDataManager.isShouldBeTakenOver()) {
             aVisitor.setDataManager(aDataManager);
         }
 

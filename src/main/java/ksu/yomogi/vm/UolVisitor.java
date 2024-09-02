@@ -5,6 +5,7 @@ import ksu.yomogi.parser.uolParser;
 import ksu.yomogi.vm.datamanager.DataManager;
 import ksu.yomogi.vm.errors.MissingArgumentsError;
 import ksu.yomogi.vm.errors.NotFoundSymbolError;
+import ksu.yomogi.vm.errors.UolRuntimeError;
 import ksu.yomogi.vm.interfaces.Executable;
 import ksu.yomogi.vm.interfaces.Value;
 
@@ -121,9 +122,9 @@ public class UolVisitor extends uolBaseVisitor<Object> {
      * @param ctx
      */
     public Object visitClassDefine(uolParser.ClassDefineContext ctx) {
-        super.visitClassDefine(ctx);
-
         String aClassName = ctx.getChild(1).getText();
+        this.aDataManager.setDataMapContent(DataManager.CACHE_CLASS_NAME, aClassName);
+        super.visitClassDefine(ctx);
 
         HashMap<String, MemberContent> aMembers = this.aDataManager.getDataMapContent(DataManager.CACHE_MEMBER_MAP);
         HashMap<String, MessageContent> aMessages = this.aDataManager.getDataMapContent(DataManager.CACHE_MESSAGE_MAP);
@@ -195,7 +196,8 @@ public class UolVisitor extends uolBaseVisitor<Object> {
             anInstruction = ctx.getChild(1).getText();
         }
 
-        MessageContent aMessageContent = new MessageContent(aModifier, anInstruction, aLambda);
+        String aClassName = this.aDataManager.getDataMapContent(DataManager.CACHE_CLASS_NAME);
+        MessageContent aMessageContent = new MessageContent(aMessageName, aClassName, aModifier, anInstruction, aLambda);
         this.aDataManager.setDataMapContentIfAbsent(DataManager.CACHE_MESSAGE_MAP, new HashMap<String, MessageContent>());
         this.aDataManager.setDataMapDeepContent(DataManager.CACHE_MESSAGE_MAP, aMessageName, aMessageContent);
 
@@ -407,7 +409,7 @@ public class UolVisitor extends uolBaseVisitor<Object> {
     public Object visitCallExpression(uolParser.CallExpressionContext ctx) {
         super.visitCallExpression(ctx);
         String aKey = ctx.getChild(0).getText();
-        UolVisitor aFunctionRunnedVisitor = this.executeCall(aKey);
+        UolVisitor aFunctionRunnedVisitor = this.executeCall(aKey, ctx);
 
         if (aFunctionRunnedVisitor != null) {
             if (aFunctionRunnedVisitor.getReturnValue() != null) {
@@ -421,22 +423,16 @@ public class UolVisitor extends uolBaseVisitor<Object> {
         return null;
     }
 
-    private DataManager getDataManagerIfShouldBeTakenOver() {
-        if (this.aDataManager.isShouldBeTakenOver()){
-            return this.aDataManager;
-        }
-        return null;
-    }
-
-    private UolVisitor executeCall(String aKey) {
+    private UolVisitor executeCall(String aKey, uolParser.CallExpressionContext ctx) {
         Executable anExecutableContent = (Executable) this.aDataManager.getVariableContent(aKey);
 
         if (anExecutableContent != null) {
             try {
                 ArrayList<Object> anArguments = this.aDataManager.getDataMapContent(DataManager.ARGUMENT_LIST);
-                return anExecutableContent.execute(anArguments, this.getDataManagerIfShouldBeTakenOver());
+                return anExecutableContent.execute(anArguments, this.getDataManager());
 
-            } catch (MissingArgumentsError error) {
+            } catch (UolRuntimeError error) {
+                error.setContext(ctx);
                 error.printErrorMessages();
                 System.exit(1);
             }
