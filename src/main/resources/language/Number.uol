@@ -1,0 +1,10 @@
+import { Object } from "language.Object"
+
+class Number extends Object {
+
+    private aPrimitiveValue = nil
+
+    public __construct(premitiveValue) {
+        self.aPrimitiveValue = premitiveValue
+    }
+}

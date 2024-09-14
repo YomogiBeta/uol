@@ -21,6 +21,9 @@ public class ClassContent extends Object {
         this.aClassName = className;
         this.aParentClassName = parentClassName;
         this.aMembers = members;
+        if (messages == null) {
+            messages = new HashMap<>();
+        }
         this.aMessages = messages;
     }
 

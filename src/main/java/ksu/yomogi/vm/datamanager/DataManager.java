@@ -37,9 +37,9 @@ public class DataManager extends Object {
     private final Stack<Object> aDataStack = new Stack<Object>();
 
     private HashMap<String, Object> aDefaultVariableMap = new HashMap<String, Object>();
-    private final HashMap<String, Object> aTempVariableMap = new HashMap<String, Object>();
+    private final Stack<HashMap<String, Object>> aTempVariableMapStack = new Stack<HashMap<String, Object>>();
     private boolean anIsTempVariableMap = false;
-    private String aSearchTargetClassName = null;
+    private Stack<String> aSearchTargetClassNameStack = new Stack<>();
 
     private static final HashMap<String, ClassContent> aClassMap = new HashMap<String, ClassContent>();
 
@@ -58,7 +58,7 @@ public class DataManager extends Object {
 
     private HashMap<String, Object> getVariableMap() {
         if (this.anIsTempVariableMap) {
-            return this.aTempVariableMap;
+            return this.aTempVariableMapStack.getLast();
         }
         return this.aDefaultVariableMap;
     }
@@ -67,20 +67,21 @@ public class DataManager extends Object {
      * 指定した変数マップを、リリースが行われるまで利用するように指示するメソッド
      * @param variableMap Map&lt;String, Object&gt; 変数マップ (可変朝引数)
      */
-    public final void useVariableMap(Object... variableMap) {
-        List<Object> aList = Arrays.asList(variableMap);
-        aList.forEach(map -> {
-            this.aTempVariableMap.putAll((HashMap<String, Object>) map);
-        });
+    public final void useVariableMap(Object variableMap) {
+        this.aTempVariableMapStack.add((HashMap<String, Object>) variableMap);
         this.anIsTempVariableMap = true;
+    }
+
+    public final void mergeVariableMap(Object variableMap) {
+        this.getVariableMap().putAll((HashMap<String, Object>) variableMap);
     }
 
     /**
      * 変数マップをリリースするメソッド
      */
-    public final void releaseVariableMap() {
-        this.aTempVariableMap.clear();
-        this.anIsTempVariableMap = false;
+    public final void rollbackVariableMap() {
+        if (!this.aTempVariableMapStack.isEmpty()) this.aTempVariableMapStack.pop();
+        if (aTempVariableMapStack.isEmpty()) this.anIsTempVariableMap = false;
     }
 
     /**
@@ -88,14 +89,14 @@ public class DataManager extends Object {
      * @param aClassName
      */
     public void setSearchTargetClassName(String aClassName) {
-        this.aSearchTargetClassName = aClassName;
+        this.aSearchTargetClassNameStack.push(aClassName);
     }
 
     /**
      * 検索対象クラス名をリリースするメソッド
      */
-    public void releaseSearchTargetClassName() {
-        this.aSearchTargetClassName = null;
+    public void rollbackSearchTargetClassName() {
+        this.aSearchTargetClassNameStack.pop();
     }
 
     /**
@@ -103,7 +104,7 @@ public class DataManager extends Object {
      * @return 引き継ぐべきであればtrue
      */
     public boolean isShouldBeTakenOver() {
-        return this.aSearchTargetClassName != null || this.anIsTempVariableMap;
+        return !this.aSearchTargetClassNameStack.isEmpty() || this.anIsTempVariableMap;
     }
 
     /**
@@ -118,7 +119,6 @@ public class DataManager extends Object {
             if (aClassContent == null) {
                 return null;
             }
-
             if (aClassContent.getMessages().get(aMessageName) != null) {
                 return aClassContent.getMessages().get(aMessageName);
             }
@@ -135,8 +135,8 @@ public class DataManager extends Object {
      */
     public Object getVariableContent(String key) {
         Object aValue =  this.getVariableMap().get(key);
-        if (aValue == null && this.aSearchTargetClassName != null) {
-            MessageContent aMessage = this.searchMessage(this.aSearchTargetClassName, key);
+        if (aValue == null && !this.aSearchTargetClassNameStack.isEmpty()) {
+            MessageContent aMessage = this.searchMessage(this.aSearchTargetClassNameStack.getLast(), key);
             if (aMessage != null) {
                 return aMessage;
             }

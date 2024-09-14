@@ -2,7 +2,7 @@ import { Object } from "language.Object"
 
 class Test {
 
-    private function sayHey() {
+    public function sayHey() {
         testSayHey = nil
     }
 
@@ -10,10 +10,12 @@ class Test {
 
 class Sample extends Object {
     private native runnable = nil
-    private aTestClass = new Test()
+    private aTestClass = nil
 
     public function __construct(b) {
-        a = nil
+        self.aTestClass = new Test()
+        c = b
+        self.aTestClass.sayHey()
     }
 
     public function testMessage() {
@@ -26,7 +28,5 @@ class Sample extends Object {
 }
 
 aSample = new Sample(nil)
-aSample.testMessage()
-aSample.getTest().sayHey()
 
 

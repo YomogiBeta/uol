@@ -53,10 +53,10 @@ public class LambdaContent extends Object implements Executable {
                 aVariableMap.replace(aKey, aFinalArguments.get(anIndex.get()));
                 anIndex.getAndSet(anIndex.get() + 1);
             });
-            aVisitor.getDataManager().useVariableMap(aVariableMap);
+            aVisitor.getDataManager().mergeVariableMap(aVariableMap);
         }
         aVisitor.visitExpressionList(aRunnableContext);
-        aVisitor.getDataManager().releaseVariableMap();
+        aVisitor.getDataManager().rollbackVariableMap();
         return aVisitor;
     }
 

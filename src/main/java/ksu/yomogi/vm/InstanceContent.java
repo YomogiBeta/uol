@@ -1,5 +1,6 @@
 package ksu.yomogi.vm;
 
+import ksu.yomogi.vm.datamanager.DataManager;
 import ksu.yomogi.vm.errors.NotFoundSymbolError;
 import ksu.yomogi.vm.interfaces.Chainable;
 import ksu.yomogi.vm.interfaces.Value;
@@ -10,22 +11,37 @@ import java.util.HashMap;
 public class InstanceContent extends Object implements Chainable, Value<InstanceContent> {
 
     private final String aClassName;
-    private final String aParentClassName;
 
     private HashMap<String, MemberContent> aMembers = new HashMap<>();
 
-    public InstanceContent(String className, String parentClassName, HashMap<String, MemberContent> members) {
+    public InstanceContent(String className, DataManager aDataManager) {
+        ClassContent aClassContent = aDataManager.getClassContent(className);
+
+        if (aClassContent == null) {
+            try {
+                throw new NotFoundSymbolError(className, null);
+            } catch (NotFoundSymbolError event) {
+                event.printErrorMessages();
+                System.exit(1);
+            }
+        }
+
+        String aParentClassName = aClassContent.getParentClassName();
+        InstanceContent aParentInstance = null;
+        if (aParentClassName != null){
+            aParentInstance = new InstanceContent(aParentClassName, aDataManager);
+        }
+
+        HashMap<String, MemberContent> members = new HashMap<>(aClassContent.getMembers());
+        members.put("self", new MemberContent("private", "none", this));
+        members.put("super", new MemberContent("private", "none", aParentInstance));
+
         this.aClassName = className;
-        this.aParentClassName = parentClassName;
         this.aMembers = members;
     }
 
     public String getClassName() {
         return this.aClassName;
-    }
-
-    public String getParentClassName() {
-        return this.aParentClassName;
     }
 
     public HashMap<String, MemberContent> getMembers() {
@@ -60,13 +76,12 @@ public class InstanceContent extends Object implements Chainable, Value<Instance
     public boolean equals(Object obj) {
         if (obj instanceof InstanceContent anOther) {
             return this.aClassName.equals(anOther.getClassName())
-                    && this.aParentClassName.equals(anOther.getParentClassName())
                     && this.aMembers.equals(anOther.getMembers());
         }
         return false;
     }
 
     public int hashCode() {
-        return this.aClassName.hashCode() + this.aParentClassName.hashCode() + this.aMembers.hashCode();
+        return this.aClassName.hashCode() + this.aMembers.hashCode();
     }
 }

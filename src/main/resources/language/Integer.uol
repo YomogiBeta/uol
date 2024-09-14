@@ -1,0 +1,8 @@
+import { Number } from "language.Number"
+
+class Integer extends Number {
+
+    public __construct(premitiveValue) {
+        super(premitiveValue)
+    }
+}

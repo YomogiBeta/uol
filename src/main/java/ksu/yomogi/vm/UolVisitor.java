@@ -360,6 +360,7 @@ public class UolVisitor extends uolBaseVisitor<Object> {
         if (anArguments == null) {
             anArguments = new ArrayList<>();
         }
+        this.aDataManager.removeDataMapContent(DataManager.ARGUMENT_LIST);
         InstanceContent anInstanceContent = this.createInstance(aClassName, anArguments);
 
         this.aDataManager.getaDataStack().push(anInstanceContent);
@@ -375,25 +376,19 @@ public class UolVisitor extends uolBaseVisitor<Object> {
      * @return InstanceContent
      */
     private InstanceContent createInstance(String aClassName, ArrayList<Object> anArguments) {
-        ClassContent aClassContent = this.aDataManager.getClassContent(aClassName);
-        if (aClassContent == null) {
-            try {
-                throw new NotFoundSymbolError(aClassName, null);
-            } catch (NotFoundSymbolError event) {
-                event.printErrorMessages();
-                System.exit(1);
-            }
-        }
+        InstanceContent anInstanceContent = new InstanceContent(aClassName, this.aDataManager);
 
-        String aParentClassName = aClassContent.getParentClassName();
-        HashMap<String, MemberContent> aMembers = new HashMap<>(aClassContent.getMembers());
-        InstanceContent anInstanceContent = new InstanceContent(aClassName, aParentClassName, aMembers);
+        this.aDataManager.useVariableMap(anInstanceContent.getValuesMap());
+        this.aDataManager.setSearchTargetClassName(anInstanceContent.getClassName());
 
         if (anArguments.size() <= 0) {
             anInstanceContent.execute(ClassContent.CONSTRUCT_METHOD, new ArrayList<>(), this);
         } else {
             anInstanceContent.execute(ClassContent.CONSTRUCT_METHOD, anArguments, this);
         }
+
+        this.aDataManager.rollbackVariableMap();
+        this.aDataManager.rollbackSearchTargetClassName();
 
         return anInstanceContent;
     }
@@ -437,6 +432,13 @@ public class UolVisitor extends uolBaseVisitor<Object> {
                 System.exit(1);
             }
         }
+
+        try {
+            throw new NotFoundSymbolError(aKey, ctx);
+        } catch (NotFoundSymbolError event) {
+            event.printErrorMessages();
+            System.exit(1);
+        }
         return null;
     }
 
@@ -471,8 +473,8 @@ public class UolVisitor extends uolBaseVisitor<Object> {
      */
     public Object visitChainExpression(uolParser.ChainExpressionContext ctx) {
         super.visitChainExpression(ctx);
-        this.aDataManager.releaseVariableMap();
-        this.aDataManager.releaseSearchTargetClassName();
+        this.aDataManager.rollbackVariableMap();
+        this.aDataManager.rollbackSearchTargetClassName();
         this.aDataManager.getCounter(DataManager.CHAIN_COUNT).reset();
         return null;
     }
@@ -486,10 +488,13 @@ public class UolVisitor extends uolBaseVisitor<Object> {
      * @param ctx
      */
     public Object visitElementExpression(uolParser.ElementExpressionContext ctx) {
-        super.visitElementExpression(ctx);
-
         int chainableCount = ((ctx.parent.getChildCount() + 1) / 2) - 1;
         Integer currentChainCount = this.aDataManager.getCounter(DataManager.CHAIN_COUNT).getCount();
+
+        boolean aCacheRawIdentityEvaluation = this.aRawIdentityEvaluation;
+        if (chainableCount != currentChainCount) this.aRawIdentityEvaluation = false;
+        super.visitElementExpression(ctx);
+        this.aRawIdentityEvaluation = aCacheRawIdentityEvaluation;
 
         if (chainableCount == currentChainCount) {
             return null;
@@ -522,13 +527,26 @@ public class UolVisitor extends uolBaseVisitor<Object> {
      * @param ctx
      */
     public Object visitAssignExpression(uolParser.AssignExpressionContext ctx) {
-        this.aRawIdentityEvaluation = true;
         super.visitAssignExpression(ctx);
-        this.aRawIdentityEvaluation = false;
         Object aVariableValue = this.aDataManager.getaDataStack().pop();
         String aVariableKey = (String) this.aDataManager.getaDataStack().pop();
         this.aDataManager.setVariableContent(aVariableKey, aVariableValue);
         System.out.println("Assign: " + aVariableKey + " = " + aVariableValue);
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     *
+     * @param ctx
+     */
+    public Object visitAssignAbleExpression(uolParser.AssignAbleExpressionContext ctx) {
+        this.aRawIdentityEvaluation = true;
+        super.visitAssignAbleExpression(ctx);
+        this.aRawIdentityEvaluation = false;
         return null;
     }
 
