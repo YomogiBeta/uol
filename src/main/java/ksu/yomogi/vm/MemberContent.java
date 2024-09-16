@@ -1,14 +1,21 @@
 package ksu.yomogi.vm;
 
+import ksu.yomogi.vm.datamanager.DataManager;
+import ksu.yomogi.vm.errors.PrivateMemberCallError;
+import ksu.yomogi.vm.errors.PrivateMethodCallError;
 import ksu.yomogi.vm.interfaces.Value;
 
 public class MemberContent extends Object implements Value<Object> {
 
+    private final String aName;
+    private final String aClassName;
     private final String aModifier;
     private final String anInstruction;
     private Object aValue;
 
-    public MemberContent(String modifier, String instruction, Object value) {
+    public MemberContent(String name, String className, String modifier, String instruction, Object value) {
+        this.aName = name;
+        this.aClassName = className;
         this.aModifier = modifier;
         this.anInstruction = instruction;
         this.aValue = value;
@@ -22,11 +29,21 @@ public class MemberContent extends Object implements Value<Object> {
         return this.anInstruction;
     }
 
-    public Object value() {
+    public Object getValue() {
         return this.aValue;
     }
 
-    public void setValue(Object value) {
+    public Object value(DataManager aDataManager) throws PrivateMemberCallError {
+        if (this.aModifier.equals("private") && !aDataManager.getSender().equals(this.aClassName)){
+            throw new PrivateMemberCallError(this.aName, null);
+        }
+        return this.aValue;
+    }
+
+    public void setValue(Object value, DataManager aDataManager) {
+        if (this.aModifier.equals("private") && !aDataManager.getSender().equals(this.aClassName)){
+            throw new PrivateMemberCallError(this.aName, null);
+        }
         this.aValue = value;
     }
 
@@ -39,7 +56,7 @@ public class MemberContent extends Object implements Value<Object> {
 
     public boolean equals(Object obj) {
         if (obj instanceof MemberContent anOther) {
-            return this.aValue.equals(anOther.value())
+            return this.aValue.equals(anOther.getValue())
                     && this.aModifier.equals(anOther.getModifier())
                     && this.anInstruction.equals(anOther.getInstruction());
         }

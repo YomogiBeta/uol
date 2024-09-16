@@ -5,15 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2beadc4c-bdb1-41c7-b9c1-83160b79d96d" name="変更" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/language/Integer.uol" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/language/Number.uol" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/errors/PrivateMemberCallError.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/ClassContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/ClassContent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/InstanceContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/InstanceContent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/LambdaContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/LambdaContent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/MemberContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/MemberContent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/MessageContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/MessageContent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/PrimitiveContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/PrimitiveContent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVisitor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/datamanager/DataManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/datamanager/DataManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/language/Object.uol" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/language/Object.uol" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/interfaces/Value.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/interfaces/Value.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/sample.uol" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sample.uol" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -177,7 +176,7 @@
       <workItem from="1724499816583" duration="11825000" />
       <workItem from="1724516971315" duration="39088000" />
       <workItem from="1725004436401" duration="38760000" />
-      <workItem from="1726295671166" duration="12923000" />
+      <workItem from="1726295671166" duration="22925000" />
     </task>
     <servers />
   </component>
@@ -185,35 +184,6 @@
     <option name="version" value="3" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVisitor.java</url>
-          <line>569</line>
-          <option name="timeStamp" value="11" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVisitor.java</url>
-          <line>573</line>
-          <option name="timeStamp" value="12" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/datamanager/DataManager.java</url>
-          <line>137</line>
-          <option name="timeStamp" value="20" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVisitor.java</url>
-          <line>380</line>
-          <option name="timeStamp" value="21" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVisitor.java</url>
-          <line>381</line>
-          <option name="timeStamp" value="22" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="java.util.HashMap$Node" memberName="key" />

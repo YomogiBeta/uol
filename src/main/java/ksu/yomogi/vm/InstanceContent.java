@@ -33,8 +33,8 @@ public class InstanceContent extends Object implements Chainable, Value<Instance
         }
 
         HashMap<String, MemberContent> members = new HashMap<>(aClassContent.getMembers());
-        members.put("self", new MemberContent("private", "none", this));
-        members.put("super", new MemberContent("private", "none", aParentInstance));
+        members.put("self", new MemberContent("self", className, "private", "none", this));
+        members.put("super", new MemberContent("super", className, "private", "none", aParentInstance));
 
         this.aClassName = className;
         this.aMembers = members;
@@ -57,15 +57,15 @@ public class InstanceContent extends Object implements Chainable, Value<Instance
             }
             throw new NotFoundSymbolError(message, null);
         }
-        LambdaContent aLambda = aMessage.getLambda();
-        return aLambda.execute(arguments, aVisitor.getDataManager());
+
+        return aMessage.execute(arguments, aVisitor.getDataManager());
     }
 
     public HashMap<String, MemberContent> getValuesMap() {
         return this.aMembers;
     }
 
-    public InstanceContent value() {
+    public InstanceContent value(DataManager aDataManager) {
         return this;
     }
 

@@ -14,8 +14,6 @@ class Sample extends Object {
 
     public function __construct(b) {
         self.aTestClass = new Test()
-        c = b
-        self.aTestClass.sayHey()
     }
 
     public function testMessage() {
@@ -28,5 +26,6 @@ class Sample extends Object {
 }
 
 aSample = new Sample(nil)
+aSample.getTest().sayHey()
 
 

@@ -1,6 +1,9 @@
 package ksu.yomogi.vm;
 
-public class PrimitiveContent extends Object {
+import ksu.yomogi.vm.datamanager.DataManager;
+import ksu.yomogi.vm.interfaces.Value;
+
+public class PrimitiveContent extends Object implements Value<Object> {
 
     private Object aValue;
     private String aType;
@@ -11,6 +14,10 @@ public class PrimitiveContent extends Object {
     }
 
     public Object getValue() {
+        return aValue;
+    }
+
+    public Object value(DataManager aDataManager) {
         return aValue;
     }
 

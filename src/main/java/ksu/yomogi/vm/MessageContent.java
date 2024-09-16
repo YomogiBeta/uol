@@ -40,7 +40,7 @@ public class MessageContent extends Object implements Executable {
     }
 
     public UolVisitor execute(ArrayList<Object> anArguments, DataManager aDataManager) throws MissingArgumentsError, PrivateMethodCallError {
-        if (this.aModifier.equals("private") && !aDataManager.getSender().equals(aClassName)){
+        if (this.aModifier.equals("private") && !aDataManager.getSender().equals(this.aClassName)){
             throw new PrivateMethodCallError(this.aName, null);
         }
         aDataManager.setSender(this.aClassName);

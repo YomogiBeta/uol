@@ -5,6 +5,7 @@ import ksu.yomogi.parser.uolParser;
 import ksu.yomogi.vm.datamanager.DataManager;
 import ksu.yomogi.vm.errors.MissingArgumentsError;
 import ksu.yomogi.vm.errors.NotFoundSymbolError;
+import ksu.yomogi.vm.errors.PrivateMemberCallError;
 import ksu.yomogi.vm.errors.UolRuntimeError;
 import ksu.yomogi.vm.interfaces.Executable;
 import ksu.yomogi.vm.interfaces.Value;
@@ -233,7 +234,8 @@ public class UolVisitor extends uolBaseVisitor<Object> {
             anInstruction = ctx.getChild(1).getText();
         }
 
-        MemberContent aMemberContent = new MemberContent(aModifier, anInstruction, aValue);
+        String aClassName = this.aDataManager.getDataMapContent(DataManager.CACHE_CLASS_NAME);
+        MemberContent aMemberContent = new MemberContent(aMemberName, aClassName, aModifier, anInstruction, aValue);
         this.aDataManager.setDataMapContentIfAbsent(DataManager.CACHE_MEMBER_MAP, new HashMap<String, MemberContent>());
         this.aDataManager.setDataMapDeepContent(DataManager.CACHE_MEMBER_MAP, aMemberName, aMemberContent);
 
@@ -381,11 +383,7 @@ public class UolVisitor extends uolBaseVisitor<Object> {
         this.aDataManager.useVariableMap(anInstanceContent.getValuesMap());
         this.aDataManager.setSearchTargetClassName(anInstanceContent.getClassName());
 
-        if (anArguments.size() <= 0) {
-            anInstanceContent.execute(ClassContent.CONSTRUCT_METHOD, new ArrayList<>(), this);
-        } else {
-            anInstanceContent.execute(ClassContent.CONSTRUCT_METHOD, anArguments, this);
-        }
+        anInstanceContent.execute(ClassContent.CONSTRUCT_METHOD, anArguments, this);
 
         this.aDataManager.rollbackVariableMap();
         this.aDataManager.rollbackSearchTargetClassName();
@@ -500,7 +498,15 @@ public class UolVisitor extends uolBaseVisitor<Object> {
             return null;
         }
         Value aStackValue = (Value) this.aDataManager.getaDataStack().pop();
-        Object aValue = aStackValue.value();
+        Object aValue = null;
+
+        try {
+            aValue = aStackValue.value(this.aDataManager);
+        } catch (PrivateMemberCallError error) {
+            error.setContext(ctx);
+            error.printErrorMessages();
+            System.exit(1);
+        }
 
         if (aValue instanceof InstanceContent aChainableContent) {
             this.aDataManager.useVariableMap(aChainableContent.getValuesMap());
@@ -530,8 +536,16 @@ public class UolVisitor extends uolBaseVisitor<Object> {
         super.visitAssignExpression(ctx);
         Object aVariableValue = this.aDataManager.getaDataStack().pop();
         String aVariableKey = (String) this.aDataManager.getaDataStack().pop();
-        this.aDataManager.setVariableContent(aVariableKey, aVariableValue);
+        Object aBeforeContent = this.aDataManager.getVariableContent(aVariableKey);
+
         System.out.println("Assign: " + aVariableKey + " = " + aVariableValue);
+
+        if (aBeforeContent instanceof MemberContent aMemberContent){
+            aMemberContent.setValue(aVariableValue, this.aDataManager);
+            return null;
+        }
+
+        this.aDataManager.setVariableContent(aVariableKey, aVariableValue);
         return null;
     }
 
@@ -570,8 +584,14 @@ public class UolVisitor extends uolBaseVisitor<Object> {
                 if (this.aRawIdentityEvaluation) {
                     this.aDataManager.getaDataStack().push(anIdentity);
                 } else {
-                    Object aVariableValue = this.aDataManager.getVariableContent(anIdentity);
-                    this.aDataManager.getaDataStack().push(aVariableValue);
+                    try {
+                        Value aVariableValue = (Value) this.aDataManager.getVariableContent(anIdentity);
+                        this.aDataManager.getaDataStack().push(aVariableValue.value(this.aDataManager));
+                    }catch (PrivateMemberCallError error){
+                        error.setContext(ctx);
+                        error.printErrorMessages();
+                        System.exit(1);
+                    }
                 }
             }
         }
