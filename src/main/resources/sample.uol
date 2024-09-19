@@ -1,5 +1,3 @@
-import { Object } from "language.Object"
-
 class Test {
 
     public function sayHey() {
@@ -13,7 +11,7 @@ class Sample extends Object {
     private aTestClass = nil
 
     public function __construct(b) {
-        self.aTestClass = new Test()
+        self.aTestClass = b
     }
 
     public function testMessage() {
@@ -21,11 +19,11 @@ class Sample extends Object {
     }
 
     public function getTest() {
-        return aTestClass
+        return self.aTestClass
     }
 }
 
-aSample = new Sample(nil)
+aSample = new Sample(new Test())
 aSample.getTest().sayHey()
 
 

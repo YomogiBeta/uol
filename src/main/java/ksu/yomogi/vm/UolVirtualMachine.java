@@ -10,16 +10,21 @@ import java.io.IOException;
 public class UolVirtualMachine extends Object {
 
     public static void main(String[] args) {
-        UolVirtualMachine.execute(args[0]);
+        UolVisitor aVisitor = new UolVisitor();
+        aVisitor.init();
+        UolVirtualMachine.execute(args[0], aVisitor);
     }
 
     public static UolVisitor execute(String aPath) {
+        return UolVirtualMachine.execute(aPath, new UolVisitor());
+    }
+
+    public static UolVisitor execute(String aPath, UolVisitor aVisitor) {
         try {
             ANTLRFileStream aStream = new ANTLRFileStream(aPath);
             uolLexer aLexer = new uolLexer(aStream);
             CommonTokenStream tokens = new CommonTokenStream(aLexer);
             uolParser aParser = new uolParser(tokens);
-            UolVisitor aVisitor = new UolVisitor();
             aVisitor.visit(aParser.prog());
             return aVisitor;
         } catch (IOException e) {

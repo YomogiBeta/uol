@@ -26,6 +26,12 @@ public class UolVisitor extends uolBaseVisitor<Object> {
 
     private Boolean aRawIdentityEvaluation = false;
 
+    public void init() {
+        this.importFile(aRuntimePath + "language" + File.separator + "Object.uol", "Object");
+        this.importFile(aRuntimePath + "language" + File.separator + "Number.uol", "Number");
+        this.importFile(aRuntimePath + "language" + File.separator + "Integer.uol", "Integer");
+    }
+
 
     /**
      * {@inheritDoc}
@@ -41,24 +47,17 @@ public class UolVisitor extends uolBaseVisitor<Object> {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * <p>The default implementation returns the result of calling
-     * {@link #visitChildren} on {@code ctx}.</p>
-     *
-     * @param ctx
-     */
-    public Object visitPartsImportStatement(uolParser.PartsImportStatementContext ctx) {
-        super.visitPartsImportStatement(ctx);
+    private void importFile(String aFilePath, String aLabel){
+        Stack<ImportLabel> aLabelStack = new Stack<>();
+        aLabelStack.push(new ImportLabel("aLabel"));
+        this.importFile(aFilePath, aLabelStack);
+    }
 
-        String aFileKey = ctx.getChild(3).getText();
-        aFileKey = aFileKey.replaceAll("\\.", File.separator);
-        aFileKey = aFileKey.substring(1, aFileKey.length() - 1);
-        UolVisitor aVisitor = UolVirtualMachine.execute(aRuntimePath + aFileKey + ".uol");
+
+    private void importFile(String aFilePath, Stack<ImportLabel> aLabelStack) {
+        UolVisitor aVisitor = UolVirtualMachine.execute(aFilePath);
 
         if (aVisitor != null) {
-            Stack<ImportLabel> aLabelStack = this.aDataManager.getDataMapContent(DataManager.IMPORT_LABEL_STACK);
 
             aLabelStack.forEach((aLabel) -> {
                 ClassContent aClassContent = aVisitor.getClassContent(aLabel.getTrueLabel());
@@ -81,7 +80,24 @@ public class UolVisitor extends uolBaseVisitor<Object> {
 
             this.aDataManager.removeDataMapContent(DataManager.IMPORT_LABEL_STACK);
         }
+    }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     *
+     * @param ctx
+     */
+    public Object visitPartsImportStatement(uolParser.PartsImportStatementContext ctx) {
+        super.visitPartsImportStatement(ctx);
+
+        String aFileKey = ctx.getChild(3).getText();
+        aFileKey = aFileKey.replaceAll("\\.", File.separator);
+        aFileKey = aFileKey.substring(1, aFileKey.length() - 1);
+        Stack<ImportLabel> aLabelStack = this.aDataManager.getDataMapContent(DataManager.IMPORT_LABEL_STACK);
+        this.importFile(aRuntimePath + aFileKey + ".uol", aLabelStack);
         return null;
     }
 
