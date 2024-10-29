@@ -1,9 +1,7 @@
-import { Number } from "language.Number"
-
 class Integer extends Number {
 
-    public __construct(primitiveValue) {
-        super(primitiveValue)
-    }
+    public function __construct(primitiveValue) {
+        super.__construct(primitiveValue)
 
+    }
 }

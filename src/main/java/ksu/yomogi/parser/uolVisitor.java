@@ -1,6 +1,5 @@
-// Generated from uol.g4 by ANTLR 4.5
+// Generated from uol.g4 by ANTLR 4.13.2
 package ksu.yomogi.parser;
-import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**

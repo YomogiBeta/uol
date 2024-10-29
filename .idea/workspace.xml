@@ -5,9 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2beadc4c-bdb1-41c7-b9c1-83160b79d96d" name="変更" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/errors/NativeMemberCallError.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/errors/NativeMethodCallError.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVirtualMachine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVirtualMachine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/antlr/uol.g4" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/antlr/uol.g4" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uol.tokens" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolBaseVisitor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolLexer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolLexer.tokens" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolVisitor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/InstanceContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/InstanceContent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/LambdaContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/LambdaContent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/MemberContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/MemberContent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/MessageContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/MessageContent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVisitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/datamanager/DataManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/datamanager/DataManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/datamanager/SimpleCounter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/datamanager/SimpleCounter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/language/Integer.uol" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/language/Integer.uol" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/language/Number.uol" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/language/Number.uol" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/sample.uol" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sample.uol" afterDir="false" />
@@ -66,32 +81,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
-    &quot;Gradle.uol_antlr [:UolVirtualMachine.main()].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.uol_antlr [:Visitor.main()].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.uol_antlr [generateGrammarSource].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.uol_antrl.executor&quot;: &quot;Run&quot;,
-    &quot;OverrideImplement.generate.javadoc&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/yomogi/labo/g2154352/Thesis/Program/uol_antlr&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;onboarding.tips.debug.path&quot;: &quot;/Users/yomogi/labo/g2154352/Thesis/Program/uol_antrl/src/main/java/ksu/yomogi/Main.java&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;モジュール&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "Gradle.uol_antlr [:UolVirtualMachine.main()].executor": "Run",
+    "Gradle.uol_antlr [:Visitor.main()].executor": "Run",
+    "Gradle.uol_antlr [generateGrammarSource].executor": "Run",
+    "Gradle.uol_antrl.executor": "Run",
+    "OverrideImplement.generate.javadoc": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/yomogi/labo/g2154352/Thesis/Program/uol_antlr",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "onboarding.tips.debug.path": "/Users/yomogi/labo/g2154352/Thesis/Program/uol_antrl/src/main/java/ksu/yomogi/Main.java",
+    "project.structure.last.edited": "モジュール",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="ksu.yomogi.vm.errors" />
@@ -135,6 +150,10 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Gradle.uol_antlr [generateGrammarSource]" />
+      <item itemvalue="アプリケーション.UolVirtualMachine" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.uol_antlr [generateGrammarSource]" />
@@ -175,7 +194,13 @@
       <workItem from="1725004436401" duration="38760000" />
       <workItem from="1726295671166" duration="27642000" />
       <workItem from="1726725415931" duration="71000" />
-      <workItem from="1726725495806" duration="1325000" />
+      <workItem from="1726725495806" duration="66986000" />
+      <workItem from="1727776563225" duration="22488000" />
+      <workItem from="1728183838815" duration="893000" />
+      <workItem from="1728391110568" duration="27273000" />
+      <workItem from="1728805668540" duration="9827000" />
+      <workItem from="1729054351739" duration="95391000" />
+      <workItem from="1730202677864" duration="5242000" />
     </task>
     <servers />
   </component>

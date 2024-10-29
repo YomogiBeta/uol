@@ -2,9 +2,22 @@ import { Object } from "language.Object"
 
 class Number extends Object {
 
-    private aPrimitiveValue = nil
+    private nativeOnly aPrimitiveValue = nil
+    private testValue = nil
 
-    public __construct(primitiveValue) {
+    public function __construct(primitiveValue) {
         self.aPrimitiveValue = primitiveValue
+
+    }
+
+    private nativeOnly function getPrimitiveValue() {
+        return self.aPrimitiveValue
+
+    }
+
+    public function calltest() {
+        return self.testValue
+
     }
 }
+

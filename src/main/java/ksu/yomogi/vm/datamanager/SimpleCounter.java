@@ -26,6 +26,10 @@ public class SimpleCounter extends Object {
         this.aCounter = 0;
     }
 
+    public void set(Integer aCacheChainCount) {
+        this.aCounter = aCacheChainCount;
+    }
+
     public String toString() {
         return Integer.toString(this.aCounter);
     }

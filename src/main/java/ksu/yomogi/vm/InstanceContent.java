@@ -7,6 +7,7 @@ import ksu.yomogi.vm.interfaces.Value;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class InstanceContent extends Object implements Chainable, Value<InstanceContent> {
 
@@ -16,6 +17,7 @@ public class InstanceContent extends Object implements Chainable, Value<Instance
 
     public InstanceContent(String className, DataManager aDataManager) {
         ClassContent aClassContent = aDataManager.getClassContent(className);
+        ClassContent aParentClassContent = null;
 
         if (aClassContent == null) {
             try {
@@ -28,13 +30,20 @@ public class InstanceContent extends Object implements Chainable, Value<Instance
 
         String aParentClassName = aClassContent.getParentClassName();
         InstanceContent aParentInstance = null;
-        if (aParentClassName != null){
+        if (aParentClassName != null) {
             aParentInstance = new InstanceContent(aParentClassName, aDataManager);
+//            aParentClassContent = aDataManager.getClassContent(aParentClassName);
         }
 
-        HashMap<String, MemberContent> members = new HashMap<>(aClassContent.getMembers());
-        members.put("self", new MemberContent("self", className, "private", "none", this));
-        members.put("super", new MemberContent("super", className, "private", "none", aParentInstance));
+        HashMap<String, MemberContent> members = new HashMap<>();
+        HashMap<String, MemberContent> aMemberTemplates = new HashMap<>(aClassContent.getMembers());
+        for (Map.Entry<String, MemberContent> entry : aMemberTemplates.entrySet()) {
+            members.put(entry.getKey(), entry.getValue().clone());
+        }
+
+        if (aParentInstance != null) members.putAll(aParentInstance.getMembers());
+        members.put(className + "-self", new MemberContent("self", className, "private", "none", this));
+        members.put(className + "-super", new MemberContent("super", className, "private", "none", aParentInstance));
 
         this.aClassName = className;
         this.aMembers = members;
@@ -51,7 +60,9 @@ public class InstanceContent extends Object implements Chainable, Value<Instance
     public UolVisitor execute(String message, ArrayList<Object> arguments, UolVisitor aVisitor) throws NotFoundSymbolError {
         MessageContent aMessage = aVisitor.getDataManager().searchMessage(this.aClassName, message);
 
+        // メッセージが未定義の場合
         if (aMessage == null) {
+            // 未定義であったが、コンストラクタの場合は正常として進める。
             if (ClassContent.CONSTRUCT_METHOD.equals(message)) {
                 return null;
             }
@@ -70,7 +81,7 @@ public class InstanceContent extends Object implements Chainable, Value<Instance
     }
 
     public String toString() {
-        return this.aClassName + "Instance";
+        return this.aClassName + "Instance (by uol)";
     }
 
     public boolean equals(Object obj) {

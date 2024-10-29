@@ -43,19 +43,26 @@ public class LambdaContent extends Object implements Executable {
             throw new MissingArgumentsError(this.anArgumentsCount, aFinalArguments.size(), null);
         }
         UolVisitor aVisitor = new UolVisitor();
+
         if (aDataManager.isShouldBeTakenOver()) {
             aVisitor.setDataManager(aDataManager);
         }
 
         if (!aFinalArguments.isEmpty()) {
             AtomicReference<Integer> anIndex = new AtomicReference<>(0);
-            aVariableMap.sequencedKeySet().forEach((aKey) -> {
-                aVariableMap.replace(aKey, aFinalArguments.get(anIndex.get()));
+            this.aVariableMap.sequencedKeySet().forEach((aKey) -> {
+                this.aVariableMap.replace(aKey, aFinalArguments.get(anIndex.get()));
                 anIndex.getAndSet(anIndex.get() + 1);
             });
-            aVisitor.getDataManager().mergeVariableMap(aVariableMap);
+
+            aVisitor.getDataManager().mergeVariableMap(this.aVariableMap);
         }
+        Integer aCacheChainCount = aDataManager.getCounter(DataManager.CHAIN_COUNT).getCount();
+        aDataManager.getCounter(DataManager.CHAIN_COUNT).reset();
+
         aVisitor.visitExpressionList(aRunnableContext);
+
+        aDataManager.getCounter(DataManager.CHAIN_COUNT).set(aCacheChainCount);
         aVisitor.getDataManager().rollbackVariableMap();
         return aVisitor;
     }

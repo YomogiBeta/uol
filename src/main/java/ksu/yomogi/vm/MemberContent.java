@@ -1,11 +1,12 @@
 package ksu.yomogi.vm;
 
 import ksu.yomogi.vm.datamanager.DataManager;
-import ksu.yomogi.vm.errors.PrivateMemberCallError;
-import ksu.yomogi.vm.errors.PrivateMethodCallError;
+import ksu.yomogi.vm.errors.*;
 import ksu.yomogi.vm.interfaces.Value;
 
-public class MemberContent extends Object implements Value<Object> {
+import java.lang.reflect.InvocationTargetException;
+
+public class MemberContent extends Object implements Value<Object>, Cloneable {
 
     private final String aName;
     private final String aClassName;
@@ -33,8 +34,13 @@ public class MemberContent extends Object implements Value<Object> {
         return this.aValue;
     }
 
-    public Object value(DataManager aDataManager) throws PrivateMemberCallError {
-        if (this.aModifier.equals("private") && !aDataManager.getSender().equals(this.aClassName)){
+    public Object value(DataManager aDataManager) throws PrivateMemberCallError, NativeMemberCallError {
+        boolean aNativeMode = aDataManager.isNativeOnlyMode();
+        if (this.anInstruction.equals("nativeOnly") && !aNativeMode) {
+            throw new NativeMemberCallError(this.aName, null);
+        }
+
+        if (!aNativeMode && this.aModifier.equals("private") && !aDataManager.getSender().equals(this.aClassName)){
             throw new PrivateMemberCallError(this.aName, null);
         }
         return this.aValue;
@@ -66,5 +72,9 @@ public class MemberContent extends Object implements Value<Object> {
     public int hashCode() {
         return (this.aValue.hashCode() + this.aModifier.hashCode() + this.anInstruction.hashCode()
         );
+    }
+
+    public MemberContent clone() {
+        return new MemberContent(this.aName, this.aClassName, this.aModifier, this.anInstruction, this.aValue);
     }
 }

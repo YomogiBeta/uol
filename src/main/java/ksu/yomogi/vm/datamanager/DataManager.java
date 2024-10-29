@@ -37,7 +37,7 @@ public class DataManager extends Object {
     private final Stack<Object> aDataStack = new Stack<Object>();
 
     private HashMap<String, Object> aDefaultVariableMap = new HashMap<String, Object>();
-    private final Stack<HashMap<String, Object>> aTempVariableMapStack = new Stack<HashMap<String, Object>>();
+    private final ArrayList<HashMap<String, Object>> aTempVariableMap = new ArrayList<HashMap<String, Object>>();
     private boolean anIsTempVariableMap = false;
     private Stack<String> aSearchTargetClassNameStack = new Stack<>();
 
@@ -48,17 +48,33 @@ public class DataManager extends Object {
 
     private String aSender = "";
 
+    private Integer aVariableIndex = null;
+
+    private boolean aNativeOnlyMode = false;
+
     /**
      * データスタックを応答するメソッド
      * @return データスタック
      */
-    public Stack<Object> getaDataStack() {
+    public Stack<Object> getDataStack() {
         return this.aDataStack;
+    }
+
+    public void tempRollbackVariableMap() {
+        if (this.aTempVariableMap.size() > 1) {
+            if (this.aVariableIndex == null) this.aVariableIndex = this.aTempVariableMap.size() - 2;
+            else if (this.aVariableIndex > 0) this.aVariableIndex--;
+        }
+    }
+
+    public void resetTempRollbackVariableMap() {
+        this.aVariableIndex = null;
     }
 
     private HashMap<String, Object> getVariableMap() {
         if (this.anIsTempVariableMap) {
-            return this.aTempVariableMapStack.getLast();
+            if (aVariableIndex == null) return this.aTempVariableMap.getLast();
+            return this.aTempVariableMap.get(aVariableIndex);
         }
         return this.aDefaultVariableMap;
     }
@@ -68,10 +84,14 @@ public class DataManager extends Object {
      * @param variableMap Map&lt;String, Object&gt; 変数マップ (可変朝引数)
      */
     public final void useVariableMap(Object variableMap) {
-        this.aTempVariableMapStack.add((HashMap<String, Object>) variableMap);
+        this.aTempVariableMap.add((HashMap<String, Object>) variableMap);
         this.anIsTempVariableMap = true;
     }
 
+    /**
+     * 現在の変数マップに指定した変数マップをマージするメソッド
+     * @param variableMap
+     */
     public final void mergeVariableMap(Object variableMap) {
         this.getVariableMap().putAll((HashMap<String, Object>) variableMap);
     }
@@ -80,8 +100,8 @@ public class DataManager extends Object {
      * 変数マップをリリースするメソッド
      */
     public final void rollbackVariableMap() {
-        if (!this.aTempVariableMapStack.isEmpty()) this.aTempVariableMapStack.pop();
-        if (aTempVariableMapStack.isEmpty()) this.anIsTempVariableMap = false;
+        if (!this.aTempVariableMap.isEmpty()) this.aTempVariableMap.removeLast();
+        if (aTempVariableMap.isEmpty()) this.anIsTempVariableMap = false;
     }
 
     /**
@@ -96,7 +116,7 @@ public class DataManager extends Object {
      * 検索対象クラス名をリリースするメソッド
      */
     public void rollbackSearchTargetClassName() {
-        this.aSearchTargetClassNameStack.pop();
+        if (!this.aSearchTargetClassNameStack.isEmpty()) this.aSearchTargetClassNameStack.pop();
     }
 
     /**
@@ -128,13 +148,21 @@ public class DataManager extends Object {
         return null;
     }
 
+    private String prepareKey(String key){
+        if (key.equals("self") || key.equals("super")){
+            return this.aSender + "-" + key;
+        }
+        return key;
+    }
+
     /**
      * 変数マップからキーに対応する変数のコンテンツを応答するメソッド
      * @param key　キー
      * @return 変数のコンテンツ
      */
     public Object getVariableContent(String key) {
-        Object aValue =  this.getVariableMap().get(key);
+        String aKey = this.prepareKey(key);
+        Object aValue =  this.getVariableMap().get(aKey);
         if (aValue == null && !this.aSearchTargetClassNameStack.isEmpty()) {
             MessageContent aMessage = this.searchMessage(this.aSearchTargetClassNameStack.getLast(), key);
             if (aMessage != null) {
@@ -185,6 +213,22 @@ public class DataManager extends Object {
      */
     public void setClassContent(String className, ClassContent classContent) {
         this.aClassMap.put(className, classContent);
+    }
+
+    /**
+     * ネイティブオンリーコールであるかどうかを設定するメッセージ
+     * @param nativeOnlyMode ネイティブオンリーモード
+     */
+    public void setNativeOnlyMode(boolean nativeOnlyMode){
+        this.aNativeOnlyMode = nativeOnlyMode;
+    }
+
+    /**
+     * ネイティブオンリーモードであるかどうかを応答するメッセージ
+     * @return ネイティブオンリーモードであればtrue、そうでなければfalse
+     */
+    public boolean isNativeOnlyMode(){
+        return this.aNativeOnlyMode;
     }
 
 

@@ -3,18 +3,18 @@ package ksu.yomogi.vm;
 import ksu.yomogi.parser.uolBaseVisitor;
 import ksu.yomogi.parser.uolParser;
 import ksu.yomogi.vm.datamanager.DataManager;
-import ksu.yomogi.vm.errors.MissingArgumentsError;
+import ksu.yomogi.vm.errors.NativeMemberCallError;
 import ksu.yomogi.vm.errors.NotFoundSymbolError;
 import ksu.yomogi.vm.errors.PrivateMemberCallError;
 import ksu.yomogi.vm.errors.UolRuntimeError;
 import ksu.yomogi.vm.interfaces.Executable;
 import ksu.yomogi.vm.interfaces.Value;
+import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Stack;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
+import java.util.function.BiFunction;
 
 public class UolVisitor extends uolBaseVisitor<Object> {
 
@@ -25,6 +25,18 @@ public class UolVisitor extends uolBaseVisitor<Object> {
     private Object aReturnValue = null;
 
     private Boolean aRawIdentityEvaluation = false;
+
+    private static final HashMap<String, BiFunction<Integer, Integer, Integer>> aCaluculations = new HashMap<>(){{
+
+        BiFunction<Integer, Integer, Integer> aSubtractionFunction = (aFirst, aSecond) -> aFirst - aSecond;
+        BiFunction<Integer, Integer, Integer> aMultiplicationFunction = (aFirst, aSecond) -> aFirst * aSecond;
+        BiFunction<Integer, Integer, Integer> aDivistionFunction = (aFirst, aSecond) -> aFirst / aSecond;
+
+        this.put("+", Integer::sum);
+        this.put("-", aSubtractionFunction);
+        this.put("*", aMultiplicationFunction);
+        this.put("/", aDivistionFunction);
+    }};
 
     public void init() {
         this.importFile(aRuntimePath + "language" + File.separator + "Object.uol", "Object");
@@ -47,7 +59,7 @@ public class UolVisitor extends uolBaseVisitor<Object> {
         return null;
     }
 
-    private void importFile(String aFilePath, String aLabel){
+    private void importFile(String aFilePath, String aLabel) {
         Stack<ImportLabel> aLabelStack = new Stack<>();
         aLabelStack.push(new ImportLabel("aLabel"));
         this.importFile(aFilePath, aLabelStack);
@@ -237,6 +249,15 @@ public class UolVisitor extends uolBaseVisitor<Object> {
 
         // 変数Assignがすでに実行されており、それをメンバの値として利用する
         Object aValue = this.aDataManager.getVariableContent(aMemberName);
+
+        if (aValue instanceof Cloneable aCloneableValue){
+            try {
+                aValue = aCloneableValue.getClass().getMethod("clone").invoke(aCloneableValue);
+            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException anError) {
+                anError.printStackTrace();
+            }
+        }
+
         // TODO クラス定義の前に、「メンバ名と同一の名 = value」のような式がある時、
         //  それが上書きされてしまう。ClassDefineの際に、getCurrentVariableHashMapから返されるMapを変更する必要がある
         this.aDataManager.deleteVariableContent(aMemberName);
@@ -269,7 +290,7 @@ public class UolVisitor extends uolBaseVisitor<Object> {
     public Object visitFunctionDefine(uolParser.FunctionDefineContext ctx) {
         super.visitFunctionDefine(ctx);
         String aFunctionName = ctx.getChild(1).getText();
-        Object aLambdaContent = this.aDataManager.getaDataStack().pop();
+        Object aLambdaContent = this.aDataManager.getDataStack().pop();
         this.aDataManager.setVariableContent(aFunctionName, aLambdaContent);
         return null;
     }
@@ -285,10 +306,10 @@ public class UolVisitor extends uolBaseVisitor<Object> {
     public Object visitLambdaDefine(uolParser.LambdaDefineContext ctx) {
         super.visitLambdaDefine(ctx);
         LinkedHashMap<String, Object> anArgumentMap = this.aDataManager.getDataMapContent(DataManager.ARGUMENT_DEFINE_MAP);
-        uolParser.ExpressionListContext aRunnableContext = (uolParser.ExpressionListContext) this.aDataManager.getaDataStack().pop();
+        uolParser.ExpressionListContext aRunnableContext = (uolParser.ExpressionListContext) this.aDataManager.getDataStack().pop();
         Integer aDefaultArgumentDefineCount = this.aDataManager.getCounter(DataManager.DEFAULT_ARGUMENT_DEFINE_COUNT).getCount();
         LambdaContent aLambdaContent = new LambdaContent(anArgumentMap, aDefaultArgumentDefineCount, aRunnableContext);
-        this.aDataManager.getaDataStack().push(aLambdaContent);
+        this.aDataManager.getDataStack().push(aLambdaContent);
         this.aDataManager.removeDataMapContent(DataManager.ARGUMENT_DEFINE_MAP);
 //        this.aDataManager.getCounter(DataManager.DEFAULT_ARGUMENT_DEFINE_COUNT).reset();
         return null;
@@ -323,10 +344,11 @@ public class UolVisitor extends uolBaseVisitor<Object> {
     public Object visitArgumentDefault(uolParser.ArgumentDefaultContext ctx) {
         super.visitArgumentDefault(ctx);
         String anIdentity = ctx.getChild(0).getText();
-        Object aDefaultValue = this.aDataManager.getaDataStack().pop();
+        Object aDefaultValue = this.aDataManager.getDataStack().pop();
 
         this.aDataManager.setDataMapContentIfAbsent(DataManager.ARGUMENT_DEFINE_MAP, new LinkedHashMap<String, Object>());
         this.aDataManager.setDataMapDeepContent(DataManager.ARGUMENT_DEFINE_MAP, anIdentity, aDefaultValue);
+        System.out.println("Default: " + anIdentity + " = " + aDefaultValue);
 
         this.aDataManager.getCounter(DataManager.DEFAULT_ARGUMENT_DEFINE_COUNT).increment();
 
@@ -343,7 +365,7 @@ public class UolVisitor extends uolBaseVisitor<Object> {
      */
     public Object visitLambdaBody(uolParser.LambdaBodyContext ctx) {
         uolParser.ExpressionListContext anExpressionListContext = ctx.getChild(uolParser.ExpressionListContext.class, 0);
-        this.aDataManager.getaDataStack().push(anExpressionListContext);
+        this.aDataManager.getDataStack().push(anExpressionListContext);
         return null;
     }
 
@@ -357,7 +379,7 @@ public class UolVisitor extends uolBaseVisitor<Object> {
      */
     public Object visitReturnExpression(uolParser.ReturnExpressionContext ctx) {
         super.visitReturnExpression(ctx);
-        this.aReturnValue = this.aDataManager.getaDataStack().pop();
+        this.aReturnValue = this.aDataManager.getDataStack().pop();
         System.out.println("Return: " + this.aReturnValue);
         return null;
     }
@@ -381,9 +403,14 @@ public class UolVisitor extends uolBaseVisitor<Object> {
         this.aDataManager.removeDataMapContent(DataManager.ARGUMENT_LIST);
         InstanceContent anInstanceContent = this.createInstance(aClassName, anArguments);
 
-        this.aDataManager.getaDataStack().push(anInstanceContent);
+        this.aDataManager.getDataStack().push(anInstanceContent);
         this.aDataManager.removeDataMapContent(DataManager.ARGUMENT_LIST);
         return null;
+    }
+
+    private InstanceContent createInstance(String aClassName, Object... anArguments) {
+        ArrayList<Object> anArgumentsList = new ArrayList<>(List.of(anArguments));
+        return this.createInstance(aClassName, anArgumentsList);
     }
 
     /**
@@ -396,7 +423,7 @@ public class UolVisitor extends uolBaseVisitor<Object> {
     private InstanceContent createInstance(String aClassName, ArrayList<Object> anArguments) {
         InstanceContent anInstanceContent = new InstanceContent(aClassName, this.aDataManager);
 
-        this.aDataManager.useVariableMap(anInstanceContent.getValuesMap());
+        this.aDataManager.useVariableMap(new HashMap<>(anInstanceContent.getValuesMap()));
         this.aDataManager.setSearchTargetClassName(anInstanceContent.getClassName());
 
         anInstanceContent.execute(ClassContent.CONSTRUCT_METHOD, anArguments, this);
@@ -422,7 +449,7 @@ public class UolVisitor extends uolBaseVisitor<Object> {
 
         if (aFunctionRunnedVisitor != null) {
             if (aFunctionRunnedVisitor.getReturnValue() != null) {
-                this.aDataManager.getaDataStack().push(aFunctionRunnedVisitor.getReturnValue());
+                this.aDataManager.getDataStack().push(aFunctionRunnedVisitor.getReturnValue());
             }
         }
 
@@ -464,9 +491,24 @@ public class UolVisitor extends uolBaseVisitor<Object> {
      *
      * @param ctx
      */
+    public Object visitArgumentList(uolParser.ArgumentListContext ctx) {
+        this.aDataManager.tempRollbackVariableMap();
+        super.visitArgumentList(ctx);
+        this.aDataManager.resetTempRollbackVariableMap();
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     *
+     * @param ctx
+     */
     public Object visitArgumentContent(uolParser.ArgumentContentContext ctx) {
         super.visitArgumentContent(ctx);
-        Object aValue = this.aDataManager.getaDataStack().pop();
+        Object aValue = this.aDataManager.getDataStack().pop();
 
         this.aDataManager.setDataMapContentIfAbsent(DataManager.ARGUMENT_LIST, new ArrayList<>());
 
@@ -513,19 +555,19 @@ public class UolVisitor extends uolBaseVisitor<Object> {
         if (chainableCount == currentChainCount) {
             return null;
         }
-        Value aStackValue = (Value) this.aDataManager.getaDataStack().pop();
+        Value aStackValue = (Value) this.aDataManager.getDataStack().pop();
         Object aValue = null;
 
         try {
             aValue = aStackValue.value(this.aDataManager);
-        } catch (PrivateMemberCallError error) {
+        } catch (PrivateMemberCallError | NativeMemberCallError error) {
             error.setContext(ctx);
             error.printErrorMessages();
             System.exit(1);
         }
 
         if (aValue instanceof InstanceContent aChainableContent) {
-            this.aDataManager.useVariableMap(aChainableContent.getValuesMap());
+            this.aDataManager.useVariableMap(new HashMap<>(aChainableContent.getValuesMap()));
             this.aDataManager.setSearchTargetClassName(aChainableContent.getClassName());
         } else {
             try {
@@ -550,16 +592,25 @@ public class UolVisitor extends uolBaseVisitor<Object> {
      */
     public Object visitAssignExpression(uolParser.AssignExpressionContext ctx) {
         super.visitAssignExpression(ctx);
-        Object aVariableValue = this.aDataManager.getaDataStack().pop();
-        String aVariableKey = (String) this.aDataManager.getaDataStack().pop();
+        Object aVariableValue = this.aDataManager.getDataStack().pop();
+        String aVariableKey = (String) this.aDataManager.getDataStack().pop();
         Object aBeforeContent = this.aDataManager.getVariableContent(aVariableKey);
 
-        System.out.println("Assign: " + aVariableKey + " = " + aVariableValue);
 
-        if (aBeforeContent instanceof MemberContent aMemberContent){
+        if (aVariableValue instanceof Cloneable aCloneableValue){
+            try {
+                aVariableValue = aCloneableValue.getClass().getMethod("clone").invoke(aCloneableValue);
+            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException anError) {
+                anError.printStackTrace();
+            }
+        }
+
+        if (aBeforeContent instanceof MemberContent aMemberContent) {
             aMemberContent.setValue(aVariableValue, this.aDataManager);
             return null;
         }
+
+        System.out.println("Assign: " + aVariableKey + " = " + aVariableValue);
 
         this.aDataManager.setVariableContent(aVariableKey, aVariableValue);
         return null;
@@ -580,6 +631,59 @@ public class UolVisitor extends uolBaseVisitor<Object> {
         return null;
     }
 
+    private void applyCalculation(List<TerminalNode> anOperators) {
+        anOperators = anOperators.reversed();
+        anOperators.forEach((anOperator) -> {
+            Object aSecond = this.aDataManager.getDataStack().pop();
+            Object aFirst =  this.aDataManager.getDataStack().pop();
+
+            Integer aSecondValue = this.getNumberPrimitive(aSecond);
+            Integer aFirstValue = this.getNumberPrimitive(aFirst);
+            System.out.println(aFirstValue + anOperator.toString() + aSecondValue);
+            Integer aResult = aCaluculations.get(anOperator.toString()).apply(aFirstValue, aSecondValue);
+
+            this.aDataManager.getDataStack().push(aResult);
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     *
+     * @param ctx
+     */
+    public Object visitAdditiveExpression(uolParser.AdditiveExpressionContext ctx) {
+        super.visitAdditiveExpression(ctx);
+        List<TerminalNode> anOperators = ctx.ADDITIVE_OPERATOR();
+        this.applyCalculation(anOperators);
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     *
+     * @param ctx
+     */
+    public Object visitMultiplicativeExpression(uolParser.MultiplicativeExpressionContext ctx) {
+        super.visitMultiplicativeExpression(ctx);
+        List<TerminalNode> anOperators = ctx.MULTIPLY_OPERATOR();
+        this.applyCalculation(anOperators);
+        return null;
+    }
+
+    private Integer getNumberPrimitive(Object anObject){
+        if (anObject instanceof InstanceContent anInstance){
+            UolVisitor aSecondVisitor = this.nativeOnlyMessageCall(anInstance, "getPrimitiveValue", new ArrayList<>());
+            return (Integer) aSecondVisitor.getReturnValue();
+        }
+        return (Integer) anObject;
+    }
+
     /**
      * {@inheritDoc}
      *
@@ -593,17 +697,21 @@ public class UolVisitor extends uolBaseVisitor<Object> {
         switch (ctx.getStart().getType()) {
             case uolParser.NIL_LITERAL -> {
                 PrimitiveContent aVariableContent = new PrimitiveContent(null, "nil");
-                this.aDataManager.getaDataStack().push(aVariableContent);
+                this.aDataManager.getDataStack().push(aVariableContent);
             }
             case uolParser.IDENTIFIER -> {
                 String anIdentity = ctx.getText();
                 if (this.aRawIdentityEvaluation) {
-                    this.aDataManager.getaDataStack().push(anIdentity);
+                    this.aDataManager.getDataStack().push(anIdentity);
                 } else {
                     try {
-                        Value aVariableValue = (Value) this.aDataManager.getVariableContent(anIdentity);
-                        this.aDataManager.getaDataStack().push(aVariableValue.value(this.aDataManager));
-                    }catch (PrivateMemberCallError error){
+                        Object aVariableValue = this.aDataManager.getVariableContent(anIdentity);
+                        if (aVariableValue instanceof Value) {
+                            this.aDataManager.getDataStack().push(((Value<?>) aVariableValue).value(this.aDataManager));
+                        } else {
+                            this.aDataManager.getDataStack().push(aVariableValue);
+                        }
+                    } catch (PrivateMemberCallError error) {
                         error.setContext(ctx);
                         error.printErrorMessages();
                         System.exit(1);
@@ -624,25 +732,36 @@ public class UolVisitor extends uolBaseVisitor<Object> {
      */
     public Object visitIntegerLiteral(uolParser.IntegerLiteralContext ctx) {
         super.visitIntegerLiteral(ctx);
-//        switch (ctx.getStart().getType()) {
-//            case uolParser.DECIMAL_LITERAL -> {
-//                VariableContent aVariableContent = new VariableContent(Integer.parseInt(ctx.getText()), "integer");
-//                this.aDataStack.push(aVariableContent);
-//            }
-//            case uolParser.HEX_LITERAL -> {
-//                VariableContent aVariableContent = new VariableContent(Integer.parseInt(ctx.getText().substring(2), 16), "integer");
-//                this.aDataStack.push(aVariableContent);
-//            }
-//            case uolParser.OCT_LITERAL -> {
-//                VariableContent aVariableContent = new VariableContent(Integer.parseInt(ctx.getText().substring(2), 8), "integer");
-//                this.aDataStack.push(aVariableContent);
-//            }
-//            case uolParser.BINARY_LITERAL -> {
-//                VariableContent aVariableContent = new VariableContent(Integer.parseInt(ctx.getText().substring(2), 2), "integer");
-//                this.aDataStack.push(aVariableContent);
-//            }
-//        }
+        switch (ctx.getStart().getType()) {
+            case uolParser.DECIMAL_LITERAL -> {
+                InstanceContent aVariableContent = this.createInstance("Integer", Integer.valueOf(ctx.getText()));
+                this.aDataManager.getDataStack().push(aVariableContent);
+            }
+            case uolParser.HEX_LITERAL -> {
+                InstanceContent aVariableContent = createInstance("Integer", Integer.valueOf(ctx.getText().substring(2), 16));
+                this.aDataManager.getDataStack().push(aVariableContent);
+            }
+            case uolParser.OCT_LITERAL -> {
+                InstanceContent aVariableContent = createInstance("Integer", Integer.valueOf(ctx.getText().substring(2), 8));
+                this.aDataManager.getDataStack().push(aVariableContent);
+            }
+            case uolParser.BINARY_LITERAL -> {
+                InstanceContent aVariableContent = createInstance("Integer", Integer.valueOf(ctx.getText().substring(2), 2));
+                this.aDataManager.getDataStack().push(aVariableContent);
+            }
+        }
         return null;
+    }
+
+    private UolVisitor nativeOnlyMessageCall(InstanceContent anInstance, String aMessage, ArrayList<Object> anArguments) {
+        this.aDataManager.useVariableMap(new HashMap<>(anInstance.getValuesMap()));
+        this.aDataManager.setSearchTargetClassName(anInstance.getClassName());
+        this.aDataManager.setNativeOnlyMode(true);
+        UolVisitor aUolVisitor = anInstance.execute(aMessage, anArguments, this);
+        this.aDataManager.setNativeOnlyMode(false);
+        this.aDataManager.rollbackVariableMap();
+        this.aDataManager.rollbackSearchTargetClassName();
+        return aUolVisitor;
     }
 
     /**

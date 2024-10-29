@@ -22,7 +22,7 @@ CLASS: 'class';
 EXTENDS: 'extends';
 IMPLEMENTS: 'implements';
 MODIFIER: 'public' | 'private';
-INSTRUCTION: 'final' | 'static' | 'native';
+INSTRUCTION: 'final' | 'static' | 'native' | 'nativeOnly';
 FUNCTION: 'function';
 NEW: 'new';
 IF: 'if';
@@ -76,8 +76,8 @@ expression
 
 responseExpression
     : literal
-    | chainExpression
     | callExpression
+    | chainExpression
     | additiveExpression
     ;
 
@@ -87,8 +87,8 @@ iterableExpression
     |   listDefine
     |   listDefineWithKey
     |   lambdaDefine
-    |   chainExpression
     |   callExpression
+    |   chainExpression
     ;
 
 expressionList
@@ -217,7 +217,7 @@ assignAbleExpression
     ;
 
 chainExpression
-    :   elementExpression ('.' (elementExpression | callExpression))*
+    :   elementExpression ('.' (callExpression | elementExpression))*
     ;
 
 callExpression

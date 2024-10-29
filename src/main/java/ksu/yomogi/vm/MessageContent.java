@@ -2,7 +2,9 @@ package ksu.yomogi.vm;
 
 import ksu.yomogi.vm.datamanager.DataManager;
 import ksu.yomogi.vm.errors.MissingArgumentsError;
+import ksu.yomogi.vm.errors.NativeMethodCallError;
 import ksu.yomogi.vm.errors.PrivateMethodCallError;
+import ksu.yomogi.vm.errors.UolRuntimeError;
 import ksu.yomogi.vm.interfaces.Executable;
 
 import java.util.ArrayList;
@@ -40,7 +42,11 @@ public class MessageContent extends Object implements Executable {
     }
 
     public UolVisitor execute(ArrayList<Object> anArguments, DataManager aDataManager) throws MissingArgumentsError, PrivateMethodCallError {
-        if (this.aModifier.equals("private") && !aDataManager.getSender().equals(this.aClassName)){
+        boolean aNativeOnlyMode = aDataManager.isNativeOnlyMode();
+        if (this.anInstruction.equals("nativeOnly") && !aNativeOnlyMode) {
+            throw new NativeMethodCallError(this.aName, null);
+        }
+        if (!aNativeOnlyMode && this.aModifier.equals("private") && !aDataManager.getSender().equals(this.aClassName)) {
             throw new PrivateMethodCallError(this.aName, null);
         }
         aDataManager.setSender(this.aClassName);
