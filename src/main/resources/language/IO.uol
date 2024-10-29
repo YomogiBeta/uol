@@ -1,0 +1,8 @@
+import { Object } from "language.Object"
+
+class IO extends Object {
+
+    public native function print(aValue) {
+    }
+}
+

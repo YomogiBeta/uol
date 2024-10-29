@@ -6,6 +6,7 @@ import ksu.yomogi.vm.errors.NativeMethodCallError;
 import ksu.yomogi.vm.errors.PrivateMethodCallError;
 import ksu.yomogi.vm.errors.UolRuntimeError;
 import ksu.yomogi.vm.interfaces.Executable;
+import ksu.yomogi.vm.native_equipment.NativeExecute;
 
 import java.util.ArrayList;
 
@@ -50,6 +51,14 @@ public class MessageContent extends Object implements Executable {
             throw new PrivateMethodCallError(this.aName, null);
         }
         aDataManager.setSender(this.aClassName);
+
+        if (this.anInstruction.equals("native")){
+            Object result = NativeExecute.execute(this.aClassName, this.aName, anArguments);
+            UolVisitor aVisitor = new UolVisitor();
+            aVisitor.setReturnValue(result);
+            return aVisitor;
+        }
+
         UolVisitor aVisitor = this.aLambda.execute(anArguments, aDataManager);
         aDataManager.setSender("");
         return aVisitor;

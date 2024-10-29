@@ -14,10 +14,5 @@ class Number extends Object {
         return self.aPrimitiveValue
 
     }
-
-    public function calltest() {
-        return self.testValue
-
-    }
 }
 

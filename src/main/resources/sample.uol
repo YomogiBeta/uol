@@ -1,1 +1,4 @@
-aSampleInteger = 2 * 3 + 4 + 2
+aSampleInteger = 2 * 3
+
+anIO = new IO()
+anIO.print(20 + aSampleInteger)

@@ -42,6 +42,7 @@ public class UolVisitor extends uolBaseVisitor<Object> {
         this.importFile(aRuntimePath + "language" + File.separator + "Object.uol", "Object");
         this.importFile(aRuntimePath + "language" + File.separator + "Number.uol", "Number");
         this.importFile(aRuntimePath + "language" + File.separator + "Integer.uol", "Integer");
+        this.importFile(aRuntimePath + "language" + File.separator + "IO.uol", "IO");
     }
 
 
@@ -348,7 +349,6 @@ public class UolVisitor extends uolBaseVisitor<Object> {
 
         this.aDataManager.setDataMapContentIfAbsent(DataManager.ARGUMENT_DEFINE_MAP, new LinkedHashMap<String, Object>());
         this.aDataManager.setDataMapDeepContent(DataManager.ARGUMENT_DEFINE_MAP, anIdentity, aDefaultValue);
-        System.out.println("Default: " + anIdentity + " = " + aDefaultValue);
 
         this.aDataManager.getCounter(DataManager.DEFAULT_ARGUMENT_DEFINE_COUNT).increment();
 
@@ -379,8 +379,7 @@ public class UolVisitor extends uolBaseVisitor<Object> {
      */
     public Object visitReturnExpression(uolParser.ReturnExpressionContext ctx) {
         super.visitReturnExpression(ctx);
-        this.aReturnValue = this.aDataManager.getDataStack().pop();
-        System.out.println("Return: " + this.aReturnValue);
+        this.setReturnValue(this.aDataManager.getDataStack().pop());
         return null;
     }
 
@@ -610,7 +609,7 @@ public class UolVisitor extends uolBaseVisitor<Object> {
             return null;
         }
 
-        System.out.println("Assign: " + aVariableKey + " = " + aVariableValue);
+//        System.out.println("Assign: " + aVariableKey + " = " + aVariableValue);
 
         this.aDataManager.setVariableContent(aVariableKey, aVariableValue);
         return null;
@@ -639,7 +638,6 @@ public class UolVisitor extends uolBaseVisitor<Object> {
 
             Integer aSecondValue = this.getNumberPrimitive(aSecond);
             Integer aFirstValue = this.getNumberPrimitive(aFirst);
-            System.out.println(aFirstValue + anOperator.toString() + aSecondValue);
             Integer aResult = aCaluculations.get(anOperator.toString()).apply(aFirstValue, aSecondValue);
 
             this.aDataManager.getDataStack().push(aResult);
@@ -801,6 +799,16 @@ public class UolVisitor extends uolBaseVisitor<Object> {
      */
     public Object getReturnValue() {
         return this.aReturnValue;
+    }
+
+    /**
+     * 戻り値を設定するメッセージ
+     *
+     * @param aReturnValue 戻り値
+     * @return void
+     */
+    public void setReturnValue(Object aReturnValue) {
+        this.aReturnValue = aReturnValue;
     }
 
     /**

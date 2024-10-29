@@ -12,6 +12,7 @@ import java.util.Map;
 public class InstanceContent extends Object implements Chainable, Value<InstanceContent> {
 
     private final String aClassName;
+    private String aParentClassName = null;
 
     private HashMap<String, MemberContent> aMembers = new HashMap<>();
 
@@ -32,7 +33,7 @@ public class InstanceContent extends Object implements Chainable, Value<Instance
         InstanceContent aParentInstance = null;
         if (aParentClassName != null) {
             aParentInstance = new InstanceContent(aParentClassName, aDataManager);
-//            aParentClassContent = aDataManager.getClassContent(aParentClassName);
+            this.aParentClassName = aParentClassName;
         }
 
         HashMap<String, MemberContent> members = new HashMap<>();
@@ -51,6 +52,10 @@ public class InstanceContent extends Object implements Chainable, Value<Instance
 
     public String getClassName() {
         return this.aClassName;
+    }
+
+    public String getParentClassName() {
+        return this.aParentClassName;
     }
 
     public HashMap<String, MemberContent> getMembers() {

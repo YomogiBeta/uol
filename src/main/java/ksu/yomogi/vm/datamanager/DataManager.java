@@ -163,11 +163,14 @@ public class DataManager extends Object {
     public Object getVariableContent(String key) {
         String aKey = this.prepareKey(key);
         Object aValue =  this.getVariableMap().get(aKey);
-        if (aValue == null && !this.aSearchTargetClassNameStack.isEmpty()) {
-            MessageContent aMessage = this.searchMessage(this.aSearchTargetClassNameStack.getLast(), key);
-            if (aMessage != null) {
-                return aMessage;
+        if (aValue == null) {
+            if (!this.aSearchTargetClassNameStack.isEmpty()) {
+                MessageContent aMessage = this.searchMessage(this.aSearchTargetClassNameStack.getLast(), key);
+                if (aMessage != null) {
+                    return aMessage;
+                }
             }
+            aValue = this.aDefaultVariableMap.get(aKey);
         }
         return aValue;
     }
