@@ -1,13 +1,14 @@
 package ksu.yomogi.vm.native_equipment.features;
 
 import ksu.yomogi.vm.InstanceContent;
+import ksu.yomogi.vm.datamanager.DataManager;
 
 import java.util.List;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 final public class NativeIO {
 
-    private static final Function<List, Boolean> aPrint = (List anArguments) -> {
+    private static final BiFunction<List, DataManager, Boolean> aPrint = (List anArguments, DataManager _) -> {
         StringBuilder aStringBuilder = new StringBuilder();
         for (Object anArgument : anArguments) {
             aStringBuilder.append(NativeIO.parseObject(anArgument));
@@ -25,7 +26,7 @@ final public class NativeIO {
         return anObject;
     }
 
-    public static Function<List, Boolean> getPrint() {
+    public static BiFunction<List, DataManager, Boolean> getPrint() {
         return aPrint;
     }
 }

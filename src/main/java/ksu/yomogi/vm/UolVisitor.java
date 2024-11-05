@@ -43,6 +43,7 @@ public class UolVisitor extends uolBaseVisitor<Object> {
         this.importFile(aRuntimePath + "language" + File.separator + "Number.uol", "Number");
         this.importFile(aRuntimePath + "language" + File.separator + "Integer.uol", "Integer");
         this.importFile(aRuntimePath + "language" + File.separator + "IO.uol", "IO");
+        this.importFile(aRuntimePath + "language" + File.separator + "You.uol", "You");
     }
 
 
@@ -399,7 +400,6 @@ public class UolVisitor extends uolBaseVisitor<Object> {
         if (anArguments == null) {
             anArguments = new ArrayList<>();
         }
-        this.aDataManager.removeDataMapContent(DataManager.ARGUMENT_LIST);
         InstanceContent anInstanceContent = this.createInstance(aClassName, anArguments);
 
         this.aDataManager.getDataStack().push(anInstanceContent);
@@ -421,14 +421,15 @@ public class UolVisitor extends uolBaseVisitor<Object> {
      */
     private InstanceContent createInstance(String aClassName, ArrayList<Object> anArguments) {
         InstanceContent anInstanceContent = new InstanceContent(aClassName, this.aDataManager);
-
-        this.aDataManager.useVariableMap(new HashMap<>(anInstanceContent.getValuesMap()));
-        this.aDataManager.setSearchTargetClassName(anInstanceContent.getClassName());
+        this.aDataManager.setSearchTargetClassName(anInstanceContent);
+        this.aDataManager.pushVariableMap((HashMap) anInstanceContent.getMembers());
 
         anInstanceContent.execute(ClassContent.CONSTRUCT_METHOD, anArguments, this);
 
-        this.aDataManager.rollbackVariableMap();
+        this.aDataManager.removeDataMapContent(DataManager.ARGUMENT_LIST);
+
         this.aDataManager.rollbackSearchTargetClassName();
+        this.aDataManager.popVariableMap();
 
         return anInstanceContent;
     }
@@ -442,6 +443,7 @@ public class UolVisitor extends uolBaseVisitor<Object> {
      * @param ctx
      */
     public Object visitCallExpression(uolParser.CallExpressionContext ctx) {
+        this.aDataManager.setCurrentChainTarget(null);
         super.visitCallExpression(ctx);
         String aKey = ctx.getChild(0).getText();
         UolVisitor aFunctionRunnedVisitor = this.executeCall(aKey, ctx);
@@ -464,8 +466,15 @@ public class UolVisitor extends uolBaseVisitor<Object> {
         if (anExecutableContent != null) {
             try {
                 ArrayList<Object> anArguments = this.aDataManager.getDataMapContent(DataManager.ARGUMENT_LIST);
-                return anExecutableContent.execute(anArguments, this.getDataManager());
-
+//                if (anExecutableContent instanceof InstanceContent anInstanceContent){
+//                    this.aDataManager.pushVariableMap((HashMap) anInstanceContent.getMembers());
+//                }
+                UolVisitor aResultVisitor = anExecutableContent.execute(anArguments, this.getDataManager());
+                this.aDataManager.removeDataMapContent(DataManager.ARGUMENT_LIST);
+//                if (anExecutableContent instanceof InstanceContent){
+//                    this.aDataManager.popVariableMap();
+//                }
+                return aResultVisitor;
             } catch (UolRuntimeError error) {
                 error.setContext(ctx);
                 error.printErrorMessages();
@@ -491,9 +500,7 @@ public class UolVisitor extends uolBaseVisitor<Object> {
      * @param ctx
      */
     public Object visitArgumentList(uolParser.ArgumentListContext ctx) {
-        this.aDataManager.tempRollbackVariableMap();
         super.visitArgumentList(ctx);
-        this.aDataManager.resetTempRollbackVariableMap();
         return null;
     }
 
@@ -528,7 +535,7 @@ public class UolVisitor extends uolBaseVisitor<Object> {
      */
     public Object visitChainExpression(uolParser.ChainExpressionContext ctx) {
         super.visitChainExpression(ctx);
-        this.aDataManager.rollbackVariableMap();
+        this.aDataManager.setCurrentChainTarget(null);
         this.aDataManager.rollbackSearchTargetClassName();
         this.aDataManager.getCounter(DataManager.CHAIN_COUNT).reset();
         return null;
@@ -554,6 +561,7 @@ public class UolVisitor extends uolBaseVisitor<Object> {
         if (chainableCount == currentChainCount) {
             return null;
         }
+
         Value aStackValue = (Value) this.aDataManager.getDataStack().pop();
         Object aValue = null;
 
@@ -566,15 +574,7 @@ public class UolVisitor extends uolBaseVisitor<Object> {
         }
 
         if (aValue instanceof InstanceContent aChainableContent) {
-            this.aDataManager.useVariableMap(new HashMap<>(aChainableContent.getValuesMap()));
-            this.aDataManager.setSearchTargetClassName(aChainableContent.getClassName());
-        } else {
-            try {
-                throw new NotFoundSymbolError(aValue.toString(), ctx);
-            } catch (NotFoundSymbolError event) {
-                event.printErrorMessages();
-                System.exit(1);
-            }
+            this.aDataManager.setCurrentChainTarget(aChainableContent);
         }
 
         this.aDataManager.getCounter(DataManager.CHAIN_COUNT).increment();
@@ -716,6 +716,11 @@ public class UolVisitor extends uolBaseVisitor<Object> {
                     }
                 }
             }
+            case uolParser.STRING_LITERAL -> {
+                String aString = ctx.getText();
+                aString = aString.substring(1, aString.length() - 1);
+                this.aDataManager.getDataStack().push(aString);
+            }
         }
         return null;
     }
@@ -752,12 +757,12 @@ public class UolVisitor extends uolBaseVisitor<Object> {
     }
 
     private UolVisitor nativeOnlyMessageCall(InstanceContent anInstance, String aMessage, ArrayList<Object> anArguments) {
-        this.aDataManager.useVariableMap(new HashMap<>(anInstance.getValuesMap()));
-        this.aDataManager.setSearchTargetClassName(anInstance.getClassName());
+        this.aDataManager.setSearchTargetClassName(anInstance);
         this.aDataManager.setNativeOnlyMode(true);
+        this.aDataManager.pushVariableMap((HashMap) anInstance.getMembers());
         UolVisitor aUolVisitor = anInstance.execute(aMessage, anArguments, this);
+        this.aDataManager.popVariableMap();
         this.aDataManager.setNativeOnlyMode(false);
-        this.aDataManager.rollbackVariableMap();
         this.aDataManager.rollbackSearchTargetClassName();
         return aUolVisitor;
     }

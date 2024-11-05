@@ -1,4 +1,3 @@
-aSampleInteger = 2 * 3
-
-anIO = new IO()
-anIO.print(20 + aSampleInteger)
+import { Main } from "Main"
+aMain = new Main()
+aMain.main()

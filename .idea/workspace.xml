@@ -5,14 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2beadc4c-bdb1-41c7-b9c1-83160b79d96d" name="変更" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/native_equipment/NativeExecute.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/native_equipment/features/NativeIO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/language/IO.uol" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/InstanceAndMessage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/native_equipment/features/NativeYou.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/Main.uol" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/Test.uol" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/language/You.uol" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/antlr/uol.g4" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/antlr/uol.g4" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uol.interp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uol.interp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolParser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/InstanceContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/InstanceContent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/LambdaContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/LambdaContent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/MessageContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/MessageContent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVisitor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/datamanager/DataManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/datamanager/DataManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/interfaces/Executable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/interfaces/Executable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/native_equipment/NativeExecute.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/native_equipment/NativeExecute.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/native_equipment/features/NativeIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/native_equipment/features/NativeIO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/language/Number.uol" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/language/Number.uol" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/sample.uol" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sample.uol" afterDir="false" />
     </list>
@@ -73,11 +82,10 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
-    "Gradle.uol_antlr [:UolVirtualMachine.main()].executor": "Run",
+    "Gradle.uol_antlr [:UolVirtualMachine.main()].executor": "Debug",
     "Gradle.uol_antlr [:Visitor.main()].executor": "Run",
     "Gradle.uol_antlr [generateGrammarSource].executor": "Run",
     "Gradle.uol_antrl.executor": "Run",
-    "OverrideImplement.generate.javadoc": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "main",
@@ -98,6 +106,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="ksu.yomogi.vm.native_equipment.features" />
       <recent name="ksu.yomogi.vm.errors" />
       <recent name="ksu.yomogi.vm" />
     </key>
@@ -189,7 +198,9 @@
       <workItem from="1728391110568" duration="27273000" />
       <workItem from="1728805668540" duration="9827000" />
       <workItem from="1729054351739" duration="95391000" />
-      <workItem from="1730202677864" duration="10017000" />
+      <workItem from="1730202677864" duration="16464000" />
+      <workItem from="1730632209414" duration="8728000" />
+      <workItem from="1730797333277" duration="26219000" />
     </task>
     <servers />
   </component>
@@ -200,19 +211,9 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/native_equipment/features/NativeIO.java</url>
-          <line>10</line>
-          <option name="timeStamp" value="106" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/MessageContent.java</url>
-          <line>55</line>
-          <option name="timeStamp" value="108" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVisitor.java</url>
-          <line>705</line>
-          <option name="timeStamp" value="114" />
+          <line>472</line>
+          <option name="timeStamp" value="235" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

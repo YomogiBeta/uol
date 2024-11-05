@@ -217,7 +217,7 @@ assignAbleExpression
     ;
 
 chainExpression
-    :   elementExpression ('.' (callExpression | elementExpression))*
+    :   elementExpression ('.' (elementExpression))*
     ;
 
 callExpression
@@ -259,9 +259,9 @@ listDefineWithKeyContent
     ;
 
 elementExpression
-    :   unaryExpression
+    :   callExpression
     |   instanceExpression
-    |   callExpression
+    |   unaryExpression
     ;
 
 literal

@@ -50,10 +50,11 @@ public class MessageContent extends Object implements Executable {
         if (!aNativeOnlyMode && this.aModifier.equals("private") && !aDataManager.getSender().equals(this.aClassName)) {
             throw new PrivateMethodCallError(this.aName, null);
         }
+
         aDataManager.setSender(this.aClassName);
 
         if (this.anInstruction.equals("native")){
-            Object result = NativeExecute.execute(this.aClassName, this.aName, anArguments);
+            Object result = NativeExecute.execute(this.aClassName, this.aName, anArguments, aDataManager);
             UolVisitor aVisitor = new UolVisitor();
             aVisitor.setReturnValue(result);
             return aVisitor;

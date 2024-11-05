@@ -1,5 +1,6 @@
 package ksu.yomogi.vm.interfaces;
 
+import ksu.yomogi.vm.InstanceContent;
 import ksu.yomogi.vm.UolVisitor;
 import ksu.yomogi.vm.datamanager.DataManager;
 import ksu.yomogi.vm.errors.MissingArgumentsError;

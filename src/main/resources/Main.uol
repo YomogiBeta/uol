@@ -1,0 +1,15 @@
+import { Test } from "Test"
+
+class Main extends Object {
+
+    public function calculate() {
+        return 1 + 230
+
+    }
+
+    public function main(){
+        aTest = new Test()
+        aTest.test()
+
+    }
+}

@@ -3,7 +3,6 @@ import { Object } from "language.Object"
 class Number extends Object {
 
     private nativeOnly aPrimitiveValue = nil
-    private testValue = nil
 
     public function __construct(primitiveValue) {
         self.aPrimitiveValue = primitiveValue

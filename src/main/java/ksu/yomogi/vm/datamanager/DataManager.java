@@ -1,6 +1,8 @@
 package ksu.yomogi.vm.datamanager;
 
 import ksu.yomogi.vm.ClassContent;
+import ksu.yomogi.vm.InstanceAndMessage;
+import ksu.yomogi.vm.InstanceContent;
 import ksu.yomogi.vm.MessageContent;
 
 import java.util.*;
@@ -35,101 +37,114 @@ public class DataManager extends Object {
 
 
     private final Stack<Object> aDataStack = new Stack<Object>();
-
-    private HashMap<String, Object> aDefaultVariableMap = new HashMap<String, Object>();
-    private final ArrayList<HashMap<String, Object>> aTempVariableMap = new ArrayList<HashMap<String, Object>>();
-    private boolean anIsTempVariableMap = false;
-    private Stack<String> aSearchTargetClassNameStack = new Stack<>();
+    private final Stack<HashMap<String, Object>> aVariableMap = new Stack<HashMap<String, Object>>(){{
+        push(new HashMap<String, Object>());
+    }};
+    private InstanceContent aCurrentChainTarget = null;
+    private Stack<InstanceContent> aSearchTargetStack = new Stack<>();
 
     private static final HashMap<String, ClassContent> aClassMap = new HashMap<String, ClassContent>();
+
+    private static final Stack<InstanceContent> aStackTrace = new Stack<InstanceContent>();
 
     private final HashMap<String, Object> aDataMap = new HashMap<String, Object>();
     private final HashMap<String, SimpleCounter> aCounterMap = new HashMap<String, SimpleCounter>();
 
     private String aSender = "";
 
-    private Integer aVariableIndex = null;
-
     private boolean aNativeOnlyMode = false;
 
     /**
      * データスタックを応答するメソッド
+     *
      * @return データスタック
      */
     public Stack<Object> getDataStack() {
         return this.aDataStack;
     }
 
-    public void tempRollbackVariableMap() {
-        if (this.aTempVariableMap.size() > 1) {
-            if (this.aVariableIndex == null) this.aVariableIndex = this.aTempVariableMap.size() - 2;
-            else if (this.aVariableIndex > 0) this.aVariableIndex--;
-        }
-    }
-
-    public void resetTempRollbackVariableMap() {
-        this.aVariableIndex = null;
-    }
-
-    private HashMap<String, Object> getVariableMap() {
-        if (this.anIsTempVariableMap) {
-            if (aVariableIndex == null) return this.aTempVariableMap.getLast();
-            return this.aTempVariableMap.get(aVariableIndex);
-        }
-        return this.aDefaultVariableMap;
-    }
-
-    /**
-     * 指定した変数マップを、リリースが行われるまで利用するように指示するメソッド
-     * @param variableMap Map&lt;String, Object&gt; 変数マップ (可変朝引数)
-     */
-    public final void useVariableMap(Object variableMap) {
-        this.aTempVariableMap.add((HashMap<String, Object>) variableMap);
-        this.anIsTempVariableMap = true;
-    }
-
-    /**
-     * 現在の変数マップに指定した変数マップをマージするメソッド
-     * @param variableMap
-     */
-    public final void mergeVariableMap(Object variableMap) {
-        this.getVariableMap().putAll((HashMap<String, Object>) variableMap);
-    }
-
-    /**
-     * 変数マップをリリースするメソッド
-     */
-    public final void rollbackVariableMap() {
-        if (!this.aTempVariableMap.isEmpty()) this.aTempVariableMap.removeLast();
-        if (aTempVariableMap.isEmpty()) this.anIsTempVariableMap = false;
-    }
 
     /**
      * 検索対象クラス名を設定するメソッド。リリースが行われるまで、変数ゲットの際にメッセージサーチも行うように指示する。
-     * @param aClassName
+     *
+     * @param anInstanceContent
      */
-    public void setSearchTargetClassName(String aClassName) {
-        this.aSearchTargetClassNameStack.push(aClassName);
+    public void setSearchTargetClassName(InstanceContent anInstanceContent) {
+        this.aSearchTargetStack.push(anInstanceContent);
     }
 
     /**
      * 検索対象クラス名をリリースするメソッド
      */
     public void rollbackSearchTargetClassName() {
-        if (!this.aSearchTargetClassNameStack.isEmpty()) this.aSearchTargetClassNameStack.pop();
+        if (!this.aSearchTargetStack.isEmpty()) this.aSearchTargetStack.pop();
     }
 
     /**
      * このデータマネージャをメッセージやラムダ実行に引き継ぐべきがどうかを応答するメッセージ
+     *
      * @return 引き継ぐべきであればtrue
      */
     public boolean isShouldBeTakenOver() {
-        return !this.aSearchTargetClassNameStack.isEmpty() || this.anIsTempVariableMap;
+        return !this.aSearchTargetStack.isEmpty();
+    }
+
+    /**
+     * 変数マップを応答するメソッド
+     *
+     * @return 変数マップ
+     */
+    public HashMap<String, Object> getVariableMap() {
+        if (this.aCurrentChainTarget != null) return (HashMap) this.aCurrentChainTarget.getMembers();
+        return this.aVariableMap.peek();
+    }
+
+    /**
+     * 変数マップをプッシュするメソッド
+     * @param aVariableMap
+     */
+    public void pushVariableMap(HashMap<String, Object> aVariableMap) {
+        this.aVariableMap.push(new HashMap<>(aVariableMap));
+    }
+
+    /**
+     * 変数マップに引数の変数マップをマージするメソッド
+     * @param aVariableMap
+     */
+    public void mergeVariableMap(HashMap<String, Object> aVariableMap) {
+        this.getVariableMap().putAll(aVariableMap);
+    }
+
+    /**
+     * 変数マップをポップするメソッド
+     */
+    public void popVariableMap() {
+        if (this.aVariableMap.size() > 1) this.aVariableMap.pop();
+    }
+
+    /**
+     * 現在のチェインターゲットを設定するメソッド
+     *
+     * @param aCurrentChainTarget チェインターゲット
+     */
+    public void setCurrentChainTarget(InstanceContent aCurrentChainTarget) {
+        this.aCurrentChainTarget = aCurrentChainTarget;
+        if (aCurrentChainTarget != null) this.setSearchTargetClassName(aCurrentChainTarget);
+    }
+
+    /**
+     * 現在のチェインターゲットを応答するメソッド
+     *
+     * @return チェインターゲット
+     */
+    public InstanceContent getCurrentChainTarget() {
+        return this.aCurrentChainTarget;
     }
 
     /**
      * 指定したクラス名とメッセージ名に対応するメッセージのコンテンツを応答するメソッド
-     * @param aClassName クラス名
+     *
+     * @param aClassName   クラス名
      * @param aMessageName メッセージ名
      * @return メッセージのコンテンツ
      */
@@ -148,8 +163,8 @@ public class DataManager extends Object {
         return null;
     }
 
-    private String prepareKey(String key){
-        if (key.equals("self") || key.equals("super")){
+    private String prepareKey(String key) {
+        if (key.equals("self") || key.equals("super")) {
             return this.aSender + "-" + key;
         }
         return key;
@@ -157,27 +172,26 @@ public class DataManager extends Object {
 
     /**
      * 変数マップからキーに対応する変数のコンテンツを応答するメソッド
-     * @param key　キー
+     *
+     * @param key 　キー
      * @return 変数のコンテンツ
      */
     public Object getVariableContent(String key) {
         String aKey = this.prepareKey(key);
-        Object aValue =  this.getVariableMap().get(aKey);
+        Object aValue = this.getVariableMap().get(aKey);
         if (aValue == null) {
-            if (!this.aSearchTargetClassNameStack.isEmpty()) {
-                MessageContent aMessage = this.searchMessage(this.aSearchTargetClassNameStack.getLast(), key);
-                if (aMessage != null) {
-                    return aMessage;
-                }
+            if (!this.aSearchTargetStack.isEmpty()) {
+                MessageContent aMessage = this.searchMessage(this.aSearchTargetStack.getLast().getClassName(), key);
+                if (aMessage != null)  return new InstanceAndMessage(aMessage, this.aSearchTargetStack.getLast());
             }
-            aValue = this.aDefaultVariableMap.get(aKey);
         }
         return aValue;
     }
 
     /**
      * 変数マップにキーと値を設定するメソッド
-     * @param key キー
+     *
+     * @param key   キー
      * @param value 値
      */
     public void setVariableContent(String key, Object value) {
@@ -186,6 +200,7 @@ public class DataManager extends Object {
 
     /**
      * 変数マップからキーに対応する変数のコンテンツを削除するメソッド
+     *
      * @param key キー
      */
     public void deleteVariableContent(String key) {
@@ -193,15 +208,8 @@ public class DataManager extends Object {
     }
 
     /**
-     * 変数マップを設定するメソッド
-     * @param variableMap 変数マップ
-     */
-    public void setVariableMap(HashMap<String, Object> variableMap) {
-        this.aDefaultVariableMap = new HashMap<>(variableMap);
-    }
-
-    /**
      * クラスマップからクラス名に対応するクラスのコンテンツを応答するメソッド
+     *
      * @param className クラス名
      * @return クラスのコンテンツ
      */
@@ -211,7 +219,8 @@ public class DataManager extends Object {
 
     /**
      * クラスマップにクラス名とクラスのコンテンツを設定するメソッド
-     * @param className クラス名
+     *
+     * @param className    クラス名
      * @param classContent クラスのコンテンツ
      */
     public void setClassContent(String className, ClassContent classContent) {
@@ -219,36 +228,82 @@ public class DataManager extends Object {
     }
 
     /**
+     * スタックトレースにインスタンスのコンテンツを追加するメソッド
+     *
+     * @param instanceContent インスタンスのコンテンツ
+     */
+    public void pushStackTrace(InstanceContent instanceContent) {
+        InstanceContent aBeforeInstance = this.getStackTraceInstance();
+        if (aBeforeInstance != null && aBeforeInstance.getClassName().equals(instanceContent.getClassName())) {
+            return;
+        }
+        this.aStackTrace.push(instanceContent);
+    }
+
+    /**
+     * スタックトレースからインスタンスのコンテンツを削除するメソッド
+     */
+    public void popStackTrace() {
+        this.aStackTrace.pop();
+    }
+
+    /**
+     * スタックトレースからインスタンスのコンテンツを応答するメソッド
+     *
+     * @return インスタンスのコンテンツ
+     */
+    private InstanceContent getStackTraceInstance() {
+        if (this.aStackTrace.isEmpty()) return null;
+        return this.aStackTrace.peek();
+    }
+
+    /**
+     * スタックトレースから一つ前のインスタンスのコンテンツを応答するメソッド
+     * @return インスタンスのコンテンツ
+     */
+    public InstanceContent getBeforeStackTraceInstance() {
+        if (this.aStackTrace.size() < 2) return null;
+        return this.aStackTrace.get(this.aStackTrace.size() - 2);
+    }
+
+    /**
      * ネイティブオンリーコールであるかどうかを設定するメッセージ
+     *
      * @param nativeOnlyMode ネイティブオンリーモード
      */
-    public void setNativeOnlyMode(boolean nativeOnlyMode){
+    public void setNativeOnlyMode(boolean nativeOnlyMode) {
         this.aNativeOnlyMode = nativeOnlyMode;
     }
 
     /**
      * ネイティブオンリーモードであるかどうかを応答するメッセージ
+     *
      * @return ネイティブオンリーモードであればtrue、そうでなければfalse
      */
-    public boolean isNativeOnlyMode(){
+    public boolean isNativeOnlyMode() {
         return this.aNativeOnlyMode;
     }
 
 
     /**
      * 辞書からキーに対応するデータのコンテンツを応答するメソッド
-     * @param aDataMapKey　キー
+     *
+     * @param aDataMapKey 　キー
+     * @param <TYPE>      　データの型
      * @return　データのコンテンツ
-     * @param <TYPE>　データの型
      */
     public <TYPE> TYPE getDataMapContent(String aDataMapKey) {
+        if (aDataMapKey.equals(DataManager.ARGUMENT_LIST)){
+            return (TYPE) this.aDataMap.get(aDataMapKey);
+        }
         return (TYPE) this.aDataMap.get(aDataMapKey);
     }
 
     /**
      * 辞書にキーと値を設定するメソッド
-     * @param aDataMapKey　キー
-     * @param aDataMapContent　値
+     *
+     * @param aDataMapKey     　キー
+     * @param aDataMapContent 　値
      */
     public void setDataMapContent(String aDataMapKey, Object aDataMapContent) {
         if (this.aDataMap.containsKey(aDataMapKey)) {
@@ -260,8 +315,9 @@ public class DataManager extends Object {
 
     /**
      * 辞書に対応するキーが存在しない場合に、キーと値を設定するメソッド。キーに対応するコンテンツがある場合は何もしない。
-     * @param aDataMapKey　キー
-     * @param aDataMapContent　値
+     *
+     * @param aDataMapKey     　キー
+     * @param aDataMapContent 　値
      */
     public void setDataMapContentIfAbsent(String aDataMapKey, Object aDataMapContent) {
         this.aDataMap.putIfAbsent(aDataMapKey, aDataMapContent);
@@ -269,6 +325,7 @@ public class DataManager extends Object {
 
     /**
      * 辞書からキーに対応するデータのコンテンツを削除するメソッド
+     *
      * @param aDataMapKey キー
      */
     public void removeDataMapContent(String aDataMapKey) {
@@ -277,10 +334,11 @@ public class DataManager extends Object {
 
     /**
      * キーに対応するハッシュマップのコンテンツキーに対応するコンテンツを応答するメソッド
-     * @param aDataMapKey　辞書のキー
-     * @param aContentKey  コンテンツのキー
+     *
+     * @param aDataMapKey 　辞書のキー
+     * @param aContentKey コンテンツのキー
+     * @param <TYPE>      　コンテンツの型
      * @return　コンテンツ
-     * @param <TYPE>　コンテンツの型
      */
     public <TYPE> TYPE getDataMapDeepContent(String aDataMapKey, String aContentKey) {
 //        this.setDataMapContentIfAbsent(aDataMapKey, new HashMap<String, Object>());
@@ -290,9 +348,10 @@ public class DataManager extends Object {
 
     /**
      * キーに対応するハッシュマップのコンテンツキーに対応するコンテンツを設定するメソッド
+     *
      * @param aDataMapKey 辞書のキー
      * @param aContentKey コンテンツのキー
-     * @param aContent コンテンツ
+     * @param aContent    コンテンツ
      */
     public void setDataMapDeepContent(String aDataMapKey, String aContentKey, Object aContent) {
 //        this.setDataMapContentIfAbsent(aDataMapKey, new HashMap<String, Object>());
@@ -303,7 +362,8 @@ public class DataManager extends Object {
 
     /**
      * 辞書から、キーに対応するカウンターを応答するメソッド
-     * @param counterName　カウンター名
+     *
+     * @param counterName 　カウンター名
      * @return　SimpleCounter
      */
     public SimpleCounter getCounter(String counterName) {

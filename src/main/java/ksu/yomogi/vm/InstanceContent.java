@@ -63,7 +63,11 @@ public class InstanceContent extends Object implements Chainable, Value<Instance
     }
 
     public UolVisitor execute(String message, ArrayList<Object> arguments, UolVisitor aVisitor) throws NotFoundSymbolError {
-        MessageContent aMessage = aVisitor.getDataManager().searchMessage(this.aClassName, message);
+        return this.execute(message, arguments, aVisitor.getDataManager());
+    }
+
+    public UolVisitor execute(String message, ArrayList<Object> arguments, DataManager aDatamanager) throws NotFoundSymbolError {
+        MessageContent aMessage = aDatamanager.searchMessage(this.aClassName, message);
 
         // メッセージが未定義の場合
         if (aMessage == null) {
@@ -74,7 +78,7 @@ public class InstanceContent extends Object implements Chainable, Value<Instance
             throw new NotFoundSymbolError(message, null);
         }
 
-        return aMessage.execute(arguments, aVisitor.getDataManager());
+        return aMessage.execute(arguments, aDatamanager);
     }
 
     public HashMap<String, MemberContent> getValuesMap() {

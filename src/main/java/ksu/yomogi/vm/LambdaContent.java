@@ -63,7 +63,6 @@ public class LambdaContent extends Object implements Executable {
         aVisitor.visitExpressionList(aRunnableContext);
 
         aDataManager.getCounter(DataManager.CHAIN_COUNT).set(aCacheChainCount);
-        aVisitor.getDataManager().rollbackVariableMap();
         return aVisitor;
     }
 
