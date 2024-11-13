@@ -1,3 +1,13 @@
 import { Main } from "Main"
+
 aMain = new Main()
 aMain.main()
+anIo = new IO()
+
+a = 1
+
+if (a == 1) {
+    anIo.print(1)
+} else {
+    anIo.print(100)
+}

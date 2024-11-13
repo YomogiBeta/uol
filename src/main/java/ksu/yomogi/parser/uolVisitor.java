@@ -185,6 +185,24 @@ public interface uolVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBooleanConditionExpression(uolParser.BooleanConditionExpressionContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link uolParser#condition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCondition(uolParser.ConditionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link uolParser#conditionBody}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitConditionBody(uolParser.ConditionBodyContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link uolParser#conditionAnotherBody}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitConditionAnotherBody(uolParser.ConditionAnotherBodyContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link uolParser#booleanLoopExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

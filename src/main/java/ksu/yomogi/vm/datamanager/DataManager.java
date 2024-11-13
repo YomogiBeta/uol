@@ -22,6 +22,7 @@ public class DataManager extends Object {
     public static final String IMPORT_LABEL_STACK = "importLabelStack";
     public static final String ARGUMENT_LIST = "argumentList";
     public static final String CACHE_CLASS_NAME = "cacheClassName";
+    public static final String BOOLEAN_CLASS_STACK = "booleanClassStack";
 
     /**
      * Stringのキー
@@ -52,7 +53,7 @@ public class DataManager extends Object {
 
     private String aSender = "";
 
-    private boolean aNativeOnlyMode = false;
+    private boolean aPrimitiveOnlyMode = false;
 
     /**
      * データスタックを応答するメソッド
@@ -178,6 +179,9 @@ public class DataManager extends Object {
      */
     public Object getVariableContent(String key) {
         String aKey = this.prepareKey(key);
+        if (aKey.equals("you")){
+            return this.getBeforeStackTraceInstance();
+        }
         Object aValue = this.getVariableMap().get(aKey);
         if (aValue == null) {
             if (!this.aSearchTargetStack.isEmpty()) {
@@ -267,21 +271,21 @@ public class DataManager extends Object {
     }
 
     /**
-     * ネイティブオンリーコールであるかどうかを設定するメッセージ
+     * プリミティブオンリーコールであるかどうかを設定するメッセージ
      *
-     * @param nativeOnlyMode ネイティブオンリーモード
+     * @param primitiveOnlyMode プリミティブオンリーモード
      */
-    public void setNativeOnlyMode(boolean nativeOnlyMode) {
-        this.aNativeOnlyMode = nativeOnlyMode;
+    public void setPrimitiveOnlyMode(boolean primitiveOnlyMode) {
+        this.aPrimitiveOnlyMode = primitiveOnlyMode;
     }
 
     /**
-     * ネイティブオンリーモードであるかどうかを応答するメッセージ
+     * プリミティブオンリーモードであるかどうかを応答するメッセージ
      *
-     * @return ネイティブオンリーモードであればtrue、そうでなければfalse
+     * @return プリミティブオンリーモードであればtrue、そうでなければfalse
      */
-    public boolean isNativeOnlyMode() {
-        return this.aNativeOnlyMode;
+    public boolean isPrimitiveOnlyMode() {
+        return this.aPrimitiveOnlyMode;
     }
 
 

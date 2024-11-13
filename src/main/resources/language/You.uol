@@ -1,7 +1,0 @@
-import { Object } from "language.Object"
-
-class You extends Object {
-
-    public native function execute(aKey) {
-    }
-}

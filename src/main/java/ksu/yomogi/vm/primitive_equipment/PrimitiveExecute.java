@@ -1,19 +1,17 @@
-package ksu.yomogi.vm.native_equipment;
+package ksu.yomogi.vm.primitive_equipment;
 
 import ksu.yomogi.vm.datamanager.DataManager;
-import ksu.yomogi.vm.native_equipment.features.NativeIO;
-import ksu.yomogi.vm.native_equipment.features.NativeYou;
+import ksu.yomogi.vm.primitive_equipment.features.PrimitiveIO;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.function.BiFunction;
 
-public class NativeExecute {
+public class PrimitiveExecute {
 
     private static final HashMap<String, BiFunction> aFunctionMap = new HashMap<String, BiFunction>(){
         {
-            put("IO-print", NativeIO.getPrint());
-            put("You-execute", NativeYou.getExecute());
+            put("IO-print", PrimitiveIO.getPrint());
         }
     };
 

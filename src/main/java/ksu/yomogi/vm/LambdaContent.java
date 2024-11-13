@@ -43,10 +43,11 @@ public class LambdaContent extends Object implements Executable {
             throw new MissingArgumentsError(this.anArgumentsCount, aFinalArguments.size(), null);
         }
         UolVisitor aVisitor = new UolVisitor();
+        aVisitor.setDataManager(aDataManager);
 
-        if (aDataManager.isShouldBeTakenOver()) {
-            aVisitor.setDataManager(aDataManager);
-        }
+//        if (aDataManager.isShouldBeTakenOver()) {
+//            aVisitor.setDataManager(aDataManager);
+//        }
 
         if (!aFinalArguments.isEmpty()) {
             AtomicReference<Integer> anIndex = new AtomicReference<>(0);

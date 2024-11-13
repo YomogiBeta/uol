@@ -7,6 +7,7 @@ import ksu.yomogi.vm.interfaces.Value;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class InstanceContent extends Object implements Chainable, Value<InstanceContent> {
@@ -93,10 +94,34 @@ public class InstanceContent extends Object implements Chainable, Value<Instance
         return this.aClassName + "Instance (by uol)";
     }
 
+
+    private boolean equalsMembers(Map<String, MemberContent> anOtherMember) {
+        Iterator<String> anIterator = this.aMembers.keySet().iterator();
+        String aKey;
+
+        while (anIterator.hasNext()) {
+            aKey = anIterator.next();
+            if (aKey.equals(this.aClassName + "-self") ||
+                    aKey.equals(this.aClassName + "-super") ||
+                    aKey.equals(this.aParentClassName + "-self") ||
+                    aKey.equals(this.aParentClassName + "-super")) {
+                continue;
+            }
+
+            Object aFirst = this.aMembers.get(aKey).getValue();
+            Object aSecond = anOtherMember.get(aKey).getValue();
+
+            if (aFirst == null && aSecond == null) continue;
+
+            if (!aFirst.equals(aSecond)) return false;
+        }
+        return true;
+    }
+
     public boolean equals(Object obj) {
         if (obj instanceof InstanceContent anOther) {
             return this.aClassName.equals(anOther.getClassName())
-                    && this.aMembers.equals(anOther.getMembers());
+                    && this.equalsMembers(anOther.getMembers());
         }
         return false;
     }

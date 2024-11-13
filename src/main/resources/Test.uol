@@ -2,8 +2,7 @@ class Test extends Object {
 
     public function test(){
         anIO = new IO()
-        aYou = new You()
-        aNumber = aYou.execute("calculate")
+        aNumber = you.calculate()
         anIO.print(aNumber)
 
     }

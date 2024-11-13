@@ -2,11 +2,10 @@ package ksu.yomogi.vm;
 
 import ksu.yomogi.vm.datamanager.DataManager;
 import ksu.yomogi.vm.errors.MissingArgumentsError;
-import ksu.yomogi.vm.errors.NativeMethodCallError;
+import ksu.yomogi.vm.errors.PrimitiveMethodCallError;
 import ksu.yomogi.vm.errors.PrivateMethodCallError;
-import ksu.yomogi.vm.errors.UolRuntimeError;
 import ksu.yomogi.vm.interfaces.Executable;
-import ksu.yomogi.vm.native_equipment.NativeExecute;
+import ksu.yomogi.vm.primitive_equipment.PrimitiveExecute;
 
 import java.util.ArrayList;
 
@@ -43,18 +42,18 @@ public class MessageContent extends Object implements Executable {
     }
 
     public UolVisitor execute(ArrayList<Object> anArguments, DataManager aDataManager) throws MissingArgumentsError, PrivateMethodCallError {
-        boolean aNativeOnlyMode = aDataManager.isNativeOnlyMode();
-        if (this.anInstruction.equals("nativeOnly") && !aNativeOnlyMode) {
-            throw new NativeMethodCallError(this.aName, null);
+        boolean aPrimitiveOnlyMode = aDataManager.isPrimitiveOnlyMode();
+        if (this.anInstruction.equals("primitiveOnly") && !aPrimitiveOnlyMode) {
+            throw new PrimitiveMethodCallError(this.aName, null);
         }
-        if (!aNativeOnlyMode && this.aModifier.equals("private") && !aDataManager.getSender().equals(this.aClassName)) {
+        if (!aPrimitiveOnlyMode && this.aModifier.equals("private") && !aDataManager.getSender().equals(this.aClassName)) {
             throw new PrivateMethodCallError(this.aName, null);
         }
 
         aDataManager.setSender(this.aClassName);
 
-        if (this.anInstruction.equals("native")){
-            Object result = NativeExecute.execute(this.aClassName, this.aName, anArguments, aDataManager);
+        if (this.anInstruction.equals("primitive")){
+            Object result = PrimitiveExecute.execute(this.aClassName, this.aName, anArguments, aDataManager);
             UolVisitor aVisitor = new UolVisitor();
             aVisitor.setReturnValue(result);
             return aVisitor;

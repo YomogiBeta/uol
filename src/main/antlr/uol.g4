@@ -5,6 +5,8 @@ grammar uol;
  */
 NEWLINE : [\r\n]+ ;
 WS: [ \t\n\r\f]+ -> skip ;
+SINGLE_COMMET: '//' ~[\r\n]* -> skip;
+MULTI_COMMET: '/*' .*? '*/' -> skip;
 
 DECIMAL_LITERAL : ('0' | [1-9] Digits?) [lL]?;
 HEX_LITERAL     : '0' [xX] [0-9a-fA-F] ([0-9a-fA-F])? [lL]?;
@@ -22,11 +24,10 @@ CLASS: 'class';
 EXTENDS: 'extends';
 IMPLEMENTS: 'implements';
 MODIFIER: 'public' | 'private';
-INSTRUCTION: 'final' | 'static' | 'native' | 'nativeOnly';
+INSTRUCTION: 'final' | 'static' | 'primitive' | 'primitiveOnly';
 FUNCTION: 'function';
 NEW: 'new';
 IF: 'if';
-ELSEIF: 'else if';
 ELSE: 'else';
 WHILE: 'while';
 FOR: 'for';
@@ -187,10 +188,19 @@ instanceExpression
     ;
 
 booleanConditionExpression
-    :   IF '(' conditionExpressionList ')' '{' expressionList '}'
-    |   IF '(' conditionExpressionList ')' '{' expressionList '}' ELSE '{' expressionList '}'
-    |   IF '(' conditionExpressionList ')' '{' expressionList '}' ELSEIF '(' conditionExpressionList ')' '{' expressionList '}'
-    |   IF '(' conditionExpressionList ')' '{' expressionList '}' ELSEIF '(' conditionExpressionList ')' '{' expressionList '}' ELSE '{' expressionList '}'
+    :  IF condition conditionBody (conditionAnotherBody)*
+    ;
+
+condition
+    :  '(' conditionExpressionList ')'
+    ;
+
+conditionBody
+    :   '{' expressionList '}'
+    ;
+
+conditionAnotherBody
+    : ELSE '{' expressionList '}'
     ;
 
 booleanLoopExpression

@@ -3,7 +3,7 @@ package ksu.yomogi.vm;
 import ksu.yomogi.parser.uolBaseVisitor;
 import ksu.yomogi.parser.uolParser;
 import ksu.yomogi.vm.datamanager.DataManager;
-import ksu.yomogi.vm.errors.NativeMemberCallError;
+import ksu.yomogi.vm.errors.PrimitiveMemberCallError;
 import ksu.yomogi.vm.errors.NotFoundSymbolError;
 import ksu.yomogi.vm.errors.PrivateMemberCallError;
 import ksu.yomogi.vm.errors.UolRuntimeError;
@@ -26,7 +26,7 @@ public class UolVisitor extends uolBaseVisitor<Object> {
 
     private Boolean aRawIdentityEvaluation = false;
 
-    private static final HashMap<String, BiFunction<Integer, Integer, Integer>> aCaluculations = new HashMap<>(){{
+    private static final HashMap<String, BiFunction<Integer, Integer, Integer>> aCaluculations = new HashMap<>() {{
 
         BiFunction<Integer, Integer, Integer> aSubtractionFunction = (aFirst, aSecond) -> aFirst - aSecond;
         BiFunction<Integer, Integer, Integer> aMultiplicationFunction = (aFirst, aSecond) -> aFirst * aSecond;
@@ -38,12 +38,19 @@ public class UolVisitor extends uolBaseVisitor<Object> {
         this.put("/", aDivistionFunction);
     }};
 
+    private static final HashMap<String, BiFunction<Object, Object, Boolean>> aConditionalFunctions = new HashMap<>() {{
+        BiFunction<Object, Object, Boolean> anEquals = (aFirst, aSecond) -> aSecond.equals(aFirst);
+
+        this.put("==", anEquals);
+    }};
+
     public void init() {
         this.importFile(aRuntimePath + "language" + File.separator + "Object.uol", "Object");
         this.importFile(aRuntimePath + "language" + File.separator + "Number.uol", "Number");
         this.importFile(aRuntimePath + "language" + File.separator + "Integer.uol", "Integer");
         this.importFile(aRuntimePath + "language" + File.separator + "IO.uol", "IO");
-        this.importFile(aRuntimePath + "language" + File.separator + "You.uol", "You");
+        this.importFile(aRuntimePath + "language" + File.separator + "True.uol", "True");
+        this.importFile(aRuntimePath + "language" + File.separator + "False.uol", "False");
     }
 
 
@@ -252,7 +259,7 @@ public class UolVisitor extends uolBaseVisitor<Object> {
         // 変数Assignがすでに実行されており、それをメンバの値として利用する
         Object aValue = this.aDataManager.getVariableContent(aMemberName);
 
-        if (aValue instanceof Cloneable aCloneableValue){
+        if (aValue instanceof Cloneable aCloneableValue) {
             try {
                 aValue = aCloneableValue.getClass().getMethod("clone").invoke(aCloneableValue);
             } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException anError) {
@@ -567,7 +574,7 @@ public class UolVisitor extends uolBaseVisitor<Object> {
 
         try {
             aValue = aStackValue.value(this.aDataManager);
-        } catch (PrivateMemberCallError | NativeMemberCallError error) {
+        } catch (PrivateMemberCallError | PrimitiveMemberCallError error) {
             error.setContext(ctx);
             error.printErrorMessages();
             System.exit(1);
@@ -596,7 +603,7 @@ public class UolVisitor extends uolBaseVisitor<Object> {
         Object aBeforeContent = this.aDataManager.getVariableContent(aVariableKey);
 
 
-        if (aVariableValue instanceof Cloneable aCloneableValue){
+        if (aVariableValue instanceof Cloneable aCloneableValue) {
             try {
                 aVariableValue = aCloneableValue.getClass().getMethod("clone").invoke(aCloneableValue);
             } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException anError) {
@@ -612,6 +619,91 @@ public class UolVisitor extends uolBaseVisitor<Object> {
 //        System.out.println("Assign: " + aVariableKey + " = " + aVariableValue);
 
         this.aDataManager.setVariableContent(aVariableKey, aVariableValue);
+        return null;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     *
+     * @param ctx
+     */
+    public Object visitBooleanConditionExpression(uolParser.BooleanConditionExpressionContext ctx) {
+        super.visitBooleanConditionExpression(ctx);
+
+        Integer aCount = ctx.getChildCount();
+
+        LambdaContent aFirstExecutableContent = null;
+        LambdaContent aSecondExecutableContent = null;
+
+        if (aCount == 4) {
+            aSecondExecutableContent = (LambdaContent) this.aDataManager.getDataStack().pop();
+            aFirstExecutableContent = (LambdaContent) this.aDataManager.getDataStack().pop();
+        } else {
+            aFirstExecutableContent = (LambdaContent) this.aDataManager.getDataStack().pop();
+        }
+
+        Boolean aBool = (Boolean) this.aDataManager.getDataStack().pop();
+        String aBoolClassName = aBool ? "True" : "False";
+
+        InstanceContent anInstanceContent = new InstanceContent(aBoolClassName, this.aDataManager);
+        anInstanceContent.execute("ifThenTrue", new ArrayList<>(List.of(aFirstExecutableContent)), this);
+        if (aSecondExecutableContent != null)
+            anInstanceContent.execute("ifThenFalse", new ArrayList<>(List.of(aSecondExecutableContent)), this);
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     *
+     * @param ctx
+     */
+    public Object visitConditionExpression(uolParser.ConditionExpressionContext ctx) {
+        super.visitConditionExpression(ctx);
+
+        Object aSecond = this.aDataManager.getDataStack().pop();
+        Object aFirst = this.aDataManager.getDataStack().pop();
+
+        String aConditionalOperator = ctx.getToken(uolParser.CONDITIONAL_OPERATOR, 0).toString();
+
+        Boolean aResult = this.aConditionalFunctions.get(aConditionalOperator).apply(aFirst, aSecond);
+        this.aDataManager.getDataStack().push(aResult);
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     *
+     * @param ctx
+     */
+    public Object visitConditionBody(uolParser.ConditionBodyContext ctx) {
+        uolParser.ExpressionListContext anExpressionListContext = ctx.getChild(uolParser.ExpressionListContext.class, 0);
+        LambdaContent aLambdaContent = new LambdaContent(new LinkedHashMap<>(), 0, anExpressionListContext);
+        this.aDataManager.getDataStack().push(aLambdaContent);
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     *
+     * @param ctx
+     */
+    public Object visitConditionAnotherBody(uolParser.ConditionAnotherBodyContext ctx) {
+        uolParser.ExpressionListContext anExpressionListContext = ctx.getChild(uolParser.ExpressionListContext.class, 0);
+        LambdaContent aLambdaContent = new LambdaContent(new LinkedHashMap<>(), 0, anExpressionListContext);
+        this.aDataManager.getDataStack().push(aLambdaContent);
         return null;
     }
 
@@ -634,7 +726,7 @@ public class UolVisitor extends uolBaseVisitor<Object> {
         anOperators = anOperators.reversed();
         anOperators.forEach((anOperator) -> {
             Object aSecond = this.aDataManager.getDataStack().pop();
-            Object aFirst =  this.aDataManager.getDataStack().pop();
+            Object aFirst = this.aDataManager.getDataStack().pop();
 
             Integer aSecondValue = this.getNumberPrimitive(aSecond);
             Integer aFirstValue = this.getNumberPrimitive(aFirst);
@@ -674,9 +766,9 @@ public class UolVisitor extends uolBaseVisitor<Object> {
         return null;
     }
 
-    private Integer getNumberPrimitive(Object anObject){
-        if (anObject instanceof InstanceContent anInstance){
-            UolVisitor aSecondVisitor = this.nativeOnlyMessageCall(anInstance, "getPrimitiveValue", new ArrayList<>());
+    private Integer getNumberPrimitive(Object anObject) {
+        if (anObject instanceof InstanceContent anInstance) {
+            UolVisitor aSecondVisitor = this.primitiveOnlyMessageCall(anInstance, "getPrimitiveValue", new ArrayList<>());
             return (Integer) aSecondVisitor.getReturnValue();
         }
         return (Integer) anObject;
@@ -756,13 +848,13 @@ public class UolVisitor extends uolBaseVisitor<Object> {
         return null;
     }
 
-    private UolVisitor nativeOnlyMessageCall(InstanceContent anInstance, String aMessage, ArrayList<Object> anArguments) {
+    private UolVisitor primitiveOnlyMessageCall(InstanceContent anInstance, String aMessage, ArrayList<Object> anArguments) {
         this.aDataManager.setSearchTargetClassName(anInstance);
-        this.aDataManager.setNativeOnlyMode(true);
+        this.aDataManager.setPrimitiveOnlyMode(true);
         this.aDataManager.pushVariableMap((HashMap) anInstance.getMembers());
         UolVisitor aUolVisitor = anInstance.execute(aMessage, anArguments, this);
         this.aDataManager.popVariableMap();
-        this.aDataManager.setNativeOnlyMode(false);
+        this.aDataManager.setPrimitiveOnlyMode(false);
         this.aDataManager.rollbackSearchTargetClassName();
         return aUolVisitor;
     }

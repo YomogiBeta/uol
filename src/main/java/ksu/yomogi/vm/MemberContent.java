@@ -4,8 +4,6 @@ import ksu.yomogi.vm.datamanager.DataManager;
 import ksu.yomogi.vm.errors.*;
 import ksu.yomogi.vm.interfaces.Value;
 
-import java.lang.reflect.InvocationTargetException;
-
 public class MemberContent extends Object implements Value<Object>, Cloneable {
 
     private final String aName;
@@ -34,13 +32,13 @@ public class MemberContent extends Object implements Value<Object>, Cloneable {
         return this.aValue;
     }
 
-    public Object value(DataManager aDataManager) throws PrivateMemberCallError, NativeMemberCallError {
-        boolean aNativeMode = aDataManager.isNativeOnlyMode();
-        if (this.anInstruction.equals("nativeOnly") && !aNativeMode) {
-            throw new NativeMemberCallError(this.aName, null);
+    public Object value(DataManager aDataManager) throws PrivateMemberCallError, PrimitiveMemberCallError {
+        boolean aPrimitiveMode = aDataManager.isPrimitiveOnlyMode();
+        if (this.anInstruction.equals("primitiveOnly") && !aPrimitiveMode) {
+            throw new PrimitiveMemberCallError(this.aName, null);
         }
 
-        if (!aNativeMode && this.aModifier.equals("private") && !aDataManager.getSender().equals(this.aClassName)){
+        if (!aPrimitiveMode && this.aModifier.equals("private") && !aDataManager.getSender().equals(this.aClassName)){
             throw new PrivateMemberCallError(this.aName, null);
         }
         return this.aValue;

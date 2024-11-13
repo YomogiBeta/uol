@@ -1,0 +1,11 @@
+class False {
+
+    public function ifThenTrue(aLambda){
+        
+    }
+
+    public function ifThenFalse(aLambda){
+        aLambda()
+
+    }
+}

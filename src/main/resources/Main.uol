@@ -3,7 +3,7 @@ import { Test } from "Test"
 class Main extends Object {
 
     public function calculate() {
-        return 1 + 230
+        return 1 + 22
 
     }
 
