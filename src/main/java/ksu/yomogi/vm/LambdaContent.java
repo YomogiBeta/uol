@@ -61,6 +61,8 @@ public class LambdaContent extends Object implements Executable {
         Integer aCacheChainCount = aDataManager.getCounter(DataManager.CHAIN_COUNT).getCount();
         aDataManager.getCounter(DataManager.CHAIN_COUNT).reset();
 
+        aDataManager.removeDataMapContent(DataManager.ARGUMENT_LIST);
+
         aVisitor.visitExpressionList(aRunnableContext);
 
         aDataManager.getCounter(DataManager.CHAIN_COUNT).set(aCacheChainCount);

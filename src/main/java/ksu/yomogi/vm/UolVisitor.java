@@ -433,8 +433,6 @@ public class UolVisitor extends uolBaseVisitor<Object> {
 
         anInstanceContent.execute(ClassContent.CONSTRUCT_METHOD, anArguments, this);
 
-        this.aDataManager.removeDataMapContent(DataManager.ARGUMENT_LIST);
-
         this.aDataManager.rollbackSearchTargetClassName();
         this.aDataManager.popVariableMap();
 
@@ -461,7 +459,6 @@ public class UolVisitor extends uolBaseVisitor<Object> {
             }
         }
 
-        this.aDataManager.removeDataMapContent(DataManager.ARGUMENT_LIST);
         this.aDataManager.getCounter(DataManager.ARGUMENT_COUNT).reset();
 
         return null;
@@ -477,7 +474,6 @@ public class UolVisitor extends uolBaseVisitor<Object> {
 //                    this.aDataManager.pushVariableMap((HashMap) anInstanceContent.getMembers());
 //                }
                 UolVisitor aResultVisitor = anExecutableContent.execute(anArguments, this.getDataManager());
-                this.aDataManager.removeDataMapContent(DataManager.ARGUMENT_LIST);
 //                if (anExecutableContent instanceof InstanceContent){
 //                    this.aDataManager.popVariableMap();
 //                }
@@ -732,7 +728,7 @@ public class UolVisitor extends uolBaseVisitor<Object> {
             Integer aFirstValue = this.getNumberPrimitive(aFirst);
             Integer aResult = aCaluculations.get(anOperator.toString()).apply(aFirstValue, aSecondValue);
 
-            this.aDataManager.getDataStack().push(aResult);
+            this.aDataManager.getDataStack().push(this.createInstance("Integer",aResult));
         });
     }
 

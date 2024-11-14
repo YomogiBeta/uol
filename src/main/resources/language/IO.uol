@@ -3,6 +3,11 @@ import { Object } from "language.Object"
 class IO extends Object {
 
     public primitive function print(aValue) {
+
+    }
+
+    public primitive function println(aValue) {
+
     }
 }
 

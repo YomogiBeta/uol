@@ -1,13 +1,14 @@
-import { Main } from "Main"
+anIo := new IO()
 
-aMain = new Main()
-aMain.main()
-anIo = new IO()
+function factorial(n) {
+    if (n == 0) {
+        return 1
 
-a = 1
+    } else {
+        return n * factorial(n - 1)
 
-if (a == 1) {
-    anIo.print(1)
-} else {
-    anIo.print(100)
+    }
 }
+
+anIo.print("factorial(10): ")
+anIo.println(factorial(10))

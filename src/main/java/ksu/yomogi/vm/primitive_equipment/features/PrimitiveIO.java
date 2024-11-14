@@ -13,7 +13,13 @@ final public class PrimitiveIO {
         for (Object anArgument : anArguments) {
             aStringBuilder.append(PrimitiveIO.parseObject(anArgument));
         }
-        System.out.print("uol: " + aStringBuilder.toString());
+        System.out.print(aStringBuilder.toString());
+        return true;
+    };
+
+    private static final BiFunction<List, DataManager, Boolean> aPrintln = (List anArguments, DataManager aDatamanager) -> {
+        aPrint.apply(anArguments, aDatamanager);
+        System.out.println();
         return true;
     };
 
@@ -28,5 +34,8 @@ final public class PrimitiveIO {
 
     public static BiFunction<List, DataManager, Boolean> getPrint() {
         return aPrint;
+    }
+    public static BiFunction<List, DataManager, Boolean> getPrintln() {
+        return aPrintln;
     }
 }

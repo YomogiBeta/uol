@@ -12,6 +12,7 @@ public class PrimitiveExecute {
     private static final HashMap<String, BiFunction> aFunctionMap = new HashMap<String, BiFunction>(){
         {
             put("IO-print", PrimitiveIO.getPrint());
+            put("IO-println", PrimitiveIO.getPrintln());
         }
     };
 

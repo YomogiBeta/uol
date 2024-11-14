@@ -32,7 +32,7 @@ ELSE: 'else';
 WHILE: 'while';
 FOR: 'for';
 
-ASSIGN: '=' | 'is';
+ASSIGN: '=' | 'is' | ':=';
 ADDITIVE_OPERATOR: '+' | '-';
 MULTIPLY_OPERATOR: '*' | '/' | '%';
 CONDITIONAL_OPERATOR: '==' | '!=' | '<' | '<=' | '>' | '>=';
@@ -252,7 +252,8 @@ multiplicativeExpression
     ;
 
 unaryExpression
-    :   literal
+    :   callExpression
+    |   literal
     |   '(' responseExpression ')';
 
 
