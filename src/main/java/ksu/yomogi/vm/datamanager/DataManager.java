@@ -237,10 +237,6 @@ public class DataManager extends Object {
      * @param instanceContent インスタンスのコンテンツ
      */
     public void pushStackTrace(InstanceContent instanceContent) {
-        InstanceContent aBeforeInstance = this.getStackTraceInstance();
-        if (aBeforeInstance != null && aBeforeInstance.getClassName().equals(instanceContent.getClassName())) {
-            return;
-        }
         this.aStackTrace.push(instanceContent);
     }
 
@@ -267,7 +263,13 @@ public class DataManager extends Object {
      */
     public InstanceContent getBeforeStackTraceInstance() {
         if (this.aStackTrace.size() < 2) return null;
-        return this.aStackTrace.get(this.aStackTrace.size() - 2);
+        List aReversedList = this.aStackTrace.reversed();
+        Iterator<InstanceContent> anIterator = aReversedList.iterator();
+        while (anIterator.hasNext()) {
+            InstanceContent anInstance = anIterator.next();
+            if (anInstance != this.getStackTraceInstance()) return anInstance;
+        }
+        return null;
     }
 
     /**
@@ -379,6 +381,13 @@ public class DataManager extends Object {
      * センダーを設定するメソッド
      */
     public void setSender(String aSender) {
+        if (aSender.equals("") && this.aStackTrace.size() > 1) {
+            InstanceContent anBeforeInstance = this.aStackTrace.get(this.aStackTrace.size() - 2);
+            if (anBeforeInstance != null) {
+                this.aSender = anBeforeInstance.getClassName();
+                return;
+            }
+        }
         this.aSender = aSender;
     }
 

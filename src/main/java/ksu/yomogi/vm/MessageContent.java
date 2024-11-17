@@ -50,17 +50,21 @@ public class MessageContent extends Object implements Executable {
             throw new PrivateMethodCallError(this.aName, null);
         }
 
-        aDataManager.setSender(this.aClassName);
+        if (!this.aClassName.equals("True") && !this.aClassName.equals("False"))
+            aDataManager.setSender(this.aClassName);
 
         if (this.anInstruction.equals("primitive")){
             Object result = PrimitiveExecute.execute(this.aClassName, this.aName, anArguments, aDataManager);
+            aDataManager.setSender("");
+            aDataManager.removeDataMapContent(DataManager.ARGUMENT_LIST);
             UolVisitor aVisitor = new UolVisitor();
             aVisitor.setReturnValue(result);
             return aVisitor;
         }
 
         UolVisitor aVisitor = this.aLambda.execute(anArguments, aDataManager);
-        aDataManager.setSender("");
+        if (!this.aClassName.equals("True") && !this.aClassName.equals("False"))
+            aDataManager.setSender("");
         return aVisitor;
     }
 

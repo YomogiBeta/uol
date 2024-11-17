@@ -1,14 +1,5 @@
-anIo := new IO()
+5.times(() {
+    anIo is new IO()
+    anIo.println("Hello World")
 
-function factorial(n) {
-    if (n == 0) {
-        return 1
-
-    } else {
-        return n * factorial(n - 1)
-
-    }
-}
-
-anIo.print("factorial(10): ")
-anIo.println(factorial(10))
+})

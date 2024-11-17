@@ -4,4 +4,17 @@ class Integer extends Number {
         super.__construct(primitiveValue)
 
     }
+
+    private function loop(anInteger, anExecutable){
+        if(anInteger > 0){
+            anExecutable()
+            self.loop(anInteger - 1, anExecutable)
+
+        }
+    }
+
+    public function times(aLambda){
+        self.loop(self, aLambda)
+
+    }
 }

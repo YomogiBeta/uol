@@ -32,10 +32,13 @@ public class InstanceAndMessage implements Executable, Value {
 
     public UolVisitor execute(ArrayList<Object> anArguments, DataManager aDataManager) throws MissingArgumentsError {
         aDataManager.pushVariableMap((HashMap) this.aInstance.getMembers());
-        if (!this.aInstance.getClassName().equals("You")) aDataManager.pushStackTrace(this.aInstance);
+        String aTargetClassName = this.aInstance.getClassName();
+        if (!aTargetClassName.equals("You") && !aTargetClassName.equals("True") && !aTargetClassName.equals("False"))
+            aDataManager.pushStackTrace(this.aInstance);
         UolVisitor aVisitor = this.aMessage.execute(anArguments, aDataManager);
         aDataManager.popVariableMap();
-        if (!this.aInstance.getClassName().equals("You")) aDataManager.popStackTrace();
+        if (!aTargetClassName.equals("You") && !aTargetClassName.equals("True") && !aTargetClassName.equals("False"))
+            aDataManager.popStackTrace();
         return aVisitor;
     }
 

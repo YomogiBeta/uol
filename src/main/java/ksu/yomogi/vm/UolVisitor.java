@@ -40,8 +40,28 @@ public class UolVisitor extends uolBaseVisitor<Object> {
 
     private static final HashMap<String, BiFunction<Object, Object, Boolean>> aConditionalFunctions = new HashMap<>() {{
         BiFunction<Object, Object, Boolean> anEquals = (aFirst, aSecond) -> aSecond.equals(aFirst);
+        BiFunction<Object, Object, Boolean> aLessThan = (aFirst, aSecond) -> {
+            if (aFirst instanceof InstanceContent aFirstInstance && aSecond instanceof InstanceContent aSecondInstance) {
+                Integer aFirstValue = (Integer) aFirstInstance.getMembers().get("aPrimitiveValue").getValue();
+                Integer aSecondValue = (Integer) aSecondInstance.getMembers().get("aPrimitiveValue").getValue();
+                return aFirstValue < aSecondValue;
+            }
+            return false;
+        };
+        BiFunction<Object, Object, Boolean> aMoreThan = (aFirst, aSecond) -> {
+            if (aFirst instanceof InstanceContent aFirstInstance && aSecond instanceof InstanceContent aSecondInstance) {
+                Integer aFirstValue = (Integer) aFirstInstance.getMembers().get("aPrimitiveValue").getValue();
+                Integer aSecondValue = (Integer) aSecondInstance.getMembers().get("aPrimitiveValue").getValue();
+                return aFirstValue > aSecondValue;
+            }
+            return false;
+        };
+
 
         this.put("==", anEquals);
+        this.put("<", aLessThan);
+        this.put(">", aMoreThan);
+
     }};
 
     public void init() {
@@ -63,6 +83,9 @@ public class UolVisitor extends uolBaseVisitor<Object> {
      * @param ctx
      */
     public Object visitExpression(uolParser.ExpressionContext ctx) {
+        if (this.getReturnValue() != null) {
+            return null;
+        }
         super.visitExpression(ctx);
         this.aDataManager.getCounter(DataManager.ARGUMENT_COUNT).reset();
         return null;
