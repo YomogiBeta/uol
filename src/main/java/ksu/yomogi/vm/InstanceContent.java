@@ -94,7 +94,6 @@ public class InstanceContent extends Object implements Chainable, Value<Instance
         return this.aClassName + "Instance (by uol)";
     }
 
-
     private boolean equalsMembers(Map<String, MemberContent> anOtherMember) {
         Iterator<String> anIterator = this.aMembers.keySet().iterator();
         String aKey;

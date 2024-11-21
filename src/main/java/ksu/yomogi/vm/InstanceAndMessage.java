@@ -48,8 +48,7 @@ public class InstanceAndMessage implements Executable, Value {
 
     public String toString() {
         StringBuffer aStringBuffer = new StringBuffer();
-        aStringBuffer.append("Instance and Message");
-        aStringBuffer.append(" { ");
+        aStringBuffer.append("Instance and Message { ");
         aStringBuffer.append(this.aInstance.toString());
         aStringBuffer.append(" , ");
         aStringBuffer.append(this.aMessage.toString());

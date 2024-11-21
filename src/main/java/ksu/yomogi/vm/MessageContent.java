@@ -74,8 +74,7 @@ public class MessageContent extends Object implements Executable {
         aStringBuffer.append(this.aModifier);
         aStringBuffer.append(" ");
         aStringBuffer.append(this.anInstruction);
-        aStringBuffer.append(" } ");
-        aStringBuffer.append("Message");
+        aStringBuffer.append(" } Message");
         return aStringBuffer.toString();
     }
 
