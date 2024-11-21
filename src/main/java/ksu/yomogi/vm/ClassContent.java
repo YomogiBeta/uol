@@ -50,8 +50,10 @@ public class ClassContent extends Object {
         return this.aClassName + "Class";
     }
 
-    public boolean equals(Object obj) {
-        if (obj instanceof ClassContent anOther) {
+    public boolean equals(Object anObject) {
+        if (anObject == null) return false;
+        if (anObject == this) return true;
+        if (anObject instanceof ClassContent anOther) {
             return this.aClassName.equals(anOther.getClassName())
                     && this.aParentClassName.equals(anOther.getParentClassName())
                     && this.aMembers.equals(anOther.getMembers())

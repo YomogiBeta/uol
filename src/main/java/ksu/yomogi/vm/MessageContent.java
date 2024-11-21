@@ -69,12 +69,20 @@ public class MessageContent extends Object implements Executable {
     }
 
     public String toString() {
-        String aString = "{ " + this.aModifier + " " + this.anInstruction + " } ";
-        return aString + "Message";
+        StringBuffer aStringBuffer = new StringBuffer();
+        aStringBuffer.append("{ ");
+        aStringBuffer.append(this.aModifier);
+        aStringBuffer.append(" ");
+        aStringBuffer.append(this.anInstruction);
+        aStringBuffer.append(" } ");
+        aStringBuffer.append("Message");
+        return aStringBuffer.toString();
     }
 
-    public boolean equals(Object obj) {
-        if (obj instanceof MessageContent anOther) {
+    public boolean equals(Object anObject) {
+        if (anObject == null) return false;
+        if (anObject == this) return true;
+        if (anObject instanceof MessageContent anOther) {
             return this.aLambda.equals(anOther.getLambda())
                     && this.aModifier.equals(anOther.getModifier())
                     && this.anInstruction.equals(anOther.getInstruction());

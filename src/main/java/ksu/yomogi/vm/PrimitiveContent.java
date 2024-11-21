@@ -36,8 +36,10 @@ public class PrimitiveContent extends Object implements Value<Object> {
         return this.aValue.toString();
     }
 
-    public boolean equals(Object obj) {
-        if (obj instanceof PrimitiveContent anOther) {
+    public boolean equals(Object anObject) {
+        if (anObject == null) return false;
+        if (anObject == this) return true;
+        if (anObject instanceof PrimitiveContent anOther) {
             return this.aValue.equals(anOther.getValue()) && this.aType.equals(anOther.getType());
         }
         return false;

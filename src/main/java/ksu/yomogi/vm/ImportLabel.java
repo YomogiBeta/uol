@@ -27,8 +27,10 @@ public class ImportLabel extends Object{
         return this.aTrueLabel + " " + this.aSubLabel;
     }
 
-    public boolean equals(Object obj) {
-        if (obj instanceof ImportLabel anOther) {
+    public boolean equals(Object anObject) {
+        if (anObject == null) return false;
+        if (anObject == this) return true;
+        if (anObject instanceof ImportLabel anOther) {
             return this.aTrueLabel.equals(anOther.getTrueLabel()) && this.aSubLabel.equals(anOther.getSubLabel());
         }
         return false;

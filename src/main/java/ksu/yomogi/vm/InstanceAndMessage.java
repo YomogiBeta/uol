@@ -45,4 +45,30 @@ public class InstanceAndMessage implements Executable, Value {
     public Object value(DataManager aDataManager) {
         return this;
     }
+
+    public String toString() {
+        StringBuffer aStringBuffer = new StringBuffer();
+        aStringBuffer.append("Instance and Message");
+        aStringBuffer.append(" { ");
+        aStringBuffer.append(this.aInstance.toString());
+        aStringBuffer.append(" , ");
+        aStringBuffer.append(this.aMessage.toString());
+        aStringBuffer.append(" } ");
+        return aStringBuffer.toString();
+    }
+
+    public boolean equals(Object anObject){
+        if (anObject == null) return false;
+        if (this == anObject) return true;
+        if (anObject instanceof InstanceAndMessage anOther) {
+            return this.aInstance.equals(anOther.getInstance()) && this.aMessage.equals(anOther.getMessage());
+        }
+        return false;
+    }
+
+    public int hashCode() {
+        return this.aInstance.hashCode() + this.aMessage.hashCode();
+    }
+
+
 }

@@ -7,7 +7,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 
 import java.io.IOException;
 
-public class UolVirtualMachine extends Object {
+final public class UolVirtualMachine extends Object {
 
     public static void main(String[] args) {
         UolVisitor aVisitor = new UolVisitor();

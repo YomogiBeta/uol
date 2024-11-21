@@ -34,14 +34,16 @@ public class SimpleCounter extends Object {
         return Integer.toString(this.aCounter);
     }
 
-    public boolean equals(Object obj) {
-        if (obj instanceof SimpleCounter anOther) {
+    public boolean equals(Object anObject) {
+        if (anObject == null) return false;
+        if (anObject == this) return true;
+        if (anObject instanceof SimpleCounter anOther) {
             return Objects.equals(this.aCounter, anOther.getCount());
         }
         return false;
     }
 
     public int hashCode() {
-        return this.aCounter;
+        return this.aCounter.hashCode();
     }
 }

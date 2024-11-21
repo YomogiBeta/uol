@@ -101,6 +101,7 @@ public class InstanceContent extends Object implements Chainable, Value<Instance
 
         while (anIterator.hasNext()) {
             aKey = anIterator.next();
+            // 再起ループに陥り、抜けられなくなるパターンを除外する
             if (aKey.equals(this.aClassName + "-self") ||
                     aKey.equals(this.aClassName + "-super") ||
                     aKey.equals(this.aParentClassName + "-self") ||
@@ -118,8 +119,10 @@ public class InstanceContent extends Object implements Chainable, Value<Instance
         return true;
     }
 
-    public boolean equals(Object obj) {
-        if (obj instanceof InstanceContent anOther) {
+    public boolean equals(Object anObject) {
+        if (anObject == null) return false;
+        if (anObject == this) return true;
+        if (anObject instanceof InstanceContent anOther) {
             return this.aClassName.equals(anOther.getClassName())
                     && this.equalsMembers(anOther.getMembers());
         }

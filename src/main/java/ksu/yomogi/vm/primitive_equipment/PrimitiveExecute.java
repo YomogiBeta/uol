@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.function.BiFunction;
 
-public class PrimitiveExecute {
+final public class PrimitiveExecute {
 
     private static final HashMap<String, BiFunction> aFunctionMap = new HashMap<String, BiFunction>(){
         {

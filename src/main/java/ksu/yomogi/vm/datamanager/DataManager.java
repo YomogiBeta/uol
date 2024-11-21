@@ -38,7 +38,7 @@ public class DataManager extends Object {
 
 
     private final Stack<Object> aDataStack = new Stack<Object>();
-    private final Stack<HashMap<String, Object>> aVariableMap = new Stack<HashMap<String, Object>>(){{
+    private final Stack<HashMap<String, Object>> aVariableMap = new Stack<HashMap<String, Object>>() {{
         push(new HashMap<String, Object>());
     }};
     private InstanceContent aCurrentChainTarget = null;
@@ -102,6 +102,7 @@ public class DataManager extends Object {
 
     /**
      * 変数マップをプッシュするメソッド
+     *
      * @param aVariableMap
      */
     public void pushVariableMap(HashMap<String, Object> aVariableMap) {
@@ -110,6 +111,7 @@ public class DataManager extends Object {
 
     /**
      * 変数マップに引数の変数マップをマージするメソッド
+     *
      * @param aVariableMap
      */
     public void mergeVariableMap(HashMap<String, Object> aVariableMap) {
@@ -179,14 +181,14 @@ public class DataManager extends Object {
      */
     public Object getVariableContent(String key) {
         String aKey = this.prepareKey(key);
-        if (aKey.equals("you")){
+        if (aKey.equals("you")) {
             return this.getBeforeStackTraceInstance();
         }
         Object aValue = this.getVariableMap().get(aKey);
         if (aValue == null) {
             if (!this.aSearchTargetStack.isEmpty()) {
                 MessageContent aMessage = this.searchMessage(this.aSearchTargetStack.getLast().getClassName(), key);
-                if (aMessage != null)  return new InstanceAndMessage(aMessage, this.aSearchTargetStack.getLast());
+                if (aMessage != null) return new InstanceAndMessage(aMessage, this.aSearchTargetStack.getLast());
             }
         }
         return aValue;
@@ -259,6 +261,7 @@ public class DataManager extends Object {
 
     /**
      * スタックトレースから一つ前のインスタンスのコンテンツを応答するメソッド
+     *
      * @return インスタンスのコンテンツ
      */
     public InstanceContent getBeforeStackTraceInstance() {
@@ -299,7 +302,7 @@ public class DataManager extends Object {
      * @return　データのコンテンツ
      */
     public <TYPE> TYPE getDataMapContent(String aDataMapKey) {
-        if (aDataMapKey.equals(DataManager.ARGUMENT_LIST)){
+        if (aDataMapKey.equals(DataManager.ARGUMENT_LIST)) {
             return (TYPE) this.aDataMap.get(aDataMapKey);
         }
         return (TYPE) this.aDataMap.get(aDataMapKey);
@@ -396,6 +399,41 @@ public class DataManager extends Object {
      */
     public String getSender() {
         return this.aSender;
+    }
+
+    public String toString() {
+        return "DataManager";
+    }
+
+    public boolean equals(Object anObject) {
+        if (anObject == null) return false;
+        if (this == anObject) return true;
+        if (anObject instanceof DataManager anOther) {
+            return this.aDataStack.equals(anOther.getDataStack())
+                    && this.aVariableMap.equals(anOther.getVariableMap())
+                    && this.aCurrentChainTarget.equals(anOther.getCurrentChainTarget())
+                    && this.aSearchTargetStack.equals(anOther.aSearchTargetStack)
+                    && this.aClassMap.equals(anOther.aClassMap)
+                    && this.aStackTrace.equals(anOther.aStackTrace)
+                    && this.aDataMap.equals(anOther.aDataMap)
+                    && this.aCounterMap.equals(anOther.aCounterMap)
+                    && this.aSender.equals(anOther.aSender)
+                    && this.aPrimitiveOnlyMode == anOther.aPrimitiveOnlyMode;
+        }
+        return false;
+    }
+
+    public int hashCode() {
+        return this.aDataStack.hashCode()
+                + this.aVariableMap.hashCode()
+                + this.aCurrentChainTarget.hashCode()
+                + this.aSearchTargetStack.hashCode()
+                + this.aClassMap.hashCode()
+                + this.aStackTrace.hashCode()
+                + this.aDataMap.hashCode()
+                + this.aCounterMap.hashCode()
+                + this.aSender.hashCode()
+                + Boolean.hashCode(this.aPrimitiveOnlyMode);
     }
 
 }

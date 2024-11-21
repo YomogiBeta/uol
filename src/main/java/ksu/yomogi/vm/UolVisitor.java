@@ -943,5 +943,24 @@ public class UolVisitor extends uolBaseVisitor<Object> {
         this.aDataManager = aDataManager;
     }
 
+    public String toString(){
+        return "UolVisitor";
+    }
+
+    public boolean equals(Object anObject){
+        if (anObject == null) return false;
+        if (anObject == this) return true;
+        if (anObject instanceof UolVisitor anOther){
+            return this.aDataManager.equals(anOther.getDataManager())
+                    && this.aReturnValue.equals(anOther.getReturnValue())
+                    && this.aRawIdentityEvaluation == anOther.aRawIdentityEvaluation;
+        }
+        return false;
+    }
+
+    public int hashCode(){
+        return this.aDataManager.hashCode() + this.aReturnValue.hashCode() + Boolean.hashCode(this.aRawIdentityEvaluation);
+    }
+
 
 }

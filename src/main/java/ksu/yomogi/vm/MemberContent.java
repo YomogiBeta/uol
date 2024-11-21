@@ -52,14 +52,22 @@ public class MemberContent extends Object implements Value<Object>, Cloneable {
     }
 
     public String toString() {
-        String aString = "{ " + this.aModifier + " " + this.anInstruction + " } ";
+        StringBuffer aStringBuffer = new StringBuffer();
+        aStringBuffer.append("{ ");
+        aStringBuffer.append(this.aModifier);
+        aStringBuffer.append(" ");
+        aStringBuffer.append(this.anInstruction);
+        aStringBuffer.append(" } ");
+        aStringBuffer.append(this.aValue);
         if (this.aValue == null)
-            return aString + "null";
-        return aString + this.aValue;
+            return aStringBuffer.append("null").toString();
+        return aStringBuffer.append(this.aValue).toString();
     }
 
-    public boolean equals(Object obj) {
-        if (obj instanceof MemberContent anOther) {
+    public boolean equals(Object anObject) {
+        if (anObject == null) return false;
+        if (anObject == this) return true;
+        if (anObject instanceof MemberContent anOther) {
             return this.aValue.equals(anOther.getValue())
                     && this.aModifier.equals(anOther.getModifier())
                     && this.anInstruction.equals(anOther.getInstruction());

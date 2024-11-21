@@ -73,8 +73,10 @@ public class LambdaContent extends Object implements Executable {
         return "Lambda";
     }
 
-    public boolean equals(Object obj) {
-        if (obj instanceof LambdaContent anOther) {
+    public boolean equals(Object anObject) {
+        if (anObject == null) return false;
+        if (anObject == this) return true;
+        if (anObject instanceof LambdaContent anOther) {
             return this.aVariableMap.equals(anOther.aVariableMap)
                     && this.anArgumentsCount.equals(anOther.anArgumentsCount)
                     && this.aDefaultArgumentsCount.equals(anOther.aDefaultArgumentsCount)

@@ -32,7 +32,7 @@ ELSE: 'else';
 WHILE: 'while';
 FOR: 'for';
 
-ASSIGN: '=' | 'is' | ':=';
+ASSIGN: '=' | ':=';
 ADDITIVE_OPERATOR: '+' | '-';
 MULTIPLY_OPERATOR: '*' | '/' | '%';
 CONDITIONAL_OPERATOR: '==' | '!=' | '<' | '<=' | '>' | '>=';
