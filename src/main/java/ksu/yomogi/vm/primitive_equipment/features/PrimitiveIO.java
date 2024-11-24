@@ -14,13 +14,13 @@ final public class PrimitiveIO {
             aStringBuilder.append(PrimitiveIO.parseObject(anArgument));
         }
         System.out.print(aStringBuilder.toString());
-        return true;
+        return null;
     };
 
     private static final BiFunction<List, DataManager, Boolean> aPrintln = (List anArguments, DataManager aDatamanager) -> {
         aPrint.apply(anArguments, aDatamanager);
         System.out.println();
-        return true;
+        return null;
     };
 
     private static Object parseObject(Object anObject) {

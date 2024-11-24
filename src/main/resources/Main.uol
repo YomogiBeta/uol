@@ -8,8 +8,11 @@ class Main extends Object {
     }
 
     public function main(){
+        anIO = new IO()
         aTest = new Test()
         aTest.test()
+
+        anIO.println("Hello World!!")
 
     }
 }

@@ -7,6 +7,7 @@ import ksu.yomogi.vm.errors.PrimitiveMemberCallError;
 import ksu.yomogi.vm.errors.NotFoundSymbolError;
 import ksu.yomogi.vm.errors.PrivateMemberCallError;
 import ksu.yomogi.vm.errors.UolRuntimeError;
+import ksu.yomogi.vm.escapes.IfStatementReturnEscape;
 import ksu.yomogi.vm.interfaces.Executable;
 import ksu.yomogi.vm.interfaces.Value;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -23,6 +24,7 @@ public class UolVisitor extends uolBaseVisitor<Object> {
     private DataManager aDataManager = new DataManager();
 
     private Object aReturnValue = null;
+    private Boolean anIsSetReturnValue = false;
 
     private Boolean aRawIdentityEvaluation = false;
 
@@ -410,6 +412,10 @@ public class UolVisitor extends uolBaseVisitor<Object> {
      */
     public Object visitReturnExpression(uolParser.ReturnExpressionContext ctx) {
         super.visitReturnExpression(ctx);
+        if (this.aDataManager.getDataStack().isEmpty()) {
+            this.setReturnValue(null);
+            return null;
+        }
         this.setReturnValue(this.aDataManager.getDataStack().pop());
         return null;
     }
@@ -474,10 +480,15 @@ public class UolVisitor extends uolBaseVisitor<Object> {
         this.aDataManager.setCurrentChainTarget(null);
         super.visitCallExpression(ctx);
         String aKey = ctx.getChild(0).getText();
-        UolVisitor aFunctionRunnedVisitor = this.executeCall(aKey, ctx);
+        UolVisitor aFunctionRunnedVisitor = null;
+        try {
+            aFunctionRunnedVisitor = this.executeCall(aKey, ctx);
+        } catch (IfStatementReturnEscape aIfStatementReturnEscape) {
+            this.aDataManager.getDataStack().push(aIfStatementReturnEscape.getReturnValue());
+        }
 
         if (aFunctionRunnedVisitor != null) {
-            if (aFunctionRunnedVisitor.getReturnValue() != null) {
+            if (aFunctionRunnedVisitor.isSetReturnValue()) {
                 this.aDataManager.getDataStack().push(aFunctionRunnedVisitor.getReturnValue());
             }
         }
@@ -669,10 +680,22 @@ public class UolVisitor extends uolBaseVisitor<Object> {
         String aBoolClassName = aBool ? "True" : "False";
 
         InstanceContent anInstanceContent = new InstanceContent(aBoolClassName, this.aDataManager);
-        anInstanceContent.execute("ifThenTrue", new ArrayList<>(List.of(aFirstExecutableContent)), this);
+        UolVisitor aFirstVisitor = anInstanceContent.execute("ifThenTrue", new ArrayList<>(List.of(aFirstExecutableContent)), this);
+        UolVisitor aSecondVisitor = null;
         if (aSecondExecutableContent != null)
-            anInstanceContent.execute("ifThenFalse", new ArrayList<>(List.of(aSecondExecutableContent)), this);
+            aSecondVisitor = anInstanceContent.execute("ifThenFalse", new ArrayList<>(List.of(aSecondExecutableContent)), this);
+        this.escapeByIfStatementReturn(aFirstVisitor);
+        this.escapeByIfStatementReturn(aSecondVisitor);
         return null;
+    }
+
+    private void escapeByIfStatementReturn(UolVisitor aVisitor) throws IfStatementReturnEscape {
+        if (aVisitor == null) return;
+        if (aVisitor.getReturnValue() != null) {
+            IfStatementReturnEscape anEscape = new IfStatementReturnEscape();
+            anEscape.setReturnValue(aVisitor.getReturnValue());
+            throw anEscape;
+        }
     }
 
     /**
@@ -925,8 +948,16 @@ public class UolVisitor extends uolBaseVisitor<Object> {
      */
     public void setReturnValue(Object aReturnValue) {
         this.aReturnValue = aReturnValue;
+        this.anIsSetReturnValue = true;
     }
 
+    /**
+     * 戻り値の設定がされているかを応答するメッセージ
+     * @return boolean
+     */
+    public boolean isSetReturnValue() {
+        return this.anIsSetReturnValue;
+    }
     /**
      * データマネージャーを応答するメッセージ
      *

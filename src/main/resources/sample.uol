@@ -1,5 +1,5 @@
-5.times(() {
-    anIo := new IO()
-    anIo.println("Hello World")
+import { Main } from "Main"
 
-})
+aMain := new Main()
+aMain.main()
+

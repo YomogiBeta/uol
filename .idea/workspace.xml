@@ -5,9 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2beadc4c-bdb1-41c7-b9c1-83160b79d96d" name="変更" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/escapes/IfStatementReturnEscape.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/InstanceAndMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/InstanceAndMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/MessageContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/MessageContent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolLexer.interp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolLexer.interp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolLexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolLexer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVisitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/primitive_equipment/features/PrimitiveIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/primitive_equipment/features/PrimitiveIO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Main.uol" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Main.uol" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Test.uol" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Test.uol" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/language/False.uol" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/language/False.uol" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/language/True.uol" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/language/True.uol" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/sample.uol" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sample.uol" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,6 +77,7 @@
     "Gradle.uol_antlr [:UolVirtualMachine.main()].executor": "Run",
     "Gradle.uol_antlr [:Visitor.main()].executor": "Run",
     "Gradle.uol_antlr [generateGrammarSource].executor": "Run",
+    "Gradle.uol_antlr [processResources].executor": "Run",
     "Gradle.uol_antrl.executor": "Run",
     "OverrideImplement.generate.javadoc": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -136,13 +145,37 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
+    <configuration name="uol_antlr [processResources]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="processResources" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
     <list>
+      <item itemvalue="Gradle.uol_antlr [processResources]" />
       <item itemvalue="Gradle.uol_antlr [generateGrammarSource]" />
       <item itemvalue="アプリケーション.UolVirtualMachine" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.uol_antlr [generateGrammarSource]" />
+        <item itemvalue="Gradle.uol_antlr [processResources]" />
       </list>
     </recent_temporary>
   </component>
@@ -189,7 +222,7 @@
       <workItem from="1730202677864" duration="16464000" />
       <workItem from="1730632209414" duration="8728000" />
       <workItem from="1730797333277" duration="27668000" />
-      <workItem from="1730962385832" duration="93460000" />
+      <workItem from="1730962385832" duration="122252000" />
     </task>
     <servers />
   </component>
@@ -201,19 +234,18 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVisitor.java</url>
-          <line>86</line>
+          <line>88</line>
           <option name="timeStamp" value="306" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVisitor.java</url>
-          <line>926</line>
-          <option name="timeStamp" value="307" />
+          <line>418</line>
+          <option name="timeStamp" value="349" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/LambdaContent.java</url>
-          <line>65</line>
-          <option name="timeStamp" value="328" />
-        </line-breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.util.EmptyStackException" package="java.util" />
+          <option name="timeStamp" value="340" />
+        </breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <pin-to-top-manager>

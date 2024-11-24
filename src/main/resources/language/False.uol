@@ -5,7 +5,7 @@ class False {
     }
 
     public function ifThenFalse(aLambda){
-        aLambda()
+        return aLambda()
 
     }
 }
