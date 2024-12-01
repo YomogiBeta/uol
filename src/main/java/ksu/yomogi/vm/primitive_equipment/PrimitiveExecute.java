@@ -16,6 +16,14 @@ final public class PrimitiveExecute {
         }
     };
 
+    /**
+     * プリミティブメソッドを実行するメソッド
+     * @param aClassName クラス名
+     * @param aMethodName メソッド名
+     * @param anArguments 引数リスト
+     * @param aDataManager データマネージャ
+     * @return
+     */
     public static Object execute(String aClassName, String aMethodName, List<Object> anArguments, DataManager aDataManager) {
         BiFunction aFunction = aFunctionMap.get(aClassName + "-" + aMethodName);
         if (aFunction != null) {

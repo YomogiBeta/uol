@@ -35,23 +35,11 @@ public interface uolVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitResponseExpression(uolParser.ResponseExpressionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link uolParser#iterableExpression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIterableExpression(uolParser.IterableExpressionContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link uolParser#expressionList}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitExpressionList(uolParser.ExpressionListContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link uolParser#fileImportStatement}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFileImportStatement(uolParser.FileImportStatementContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link uolParser#partsImportStatement}.
 	 * @param ctx the parse tree
@@ -203,18 +191,6 @@ public interface uolVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitConditionAnotherBody(uolParser.ConditionAnotherBodyContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link uolParser#booleanLoopExpression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBooleanLoopExpression(uolParser.BooleanLoopExpressionContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link uolParser#forEachExpression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitForEachExpression(uolParser.ForEachExpressionContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link uolParser#conditionExpressionList}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -280,24 +256,6 @@ public interface uolVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitUnaryExpression(uolParser.UnaryExpressionContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link uolParser#listDefine}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitListDefine(uolParser.ListDefineContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link uolParser#listDefineWithKey}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitListDefineWithKey(uolParser.ListDefineWithKeyContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link uolParser#listDefineWithKeyContent}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitListDefineWithKeyContent(uolParser.ListDefineWithKeyContentContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link uolParser#elementExpression}.
 	 * @param ctx the parse tree

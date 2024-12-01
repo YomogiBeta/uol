@@ -5,20 +5,37 @@ public class ImportLabel extends Object{
     private String aTrueLabel;
     private String aSubLabel;
 
+    /**
+     * コンストラクトメソッド
+     * @param trueLabel 真名
+     * @param subLabel 仮名
+     */
     public ImportLabel(String trueLabel, String subLabel) {
         this.aTrueLabel = trueLabel;
         this.aSubLabel = subLabel;
     }
 
+    /**
+     * コンストラクトメソッド
+     * @param trueLabel 真名
+     */
     public ImportLabel (String trueLabel) {
         this.aTrueLabel = trueLabel;
         this.aSubLabel = trueLabel;
     }
 
+    /**
+     * 真名を応答するメソッド
+     * @return 真名
+     */
     public String getTrueLabel() {
         return this.aTrueLabel;
     }
 
+    /**
+     * 仮名を応答するメソッド
+     * @return 仮名
+     */
     public String getSubLabel() {
         return this.aSubLabel;
     }

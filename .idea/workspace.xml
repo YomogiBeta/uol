@@ -5,17 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2beadc4c-bdb1-41c7-b9c1-83160b79d96d" name="変更" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/escapes/IfStatementReturnEscape.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/antlr/uol.g4" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/antlr/uol.g4" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uol.interp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uol.interp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uol.tokens" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uol.tokens" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolBaseVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolBaseVisitor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolLexer.interp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolLexer.interp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolLexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolLexer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVisitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolLexer.tokens" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolLexer.tokens" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/parser/uolVisitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/ClassContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/ClassContent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/ImportLabel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/ImportLabel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/InstanceAndMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/InstanceAndMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/InstanceContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/InstanceContent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/LambdaContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/LambdaContent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/MemberContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/MemberContent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/MessageContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/MessageContent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/PrimitiveContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/PrimitiveContent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/datamanager/DataManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/datamanager/DataManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/errors/PrimitiveMethodCallError.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/errors/PrimitiveMethodCallError.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/primitive_equipment/PrimitiveExecute.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/primitive_equipment/PrimitiveExecute.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/primitive_equipment/features/PrimitiveIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/primitive_equipment/features/PrimitiveIO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Main.uol" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Main.uol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Test.uol" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Test.uol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/language/False.uol" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/language/False.uol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/language/True.uol" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/language/True.uol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/sample.uol" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sample.uol" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -222,7 +233,7 @@
       <workItem from="1730202677864" duration="16464000" />
       <workItem from="1730632209414" duration="8728000" />
       <workItem from="1730797333277" duration="27668000" />
-      <workItem from="1730962385832" duration="122252000" />
+      <workItem from="1730962385832" duration="172998000" />
     </task>
     <servers />
   </component>

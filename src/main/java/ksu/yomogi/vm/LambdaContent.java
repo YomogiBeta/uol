@@ -16,6 +16,12 @@ public class LambdaContent extends Object implements Executable {
     private Integer aDefaultArgumentsCount = 0;
     private uolParser.ExpressionListContext aRunnableContext = null;
 
+    /**
+     * コンストラクトメソッド
+     * @param aVariableMap 引数名と値のマップ
+     * @param aDefaultArgumentDefineCount　デフォルト引数の数
+     * @param aRunnableContext　実行する構文木
+     */
     public LambdaContent(LinkedHashMap<String, Object> aVariableMap, Integer aDefaultArgumentDefineCount, uolParser.ExpressionListContext aRunnableContext) {
         if (aVariableMap == null) {
             aVariableMap = new LinkedHashMap<>();
@@ -27,10 +33,23 @@ public class LambdaContent extends Object implements Executable {
         this.anArgumentsCount = this.aVariableMap.size() - this.aDefaultArgumentsCount;
     }
 
+    /**
+     * ラムダを実行するメソッド。
+     * @param aDataManager
+     * @return
+     * @throws MissingArgumentsError
+     */
     public UolVisitor execute(DataManager aDataManager) throws MissingArgumentsError {
         return this.execute(new ArrayList<>(), aDataManager);
     }
 
+    /**
+     * ラムダを実行するメソッド。
+     * @param anArguments
+     * @param aDataManager
+     * @return
+     * @throws MissingArgumentsError
+     */
     public UolVisitor execute(ArrayList<Object> anArguments, DataManager aDataManager) throws MissingArgumentsError {
 
         if (anArguments == null) {

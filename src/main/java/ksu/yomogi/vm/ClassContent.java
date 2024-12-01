@@ -17,6 +17,13 @@ public class ClassContent extends Object {
     private HashMap<String, MemberContent> aMembers = new HashMap<>();
     private HashMap<String, MessageContent> aMessages = new HashMap<>();
 
+    /**
+     * コンストラクタメソッド
+     * @param className クラス名
+     * @param parentClassName 親クラス名
+     * @param members メンバマッピ
+     * @param messages メッセージマップ
+     */
     public ClassContent(String className, String parentClassName, HashMap<String, MemberContent> members, HashMap<String, MessageContent> messages) {
         this.aClassName = className;
         this.aParentClassName = parentClassName;
@@ -27,14 +34,26 @@ public class ClassContent extends Object {
         this.aMessages = messages;
     }
 
+    /**
+     * クラス名を応答するメソッド
+     * @return クラス名
+     */
     public String getClassName() {
         return this.aClassName;
     }
 
+    /**
+     * 親クラス名を応答するメソッド
+     * @return 親クラス名
+     */
     public String getParentClassName() {
         return this.aParentClassName;
     }
 
+    /**
+     * 自作言語上でのクラスが持つメンバマップを応答するメソッド
+     * @return メンバマップ
+     */
     public HashMap<String, MemberContent> getMembers() {
         if (this.aMembers == null) {
             return new HashMap<>();
@@ -42,6 +61,10 @@ public class ClassContent extends Object {
         return this.aMembers;
     }
 
+    /**
+     * 自作言語上でのクラスが持つメッセージマップを応答するメソッド
+     * @return メッセージマップ
+     */
     public HashMap<String, MessageContent> getMessages() {
         return this.aMessages;
     }

@@ -23,6 +23,11 @@ final public class PrimitiveIO {
         return null;
     };
 
+    /**
+     *  仮想マシン上でのObjectを自作言語上でのインス働き方ランスの特徴に合わせてパーズする私的静的メソッド
+     * @param anObject オブジェクト
+     * @return
+     */
     private static Object parseObject(Object anObject) {
         if (anObject instanceof InstanceContent anInstance) {
             if (anInstance.getParentClassName().equals("Number")) {
@@ -32,9 +37,18 @@ final public class PrimitiveIO {
         return anObject;
     }
 
+    /**
+     * 自作言語のIOクラスが持つprintメソッドの実装を応答するメソッド
+     * @return メソッド
+     */
     public static BiFunction<List, DataManager, Boolean> getPrint() {
         return aPrint;
     }
+
+    /**
+     * 自作言語のIOクラスが持つprintlnメソッドの実装を応答するメソッド
+     * @return メソッド
+     */
     public static BiFunction<List, DataManager, Boolean> getPrintln() {
         return aPrintln;
     }

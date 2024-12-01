@@ -66,7 +66,7 @@ public class DataManager extends Object {
 
 
     /**
-     * 検索対象クラス名を設定するメソッド。リリースが行われるまで、変数ゲットの際にメッセージサーチも行うように指示する。
+     * 検索対象クラス名を設定するメソッド。後述するリリースが行われるまで、変数参照の際にメッセージサーチも合わせて行うように指示する。
      *
      * @param anInstanceContent
      */
@@ -91,7 +91,7 @@ public class DataManager extends Object {
     }
 
     /**
-     * 変数マップを応答するメソッド
+     * 仮想マシンの処理状況に合わせて、変数マップを応答するメソッド。
      *
      * @return 変数マップ
      */
@@ -166,6 +166,11 @@ public class DataManager extends Object {
         return null;
     }
 
+    /**
+     * 変数辞書から変数の内容をサーチする際に、そのキーの下処理を行う私的メソッド
+     * @param key
+     * @return 下処理後のキー
+     */
     private String prepareKey(String key) {
         if (key.equals("self") || key.equals("super")) {
             return this.aSender + "-" + key;

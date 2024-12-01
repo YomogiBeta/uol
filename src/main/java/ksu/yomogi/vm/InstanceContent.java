@@ -17,6 +17,11 @@ public class InstanceContent extends Object implements Chainable, Value<Instance
 
     private HashMap<String, MemberContent> aMembers = new HashMap<>();
 
+    /**
+     * コンストラクトメソッド
+     * @param className クラス名
+     * @param aDataManager データマネージャ
+     */
     public InstanceContent(String className, DataManager aDataManager) {
         ClassContent aClassContent = aDataManager.getClassContent(className);
         ClassContent aParentClassContent = null;
@@ -51,22 +56,50 @@ public class InstanceContent extends Object implements Chainable, Value<Instance
         this.aMembers = members;
     }
 
+    /**
+     * クラス名を応答するメソッド
+     * @return クラス名
+     */
     public String getClassName() {
         return this.aClassName;
     }
 
+    /**
+     * 親クラス名を応答するメソッド
+     * @return 親クラス名
+     */
     public String getParentClassName() {
         return this.aParentClassName;
     }
 
+    /**
+     * 自作言語上でのメンバマップを応答するメソッド
+     * @return メンバマップ
+     */
     public HashMap<String, MemberContent> getMembers() {
         return this.aMembers;
     }
 
+    /**
+     * インスタンスが持つメッセージの名前を指定し、を実行するメソッド
+     * @param message メッセージ名
+     * @param arguments 引数
+     * @param aVisitor ビジター
+     * @return ビジター
+     * @throws NotFoundSymbolError
+     */
     public UolVisitor execute(String message, ArrayList<Object> arguments, UolVisitor aVisitor) throws NotFoundSymbolError {
         return this.execute(message, arguments, aVisitor.getDataManager());
     }
 
+    /**
+     * インスタンスが持つメッセージの名前を指定し、を実行するメソッド
+     * @param message メッセージ名
+     * @param arguments 引数
+     * @param aDatamanager データマネージャ
+     * @return ビジター
+     * @throws NotFoundSymbolError
+     */
     public UolVisitor execute(String message, ArrayList<Object> arguments, DataManager aDatamanager) throws NotFoundSymbolError {
         MessageContent aMessage = aDatamanager.searchMessage(this.aClassName, message);
 
@@ -82,10 +115,19 @@ public class InstanceContent extends Object implements Chainable, Value<Instance
         return aMessage.execute(arguments, aDatamanager);
     }
 
+    /**
+     * インスタンスが持つメンバマップを応答するメソッド
+     * @return　メンバマップ
+     */
     public HashMap<String, MemberContent> getValuesMap() {
         return this.aMembers;
     }
 
+    /**
+     * インスタンス自身を応答するメソッド
+     * @param aDataManager
+     * @return インスタンス自身
+     */
     public InstanceContent value(DataManager aDataManager) {
         return this;
     }
@@ -94,6 +136,11 @@ public class InstanceContent extends Object implements Chainable, Value<Instance
         return this.aClassName + "Instance (by uol)";
     }
 
+    /**
+     * インスタンスのメンバマップが等しいかどうかを比較するメソッド
+     * @param anOtherMember
+     * @return 等しいかどうか
+     */
     private boolean equalsMembers(Map<String, MemberContent> anOtherMember) {
         Iterator<String> anIterator = this.aMembers.keySet().iterator();
         String aKey;

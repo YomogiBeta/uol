@@ -17,6 +17,14 @@ public class MessageContent extends Object implements Executable {
     private final String anInstruction;
     private LambdaContent aLambda;
 
+    /**
+     * コンストラクタメソッド
+     * @param name メッセージ名
+     * @param className クラス名
+     * @param modifier 修飾子
+     * @param instruction 指示トークン
+     * @param lambda ラムダコンテンツ
+     */
     public MessageContent(String name, String className, String modifier, String instruction, LambdaContent lambda) {
         this.aName = name;
         this.aClassName = className;
@@ -25,22 +33,48 @@ public class MessageContent extends Object implements Executable {
         this.aLambda = lambda;
     }
 
+    /**
+     * 修飾子を応答するメソッド
+     * @return 修飾子
+     */
     public String getModifier() {
         return this.aModifier;
     }
 
+    /**
+     * 指示トークンを応答するメソッド
+     * @return 指示トークン
+     */
     public String getInstruction() {
         return this.anInstruction;
     }
 
+    /**
+     * メッセージのラムダコンテンツを応答するメソッド
+     * @return　ラムダコンテンツ
+     */
     public LambdaContent getLambda() {
         return this.aLambda;
     }
 
+    /**
+     * メッセージを実行するメソッド
+     * @param aDataManager
+     * @return
+     * @throws MissingArgumentsError
+     */
     public UolVisitor execute(DataManager aDataManager) throws MissingArgumentsError {
         return this.execute(new ArrayList<>(), aDataManager);
     }
 
+    /**
+     * メッセージを実行するメソッド
+     * @param anArguments
+     * @param aDataManager
+     * @return
+     * @throws MissingArgumentsError
+     * @throws PrivateMethodCallError
+     */
     public UolVisitor execute(ArrayList<Object> anArguments, DataManager aDataManager) throws MissingArgumentsError, PrivateMethodCallError {
         boolean aPrimitiveOnlyMode = aDataManager.isPrimitiveOnlyMode();
         if (this.anInstruction.equals("primitiveOnly") && !aPrimitiveOnlyMode) {

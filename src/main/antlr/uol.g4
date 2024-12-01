@@ -29,8 +29,6 @@ FUNCTION: 'function';
 NEW: 'new';
 IF: 'if';
 ELSE: 'else';
-WHILE: 'while';
-FOR: 'for';
 
 ASSIGN: '=' | ':=';
 ADDITIVE_OPERATOR: '+' | '-';
@@ -54,15 +52,15 @@ fragment LetterOrDigit: Letter | [0-9];
 prog:	(NEWLINE)* (statement NEWLINE)* ;
 statement
     :   partsImportStatement
-    |   fileImportStatement
+//    |   fileImportStatement
     |   classDefine
     |   expression
     ;
 
 expression
     : literal
-    | listDefine
-    | listDefineWithKey
+//    | listDefine
+//    | listDefineWithKey
     | lambdaDefine
     | instanceExpression
     | callExpression
@@ -70,8 +68,6 @@ expression
     | assignExpression
     | functionDefine
     | booleanConditionExpression
-    | booleanLoopExpression
-    | forEachExpression
     | additiveExpression
     ;
 
@@ -82,23 +78,23 @@ responseExpression
     | additiveExpression
     ;
 
-iterableExpression
-    :   STRING_LITERAL
-    |   IDENTIFIER
-    |   listDefine
-    |   listDefineWithKey
-    |   lambdaDefine
-    |   callExpression
-    |   chainExpression
-    ;
+//iterableExpression
+//    :   STRING_LITERAL
+//    |   IDENTIFIER
+////    |   listDefine
+////    |   listDefineWithKey
+//    |   lambdaDefine
+//    |   callExpression
+//    |   chainExpression
+//    ;
 
 expressionList
      : (expression (NEWLINE)*)* (returnExpression (NEWLINE)*)?
      ;
 
-fileImportStatement
-    : IMPORT IDENTIFIER FROM STRING_LITERAL
-    ;
+//fileImportStatement
+//    : IMPORT IDENTIFIER FROM STRING_LITERAL
+//    ;
 
 partsImportStatement
     : IMPORT partsImportContentList FROM STRING_LITERAL
@@ -203,14 +199,6 @@ conditionAnotherBody
     : ELSE '{' expressionList '}'
     ;
 
-booleanLoopExpression
-    :   WHILE '(' conditionExpressionList ')' '{' expressionList '}'
-    ;
-
-forEachExpression
-    :   FOR '(' IDENTIFIER 'in' iterableExpression ')' '{' expressionList '}'
-    ;
-
 conditionExpressionList
     :   conditionExpression (CONDITIONAL_LOGICAL_OPERATOR conditionExpression)*
     ;
@@ -257,17 +245,17 @@ unaryExpression
     |   '(' responseExpression ')';
 
 
-listDefine
-    :   '[' (expression (',' expression)*)* ']'
-    ;
-
-listDefineWithKey
-    :   '{' listDefineWithKeyContent (',' listDefineWithKeyContent)*'}'
-    ;
-
-listDefineWithKeyContent
-    :  STRING_LITERAL ': ' expression
-    ;
+//listDefine
+//    :   '[' (expression (',' expression)*)* ']'
+//    ;
+//
+//listDefineWithKey
+//    :   '{' listDefineWithKeyContent (',' listDefineWithKeyContent)*'}'
+//    ;
+//
+//listDefineWithKeyContent
+//    :  STRING_LITERAL ': ' expression
+//    ;
 
 elementExpression
     :   callExpression

@@ -12,6 +12,14 @@ public class MemberContent extends Object implements Value<Object>, Cloneable {
     private final String anInstruction;
     private Object aValue;
 
+    /**
+     * コンストラクトメソッド
+     * @param name メンバ名
+     * @param className クラス名
+     * @param modifier 修飾子
+     * @param instruction 指示トークン
+     * @param value 値
+     */
     public MemberContent(String name, String className, String modifier, String instruction, Object value) {
         this.aName = name;
         this.aClassName = className;
@@ -20,18 +28,37 @@ public class MemberContent extends Object implements Value<Object>, Cloneable {
         this.aValue = value;
     }
 
+    /**
+     * 修飾子を応答するメソッド
+     * @return 修飾子
+     */
     public String getModifier() {
         return this.aModifier;
     }
 
+    /**
+     * 指示トークンを応答するメソッド
+     * @return 指示トークン
+     */
     public String getInstruction() {
         return this.anInstruction;
     }
 
+    /**
+     * 値を応答するメソッド
+     * @return 値
+     */
     public Object getValue() {
         return this.aValue;
     }
 
+    /**
+     * 参照可能かどうかを確認し、可能であれば値を応答するメソッド
+     * @param aDataManager
+     * @return
+     * @throws PrivateMemberCallError
+     * @throws PrimitiveMemberCallError
+     */
     public Object value(DataManager aDataManager) throws PrivateMemberCallError, PrimitiveMemberCallError {
         boolean aPrimitiveMode = aDataManager.isPrimitiveOnlyMode();
         if (this.anInstruction.equals("primitiveOnly") && !aPrimitiveMode) {
@@ -44,6 +71,11 @@ public class MemberContent extends Object implements Value<Object>, Cloneable {
         return this.aValue;
     }
 
+    /**
+     * 参照可能かどうかを確認し、可能であれば値を設定するメソッド
+     * @param value
+     * @param aDataManager
+     */
     public void setValue(Object value, DataManager aDataManager) {
         if (this.aModifier.equals("private") && !aDataManager.getSender().equals(this.aClassName)){
             throw new PrivateMemberCallError(this.aName, null);
