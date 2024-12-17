@@ -1,5 +1,4 @@
-import { Object } from "language.Object"
+import { Main } from "Main"
 
-class Sample extends Object {
-    private native runnable = nil
-}
+aMain := new Main()
+aMain.main()
