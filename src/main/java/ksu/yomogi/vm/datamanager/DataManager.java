@@ -172,10 +172,25 @@ public class DataManager extends Object {
      * @return 下処理後のキー
      */
     private String prepareKey(String key) {
-        if (key.equals("self") || key.equals("super")) {
+        if (key.equals("super")) {
             return this.aSender + "-" + key;
         }
+        if (key.equals("self")) {
+            return this.getStackTraceInstance().getClassName() + "-" + key;
+        }
         return key;
+    }
+
+    /**
+     * 対象のクラスに対して、現在のデータ状況でアクセス権限があるかどうかを応答するメソッド。
+     * @param aClassName 対象のクラス名
+     * @return
+     */
+    public Boolean isAccsessPermission(String aClassName) {
+        if (!this.getSender().equals(aClassName) && this.getStackTraceInstance().equals(aClassName)) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -259,7 +274,7 @@ public class DataManager extends Object {
      *
      * @return インスタンスのコンテンツ
      */
-    private InstanceContent getStackTraceInstance() {
+    public InstanceContent getStackTraceInstance() {
         if (this.aStackTrace.isEmpty()) return null;
         return this.aStackTrace.peek();
     }

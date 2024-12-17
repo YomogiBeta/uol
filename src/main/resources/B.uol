@@ -1,0 +1,19 @@
+import { A } from "A"
+
+class B extends A {
+    public function write() {
+        anIO = new IO()
+        anIO.println("B")
+
+    }
+
+    public function message1() {
+        super.write()
+
+    }
+
+    public function message2() {
+        self.write()
+
+    }
+}

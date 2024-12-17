@@ -1,0 +1,9 @@
+import { B } from "B"
+
+class C extends B {
+    public function write() {
+        anIO = new IO()
+        anIO.println("C")
+
+    }
+}
