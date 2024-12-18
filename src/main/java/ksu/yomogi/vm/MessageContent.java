@@ -80,7 +80,7 @@ public class MessageContent extends Object implements Executable {
         if (this.anInstruction.equals("primitiveOnly") && !aPrimitiveOnlyMode) {
             throw new PrimitiveMethodCallError(this.aName, null);
         }
-        if (!aPrimitiveOnlyMode && this.aModifier.equals("private") && !aDataManager.isAccsessPermission(this.aClassName)) {
+        if (!aPrimitiveOnlyMode && this.aModifier.equals("private") && !aDataManager.isAccessPermission(this.aClassName)) {
             throw new PrivateMethodCallError(this.aName, null);
         }
 

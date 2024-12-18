@@ -1,6 +1,4 @@
-import { C } from "C"
+import { Main } from "Main"
 
-aC = new C()
-aC.message1()
-aC.message2()
-
+aMain := new Main()
+aMain.main()

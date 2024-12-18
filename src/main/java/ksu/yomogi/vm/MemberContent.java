@@ -65,7 +65,7 @@ public class MemberContent extends Object implements Value<Object>, Cloneable {
             throw new PrimitiveMemberCallError(this.aName, null);
         }
 
-        if (!aPrimitiveMode && this.aModifier.equals("private") && !aDataManager.isAccsessPermission(this.aClassName)){
+        if (!aPrimitiveMode && this.aModifier.equals("private") && !aDataManager.isAccessPermission(this.aClassName)){
             throw new PrivateMemberCallError(this.aName, null);
         }
         return this.aValue;

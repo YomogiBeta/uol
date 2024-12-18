@@ -894,7 +894,9 @@ public class UolVisitor extends uolBaseVisitor<Object> {
         this.aDataManager.setSearchTargetClassName(anInstance);
         this.aDataManager.setPrimitiveOnlyMode(true);
         this.aDataManager.pushVariableMap((HashMap) anInstance.getMembers());
+        this.aDataManager.pushStackTrace(anInstance);
         UolVisitor aUolVisitor = anInstance.execute(aMessage, anArguments, this);
+        this.aDataManager.popStackTrace();
         this.aDataManager.popVariableMap();
         this.aDataManager.setPrimitiveOnlyMode(false);
         this.aDataManager.rollbackSearchTargetClassName();

@@ -186,9 +186,14 @@ public class DataManager extends Object {
      * @param aClassName 対象のクラス名
      * @return
      */
-    public Boolean isAccsessPermission(String aClassName) {
-        if (!this.getSender().equals(aClassName) && this.getStackTraceInstance().equals(aClassName)) {
-            return false;
+    public Boolean isAccessPermission(String aClassName) {
+        if (!this.getSender().equals(aClassName)) {
+            InstanceContent aTargetInstance = this.aStackTrace.firstElement();
+            if (aTargetInstance != null) {
+                if (!aTargetInstance.getClassName().equals(aClassName)) {
+                    return false;
+                }
+            }
         }
         return true;
     }

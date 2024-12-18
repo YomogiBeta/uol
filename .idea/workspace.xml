@@ -6,7 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="2beadc4c-bdb1-41c7-b9c1-83160b79d96d" name="変更" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/sample2.uol" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sample2.uol" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/MemberContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/MemberContent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/MessageContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/MessageContent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVisitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/datamanager/DataManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/datamanager/DataManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/sample.uol" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sample.uol" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -214,7 +218,7 @@
       <workItem from="1730202677864" duration="16464000" />
       <workItem from="1730632209414" duration="8728000" />
       <workItem from="1730797333277" duration="27668000" />
-      <workItem from="1730962385832" duration="215345000" />
+      <workItem from="1730962385832" duration="221554000" />
     </task>
     <servers />
   </component>
@@ -230,9 +234,9 @@
           <option name="timeStamp" value="306" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVisitor.java</url>
-          <line>418</line>
-          <option name="timeStamp" value="349" />
+          <url>file://$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/datamanager/DataManager.java</url>
+          <line>207</line>
+          <option name="timeStamp" value="361" />
         </line-breakpoint>
         <breakpoint enabled="true" type="java-exception">
           <properties class="java.util.EmptyStackException" package="java.util" />
