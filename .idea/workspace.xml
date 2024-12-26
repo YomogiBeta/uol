@@ -6,10 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="2beadc4c-bdb1-41c7-b9c1-83160b79d96d" name="変更" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/MemberContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/MemberContent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/MessageContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/MessageContent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVirtualMachine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVirtualMachine.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVisitor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/datamanager/DataManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/datamanager/DataManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/sample.uol" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sample.uol" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -34,6 +33,23 @@
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="uol_antlr" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="uol_antlr" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="uol_antlr" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="build" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="uol_antlr" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="shadow" type="c8890929:TasksNode$1" />
               </path>
             </expand>
             <select />
@@ -71,8 +87,12 @@
     "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
     "Gradle.uol_antlr [:UolVirtualMachine.main()].executor": "Run",
     "Gradle.uol_antlr [:Visitor.main()].executor": "Run",
+    "Gradle.uol_antlr [build].executor": "Run",
+    "Gradle.uol_antlr [clean].executor": "Run",
     "Gradle.uol_antlr [generateGrammarSource].executor": "Run",
+    "Gradle.uol_antlr [jar].executor": "Run",
     "Gradle.uol_antlr [processResources].executor": "Run",
+    "Gradle.uol_antlr [shadowJar].executor": "Run",
     "Gradle.uol_antrl.executor": "Run",
     "OverrideImplement.generate.javadoc": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -86,9 +106,9 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "onboarding.tips.debug.path": "/Users/yomogi/labo/g2154352/Thesis/Program/uol_antrl/src/main/java/ksu/yomogi/Main.java",
-    "project.structure.last.edited": "モジュール",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
+    "project.structure.last.edited": "アーティファクト",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   }
@@ -104,11 +124,14 @@
       <recent name="ksu.yomogi.vm" />
     </key>
   </component>
-  <component name="RunManager" selected="アプリケーション.UolVirtualMachine">
+  <component name="RunManager" selected="Gradle.uol_antlr [shadowJar]">
     <configuration name="UolVirtualMachine" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="/Library/Java/JavaVirtualMachines/jdk-23.0.1.jdk/Contents/Home" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="ksu.yomogi.vm.UolVirtualMachine" />
       <module name="uol_antlr.main" />
-      <option name="PROGRAM_PARAMETERS" value="src/main/resources/sample.uol" />
+      <option name="PROGRAM_PARAMETERS" value="sample.uol" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/main/resources" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="ksu.yomogi.vm.datamanager.*" />
@@ -118,6 +141,50 @@
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
+    </configuration>
+    <configuration name="uol_antlr [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="build" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="uol_antlr [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="clean" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
     </configuration>
     <configuration name="uol_antlr [generateGrammarSource]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
@@ -141,7 +208,29 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="uol_antlr [processResources]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="uol_antlr [jar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="jar" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="uol_antlr [shadowJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -152,7 +241,7 @@
         </option>
         <option name="taskNames">
           <list>
-            <option value="processResources" />
+            <option value="shadowJar" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -164,14 +253,20 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Gradle.uol_antlr [processResources]" />
+      <item itemvalue="Gradle.uol_antlr [build]" />
+      <item itemvalue="Gradle.uol_antlr [clean]" />
+      <item itemvalue="Gradle.uol_antlr [shadowJar]" />
+      <item itemvalue="Gradle.uol_antlr [jar]" />
       <item itemvalue="Gradle.uol_antlr [generateGrammarSource]" />
       <item itemvalue="アプリケーション.UolVirtualMachine" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.uol_antlr [shadowJar]" />
+        <item itemvalue="Gradle.uol_antlr [clean]" />
+        <item itemvalue="Gradle.uol_antlr [build]" />
+        <item itemvalue="Gradle.uol_antlr [jar]" />
         <item itemvalue="Gradle.uol_antlr [generateGrammarSource]" />
-        <item itemvalue="Gradle.uol_antlr [processResources]" />
       </list>
     </recent_temporary>
   </component>
@@ -218,7 +313,7 @@
       <workItem from="1730202677864" duration="16464000" />
       <workItem from="1730632209414" duration="8728000" />
       <workItem from="1730797333277" duration="27668000" />
-      <workItem from="1730962385832" duration="221554000" />
+      <workItem from="1730962385832" duration="243251000" />
     </task>
     <servers />
   </component>
@@ -228,16 +323,6 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/UolVisitor.java</url>
-          <line>88</line>
-          <option name="timeStamp" value="306" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ksu/yomogi/vm/datamanager/DataManager.java</url>
-          <line>207</line>
-          <option name="timeStamp" value="361" />
-        </line-breakpoint>
         <breakpoint enabled="true" type="java-exception">
           <properties class="java.util.EmptyStackException" package="java.util" />
           <option name="timeStamp" value="340" />

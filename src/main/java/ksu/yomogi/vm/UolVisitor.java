@@ -13,13 +13,14 @@ import ksu.yomogi.vm.interfaces.Value;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.function.BiFunction;
 
 public class UolVisitor extends uolBaseVisitor<Object> {
-
-    private final static String aRuntimePath = "src/main/resources/";
 
     private DataManager aDataManager = new DataManager();
 
@@ -67,12 +68,12 @@ public class UolVisitor extends uolBaseVisitor<Object> {
     }};
 
     public void init() {
-        this.importFile(aRuntimePath + "language" + File.separator + "Object.uol", "Object");
-        this.importFile(aRuntimePath + "language" + File.separator + "Number.uol", "Number");
-        this.importFile(aRuntimePath + "language" + File.separator + "Integer.uol", "Integer");
-        this.importFile(aRuntimePath + "language" + File.separator + "IO.uol", "IO");
-        this.importFile(aRuntimePath + "language" + File.separator + "True.uol", "True");
-        this.importFile(aRuntimePath + "language" + File.separator + "False.uol", "False");
+        this.importFile(ClassLoader.getSystemResourceAsStream("language/Object.uol"),"Object");
+        this.importFile(ClassLoader.getSystemResourceAsStream("language/Number.uol"), "Number");
+        this.importFile(ClassLoader.getSystemResourceAsStream("language/Integer.uol"), "Integer");
+        this.importFile(ClassLoader.getSystemResourceAsStream("language/IO.uol"), "IO");
+        this.importFile(ClassLoader.getSystemResourceAsStream("language/True.uol"), "True");
+        this.importFile(ClassLoader.getSystemResourceAsStream("language/False.uol"), "False");
     }
 
 
@@ -99,9 +100,25 @@ public class UolVisitor extends uolBaseVisitor<Object> {
         this.importFile(aFilePath, aLabelStack);
     }
 
+    private void importFile(InputStream aStream, String aLabel) {
+        Stack<ImportLabel> aLabelStack = new Stack<>();
+        aLabelStack.push(new ImportLabel("aLabel"));
+        this.importFile(aStream, aLabelStack);
+    }
 
     private void importFile(String aFilePath, Stack<ImportLabel> aLabelStack) {
-        UolVisitor aVisitor = UolVirtualMachine.execute(aFilePath);
+        InputStream aStream = null;
+        try {
+            aStream = new FileInputStream(aFilePath);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        this.importFile(aStream, aLabelStack);
+        return;
+    }
+
+    private void importFile(InputStream aStream, Stack<ImportLabel> aLabelStack) {
+        UolVisitor aVisitor = UolVirtualMachine.execute(aStream);
 
         if (aVisitor != null) {
 
@@ -143,7 +160,8 @@ public class UolVisitor extends uolBaseVisitor<Object> {
         aFileKey = aFileKey.replaceAll("\\.", File.separator);
         aFileKey = aFileKey.substring(1, aFileKey.length() - 1);
         Stack<ImportLabel> aLabelStack = this.aDataManager.getDataMapContent(DataManager.IMPORT_LABEL_STACK);
-        this.importFile(aRuntimePath + aFileKey + ".uol", aLabelStack);
+        String aCurrentDirectory = System.getProperty("user.dir");
+        this.importFile(aCurrentDirectory + File.separator + aFileKey + ".uol", aLabelStack);
         return null;
     }
 

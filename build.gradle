@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'antlr'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 group = 'ksu.yomogi'
@@ -15,10 +16,10 @@ repositories {
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
-}
 
-dependencies {
-     antlr "org.antlr:antlr4:4.13.2" // use ANTLR version 4
+    antlr "org.antlr:antlr4:4.13.2" // use ANTLR version 4
+//    implementation 'org.antlr:antlr4:4.13.2'
+    implementation 'org.antlr:antlr4-runtime:4.13.2'
 }
 
 generateGrammarSource {
@@ -28,4 +29,10 @@ generateGrammarSource {
 
 test {
     useJUnitPlatform()
+}
+
+jar{
+    manifest{
+        attributes 'Main-Class' : 'ksu.yomogi.vm.UolVirtualMachine' //クラス名を指定する
+    }
 }
