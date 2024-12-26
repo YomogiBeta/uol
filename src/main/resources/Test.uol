@@ -6,12 +6,13 @@ class Test extends Object {
             if (2 == 2){
                 anIO.println("oop!")
                 // return nil
-
+            } else {
+                anIO.println("nooop!")
+                // return nil
             }
-
         }
-        aNumber = you.calculate()
-        anIO.println(aNumber)
+        aNumber = you.calculate() // youというシュード変数を利用できる
+        anIO.println(aNumber) // 標準出力へ数値の出力ができる
 
     }
 }

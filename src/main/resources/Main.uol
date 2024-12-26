@@ -1,9 +1,14 @@
-import { Test } from "Test"
+import { Test } from "Test" // 他のソースからのインポートができる
 
 class Main extends Object {
 
+    public function getOtherNumber() {
+        return 2
+    }
+
     public function calculate() {
-        return 1 + 22
+        aTest = 255
+        return (aTest + 1) * (self.getOtherNumber())  // 計算式を記述できる・selfというシュード変数を利用できる
 
     }
 
@@ -11,8 +16,8 @@ class Main extends Object {
         anIO = new IO()
         aTest = new Test()
         aTest.test()
-
-        anIO.println("Hello World!!")
-
     }
 }
+
+// メンバとメソッドを持つ基本的なクラス定義ができる
+// クラス継承ができる

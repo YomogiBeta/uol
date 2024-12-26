@@ -1,6 +1,22 @@
-import { C } from "C"
+import { Main as SubMain } from "Main" // 仮名を使って他のソースからインポートができる
 
-aC = new C()
-aC.message1()
-aC.message2()
+aVariable = () { // 変数束縛がかける、ラムダが書ける
+    return "a lambda" // 文字列を表すリテラルが書ける
+}
 
+function test (target) { // 関数や変数に束縛したラムダをコールできる
+    anIO = new IO() // new という指示を用いて、クラスをインスタンスにできる
+    anIO.println(target()) // チェインが利用できる
+}
+
+test(aVariable)
+
+5.times( () {
+    anIO = new IO()
+    anIO.println("Too much!") // 標準出力へ文字列の出力ができる
+} )
+
+aMain := new SubMain()
+aMain.main()
+
+nil // nilリテラルが書ける

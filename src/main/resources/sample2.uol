@@ -1,4 +1,9 @@
 import { Main } from "Main"
+import { C } from "C"
 
 aMain := new Main()
 aMain.main()
+
+aC = new C()
+aC.message1()
+aC.message2()
