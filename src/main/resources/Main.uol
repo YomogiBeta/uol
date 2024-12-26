@@ -2,8 +2,10 @@ import { Test } from "Test" // 他のソースからのインポートができ�
 
 class Main extends Object {
 
+    private aNumber = 2
+
     public function getOtherNumber() {
-        return 2
+        return self.aNumber // チェインが利用できる
     }
 
     public function calculate() {
