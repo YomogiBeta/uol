@@ -1,0 +1,9 @@
+
+class Outputer extends Object {
+    public function say() {
+        anIO = new IO()
+        anIO.println("System has client!")
+        anAttribute = you.attributes()
+        anIO.println(anAttribute)
+    }
+}

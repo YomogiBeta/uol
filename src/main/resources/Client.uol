@@ -1,0 +1,13 @@
+import { Outputer } from "Outputer"
+
+class Client extends Object {
+
+    public function execute(){
+        anOutputer = new Outputer()
+        anOutputer.say()
+    }
+
+    public function attributes() {
+        return "No: 1 / Execute type : 14"
+    }
+}

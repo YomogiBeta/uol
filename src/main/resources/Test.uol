@@ -16,3 +16,4 @@ class Test extends Object {
 
     }
 }
+//if文、if-else文が書ける
